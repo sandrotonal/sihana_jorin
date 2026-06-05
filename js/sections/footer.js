@@ -2,9 +2,8 @@ const SJ = window.SJ;
 
 SJ.Footer = function Footer() {
     const links = [
-        { group:'Keşfet', items:[{label:'Hikayemiz',href:'#about'},{label:'Galeri',href:'#gallery'},{label:'Çalışmalarımız',href:'#features'}] },
-        { group:'Topluluk', items:[{label:'Etkinlikler',href:'#features'},{label:'Projeler',href:'#features'},{label:'Duyurular',href:'#announcements'}] },
-        { group:'Destek', items:[{label:'Bağış Yap',href:'#contact'},{label:'Gönüllü Ol',href:'#contact'},{label:'İletişim',href:'#contact'}] }
+        { group:'Keşfet', items:[{label:'Hikayemiz',href:'hakkimizda.html'},{label:'Galeri',href:'galeri.html'},{label:'Duyurular',href:'duyurular.html'}] },
+        { group:'Destek', items:[{label:'Bağış Yap',href:'bagis.html'},{label:'Gönüllü Ol',href:'gonullu.html'},{label:'İletişim',href:'iletisim.html'}] }
     ];
 
     return (

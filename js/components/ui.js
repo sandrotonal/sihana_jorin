@@ -11,7 +11,6 @@ SJ.HamburgerMenu = function HamburgerMenu({ isOpen, onClose }) {
         { href: 'hakkimizda.html', label: 'Hikayemiz' },
         { href: 'galeri.html', label: 'Galeri' },
         { href: 'duyurular.html', label: 'Duyurular' },
-        { href: 'calismalar.html', label: 'Çalışmalar' },
         { href: 'iletisim.html', label: 'İletişim' }
     ];
     useEffect(() => {

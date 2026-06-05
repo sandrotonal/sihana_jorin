@@ -10,12 +10,10 @@
         { label: 'Hikayemiz', href: 'hakkimizda.html' },
         { label: 'Galeri', href: 'galeri.html' },
         { label: 'Duyurular', href: 'duyurular.html' },
-        { label: 'Çalışmalar', href: 'calismalar.html' },
         { label: 'İletişim', href: 'iletisim.html' },
     ];
     const FOOTER_GROUPS = [
-        { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Çalışmalar', href: 'calismalar.html' }] },
-        { group: 'Topluluk', items: [{ label: 'Etkinlikler', href: 'calismalar.html' }, { label: 'Projeler', href: 'calismalar.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
+        { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
         { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] },
     ];
 

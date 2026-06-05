@@ -120,7 +120,6 @@ window.SJ.useInView = function useInView(options = {}) {
             { href: 'hakkimizda.html', label: 'Hikayemiz' },
             { href: 'galeri.html', label: 'Galeri' },
             { href: 'duyurular.html', label: 'Duyurular' },
-            { href: 'calismalar.html', label: 'Çalışmalar' },
             { href: 'iletisim.html', label: 'İletişim' }
         ];
         useEffect(() => {
@@ -626,22 +625,21 @@ window.SJ.useInView = function useInView(options = {}) {
             <>
                 <section id="hero" className="h-screen" aria-label="Ana bölüm">
                     <div className="relative h-full overflow-hidden">
-                        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+                        <video ref={el => { if (el) { el.muted = true; el.play().catch(e => console.log("Hero video autoplay failed", e)); } }} loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
                             <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4" type="video/mp4" />
                         </video>
                         <div className="noise-overlay opacity-[0.7] mix-blend-overlay pointer-events-none absolute inset-0 z-10" aria-hidden="true"></div>
                         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 z-20" aria-hidden="true"></div>
-                        <nav className="absolute top-0 left-1/2 -translate-x-1/2 z-30 bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8 hidden md:block" role="navigation" aria-label="Ana navigasyon">
+                        <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8 hidden md:block" role="navigation" aria-label="Ana navigasyon">
                             <div className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
                                 <a href="index.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Ana Sayfa</a>
                                 <a href="hakkimizda.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Hikayemiz</a>
                                 <a href="galeri.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Galeri</a>
                                 <a href="duyurular.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Duyurular</a>
-                                <a href="calismalar.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Çalışmalar</a>
                                 <a href="iletisim.html" className="nav-link text-[10px] sm:text-xs md:text-sm">İletişim</a>
                             </div>
                         </nav>
-                        <button onClick={() => setMenuOpen(true)} className="absolute top-3 right-4 z-30 bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden" aria-label="Menüyü aç">
+                        <button onClick={() => setMenuOpen(true)} className="fixed top-3 right-4 z-[190] bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden" aria-label="Menüyü aç">
                             <SJ.MenuIcon size={20} className="text-[#E1E0CC]" />
                         </button>
                         <div className="absolute bottom-0 left-0 right-0 z-30 p-6 md:p-10 lg:p-14">
@@ -743,7 +741,7 @@ window.SJ.useInView = function useInView(options = {}) {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-2 md:gap-1">
                         <SJ.CardEntrance delay={0} className="relative rounded-2xl overflow-hidden lg:h-[480px] min-h-[300px]">
-                            <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+                            <video ref={el => { if (el) { el.muted = true; el.play().catch(e => console.log("Features video autoplay failed", e)); } }} loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
                                 <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4" type="video/mp4" />
                             </video>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" aria-hidden="true"></div>
@@ -851,8 +849,7 @@ window.SJ.useInView = function useInView(options = {}) {
 
     SJ.Footer = function Footer() {
         const links = [
-            { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Çalışmalar', href: 'calismalar.html' }] },
-            { group: 'Topluluk', items: [{ label: 'Etkinlikler', href: 'calismalar.html' }, { label: 'Projeler', href: 'calismalar.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
+            { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
             { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] }
         ];
         return (

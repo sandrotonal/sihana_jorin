@@ -9,9 +9,7 @@
         content="Sıhana Jorin Köy Derneği'nin en güncel haberleri, etkinlik duyuruları ve önemli gelişmeleri.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script>window.tailwind = window.tailwind || {}; window.tailwind.config = { theme: { extend: { colors: { primary: '#DEDBC8' }, fontFamily: { serif: ['"Instrument Serif"', 'serif'] } } } }</script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -161,120 +159,63 @@
     <script src="js/site-nav.js"></script>
     <script src="js/hooks.js"></script>
     <script src="js/components/page-header.js"></script>
+    <script type="text/babel" src="js/components/carousel-card.js"></script>
     <script src="js/animations-init.js"></script>
 
     <main>
         <div id="page-header-root"></div>
+        <div id="duyurular-root" class="max-w-[95%] xl:max-w-7xl mx-auto py-12"></div>
+
         <script type="text/babel">
-                (function () {
-                    const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
-                    root.render(React.createElement(SJ.PageHeader, {
-                        title: 'Duyurular',
-                        description: 'Köy derneğimizin en güncel haberleri, etkinlik duyuruları ve önemli gelişmelerden haberdar olun.'
-                    }));
-                })();
+            (function () {
+                const headerRoot = ReactDOM.createRoot(document.getElementById('page-header-root'));
+                headerRoot.render(React.createElement(SJ.PageHeader, {
+                    title: 'Duyurular',
+                    description: 'Köy derneğimizin en güncel haberleri, etkinlik duyuruları ve önemli gelişmelerden haberdar olun.'
+                }));
+
+                const ANNOUNCEMENTS_DATA = [
+                    {
+                        id: 1,
+                        date: 'Ağustos 2026',
+                        category: 'Etkinlik · Duyuru',
+                        title: 'Geleneksel Yaz Şenliği',
+                        imgUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=compress&cs=tinysrgb&w=800',
+                        content: 'Bu yıl geleneksel Yaz Şenliğimiz 15–16 Ağustos tarihlerinde köy meydanında gerçekleşecektir.\n\nŞenliğimizde canlı müzik performansları, halk oyunları gösterileri, yöresel yemek stantları ve çocuklar için özel oyun alanları bulunacaktır. Tüm köy halkımız, çevre köylerdeki komşularımız ve gurbetteki tüm hemşehrilerimiz davetlidir.'
+                    },
+                    {
+                        id: 2,
+                        date: 'Haziran 2026',
+                        category: 'Altyapı · Çalışma',
+                        title: 'Köy Yolu Yenileme Çalışmaları',
+                        imgUrl: 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=compress&cs=tinysrgb&w=800',
+                        content: 'Köyümüzün ana bağlantı yolunda derneğimizin girişimleri ve belediye iş birliğiyle yürütülen genişletme ve asfaltlama çalışmaları başarıyla tamamlanmıştır.\n\nArtık köyümüze ulaşım çok daha konforlu ve güvenli. Desteklerini esirgemeyen tüm köylülerimize teşekkürü bir borç biliriz.'
+                    },
+                    {
+                        id: 3,
+                        date: 'Mayıs 2026',
+                        category: 'Topluluk · Eğitim',
+                        title: 'Yeni Dönem Üye Kayıtları',
+                        imgUrl: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=compress&cs=tinysrgb&w=800',
+                        content: 'Sıhana Jorin Köy Derneği 2026–2027 dönemi üyelik yenileme ve yeni üye kayıt süreci başlamıştır.\n\nKöyümüzün geleceğini şekillendirmek, projelerimizde aktif söz sahibi olmak ve dayanışmayı büyütmek adına tüm gençlerimizi ve hemşehrilerimizi derneğimize resmi üye olmaya davet ediyoruz.'
+                    },
+                    {
+                        id: 4,
+                        date: 'Nisan 2026',
+                        category: 'Kültür · Sanat',
+                        title: 'Köy El Sanatları Sergisi',
+                        imgUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=compress&cs=tinysrgb&w=800',
+                        content: 'Köyümüzün kadınları tarafından hazırlanan el emeği göz nuru dokumalar, seramikler ve geleneksel süs eşyalarının sergileneceği özel sergimiz açılmıştır.\n\nDernek binamızın sergi salonunda bir ay boyunca açık kalacak olan sergimizi ziyaret edebilir, hem tarihimize dokunabilir hem de el emeğine destek olabilirsiniz.'
+                    }
+                ];
+
+                const carouselRoot = ReactDOM.createRoot(document.getElementById('duyurular-root'));
+                carouselRoot.render(React.createElement(SJ.CarouselCard, {
+                    data: ANNOUNCEMENTS_DATA,
+                    showCarousel: true
+                }));
+            })();
         </script>
-
-        <!-- Timeline -->
-        <section class="sj-section" data-reveal>
-            <div class="sj-container--narrow">
-                <div class="duy-timeline">
-                    <div class="duy-line"></div>
-
-                    <!-- Item 1 -->
-                    <div class="duy-item">
-                        <div class="duy-date-col">
-                            <p class="duy-date">Haziran 2026</p>
-                        </div>
-                        <div class="duy-content-col" style="position:relative;">
-                            <div class="duy-dot"></div>
-                            <div class="duy-card">
-                                <div class="duy-cat">Etkinlik · Duyuru</div>
-                                <h2 class="duy-title">Yaz Şenliği Duyurusu</h2>
-                                <p class="duy-body">Bu yıl geleneksel Yaz Şenliğimiz 15–16 Ağustos tarihlerinde köy
-                                    meydanında gerçekleşecektir. Tüm köy halkımız ve misafirlerimiz davetlidir.</p>
-                                <a href="#" class="sj-link">
-                                    Devamını Oku
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 2 -->
-                    <div class="duy-item">
-                        <div class="duy-date-col">
-                            <p class="duy-date">Mayıs 2026</p>
-                        </div>
-                        <div class="duy-content-col" style="position:relative;">
-                            <div class="duy-dot duy-dot--dim"></div>
-                            <div class="duy-card">
-                                <div class="duy-cat">Altyapı</div>
-                                <h2 class="duy-title">Köy Yolu Çalışmaları Tamamlandı</h2>
-                                <p class="duy-body">Köyümüzün ana yolunda yürütülen yenileme çalışmaları başarıyla
-                                    tamamlanmıştır. Katkılarınız için tüm hemşehrilerimize teşekkür ederiz.</p>
-                                <a href="#" class="sj-link">
-                                    Devamını Oku
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 3 -->
-                    <div class="duy-item">
-                        <div class="duy-date-col">
-                            <p class="duy-date">Nisan 2026</p>
-                        </div>
-                        <div class="duy-content-col" style="position:relative;">
-                            <div class="duy-dot duy-dot--dim"></div>
-                            <div class="duy-card">
-                                <div class="duy-cat">Üyelik</div>
-                                <h2 class="duy-title">Yeni Dönem Kayıtları Başladı</h2>
-                                <p class="duy-body">Derneğimizin 2026–2027 dönemi üyelik kayıtları başlamıştır. Kayıt
-                                    yaptırmak isteyen hemşehrilerimiz bizimle iletişime geçebilir.</p>
-                                <a href="iletisim.html" class="sj-link">
-                                    İletişime Geç
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Item 4 -->
-                    <div class="duy-item">
-                        <div class="duy-date-col">
-                            <p class="duy-date">Mart 2026</p>
-                        </div>
-                        <div class="duy-content-col" style="position:relative;">
-                            <div class="duy-dot duy-dot--dim"></div>
-                            <div class="duy-card">
-                                <div class="duy-cat">Kültür</div>
-                                <h2 class="duy-title">El Sanatları Sergisi Açıldı</h2>
-                                <p class="duy-body">Köyümüzün geleneksel el sanatlarını tanıtan sergi, dernek binasında
-                                    ziyaretçilerin beğenisine sunulmuştur.</p>
-                                <a href="#" class="sj-link">
-                                    Devamını Oku
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <div id="site-footer"></div>

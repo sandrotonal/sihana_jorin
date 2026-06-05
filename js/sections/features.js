@@ -16,7 +16,7 @@ SJ.FeaturesSection = function FeaturesSection() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-2 md:gap-1">
                     <SJ.CardEntrance delay={0} className="relative rounded-2xl overflow-hidden lg:h-[480px] min-h-[300px]">
-                        <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+                        <video ref={el => { if (el) { el.muted = true; el.play().catch(e => console.log("Features video autoplay failed", e)); } }} loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
                             <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4" type="video/mp4" />
                         </video>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" aria-hidden="true"></div>
