@@ -30,7 +30,7 @@ SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
     }
 
     // Each card's width in percentage based on cardsPerView
-    const cardWidth = 100 / cardsPerView;
+    const cardWidth = 75 / cardsPerView;
 
     const nextSlide = () => {
         if (isAnimating || !showCarousel || data.length <= cardsPerView) return;
@@ -39,7 +39,7 @@ SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
         const nextIndex = (currentIndex + 1) % data.length;
 
         if (containerRef.current) {
-            containerRef.current.style.transition = "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)";
+            containerRef.current.style.transition = "transform 500ms ease";
             containerRef.current.style.transform = `translateX(-${cardWidth}%)`;
 
             setTimeout(() => {
@@ -71,7 +71,7 @@ SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
 
             setTimeout(() => {
                 if (containerRef.current) {
-                    containerRef.current.style.transition = "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)";
+                    containerRef.current.style.transition = "transform 500ms ease";
                     containerRef.current.style.transform = "translateX(0)";
                 }
                 setTimeout(() => {
@@ -96,32 +96,32 @@ SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
     };
 
     return (
-        <div className="w-full relative px-4 sm:px-12 md:px-16">
-            <div className="relative overflow-hidden w-full py-4">
+        <div className="w-full px-4">
+            <div className={`relative ${data.length === 1 ? 'max-w-sm mx-auto' : 'w-full'}`}>
                 {/* Carousel Controls */}
                 {showCarousel && data.length > cardsPerView && (
                     <>
                         <button
                             onClick={prevSlide}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/60 border border-[#DEDBC8]/10 text-[#E1E0CC] w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/90 hover:border-[#DEDBC8]/30 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-300 cursor-pointer"
                             disabled={isAnimating}
-                            aria-label="Önceki duyuru"
+                            aria-label="Previous slide"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            &lt;
                         </button>
                         <button
                             onClick={nextSlide}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/60 border border-[#DEDBC8]/10 text-[#E1E0CC] w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/90 hover:border-[#DEDBC8]/30 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-300 cursor-pointer"
                             disabled={isAnimating}
-                            aria-label="Sonraki duyuru"
+                            aria-label="Next slide"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            &gt;
                         </button>
                     </>
                 )}
 
-                {/* Cards Container Wrapper */}
-                <div className="overflow-hidden rounded-2xl">
+                {/* Cards Container Wrapper - limits visible area */}
+                <div className="overflow-hidden">
                     {/* Sliding Cards Container */}
                     <div
                         ref={containerRef}
@@ -137,48 +137,36 @@ SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
                                 style={{
                                     width: showCarousel && data.length > cardsPerView ? `${100 / (cardsPerView + 1)}%` : `${100 / Math.min(cardsPerView, data.length)}%`
                                 }}
-                                className="px-2 sm:px-3"
+                                className="px-2"
                             >
-                                <div className="relative overflow-hidden rounded-2xl border border-[#DEDBC8]/5 bg-[#121212] group h-[400px] flex flex-col transition-all duration-300 hover:border-[#DEDBC8]/20 hover:shadow-2xl">
+                                <div className="relative overflow-hidden rounded-lg shadow-md group h-96">
                                     {/* Image Section */}
-                                    <div className="w-full h-56 overflow-hidden relative">
+                                    <div className="w-full h-full">
                                         <img
                                             src={card.imgUrl}
-                                            alt={card.title || 'Duyuru Görseli'}
-                                            className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105"
+                                            alt={card.title || ''}
+                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                         />
-                                        <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-[#DEDBC8]/10 px-3 py-1 rounded-full text-[10px] tracking-wider uppercase text-[#DEDBC8]">
-                                            {card.date}
-                                        </div>
                                     </div>
-
-                                    {/* Text Info Section */}
-                                    <div className="p-5 flex-1 flex flex-col justify-between">
-                                        <div>
-                                            <span className="text-[10px] tracking-widest uppercase text-primary/40 block mb-2">{card.category}</span>
-                                            <h3 className="text-lg font-medium line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-300" style={{ color: '#E1E0CC' }}>
-                                                {card.title}
-                                            </h3>
-                                        </div>
-                                        <div className="flex items-center gap-1.5 text-primary text-xs font-medium mt-4 cursor-pointer group/btn">
-                                            Detayları Gör 
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="transform group-hover/btn:translate-x-1 transition-transform duration-300"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                                        </div>
+                                    
+                                    {/* Info Overlay at the bottom when not hovered */}
+                                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/85 via-black/50 to-transparent group-hover:opacity-0 transition-opacity duration-300 z-10 pointer-events-none">
+                                        <span className="text-[10px] tracking-widest uppercase text-primary/70 block mb-1">{card.category} — {card.date}</span>
+                                        <h3 className="text-base font-medium text-[#E1E0CC] line-clamp-1">{card.title}</h3>
                                     </div>
 
                                     {/* Hover Slide-up Details Panel */}
-                                    <div className="absolute inset-0 bg-black/95 text-[#E1E0CC] p-6 flex flex-col justify-between transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] transform translate-y-full group-hover:translate-y-0 z-10 overflow-y-auto">
+                                    <div className="absolute inset-0 bg-black/90 text-white p-6 flex flex-col justify-between transition-all duration-300 transform translate-y-full group-hover:translate-y-0 overflow-y-auto z-20">
                                         <div>
-                                            <div className="flex items-center justify-between border-b border-[#DEDBC8]/10 pb-3 mb-4">
-                                                <span className="text-[10px] tracking-widest uppercase text-primary">{card.category}</span>
-                                                <span className="text-[10px] text-gray-500">{card.date}</span>
+                                            <div className="flex items-center justify-between border-b border-[#DEDBC8]/10 pb-2 mb-3 text-xs text-[#DEDBC8]/60">
+                                                <span>{card.category}</span>
+                                                <span>{card.date}</span>
                                             </div>
-                                            <h4 className="text-xl font-medium mb-3 text-primary leading-snug">{card.title}</h4>
-                                            <p className="text-gray-400 text-sm leading-relaxed whitespace-pre-line">{card.content}</p>
+                                            <h4 className="text-lg font-medium text-primary mb-3 leading-snug">{card.title}</h4>
+                                            <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{card.content}</p>
                                         </div>
-                                        <div className="border-t border-[#DEDBC8]/10 pt-4 mt-6 flex justify-between items-center text-xs text-gray-500">
-                                            <span>Sıhana Jorin Köy Derneği</span>
-                                            <div className="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+                                        <div className="text-[10px] text-gray-500 mt-4 text-right">
+                                            Sıhana Jorin Köy Derneği
                                         </div>
                                     </div>
                                 </div>

@@ -24,14 +24,14 @@
         @media (max-width:900px) { .bagis-main-grid { grid-template-columns:1fr; } }
     </style>
 </head>
-<body>
+<body class="flex flex-col min-h-screen">
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
     <script src="js/hooks.js"></script>
     <script src="js/components/page-header.js"></script>
     <script src="js/animations-init.js"></script>
 
-    <main>
+    <main class="flex-grow">
         <div id="page-header-root"></div>
         <script type="text/babel">
             (function() {
