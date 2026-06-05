@@ -20,15 +20,38 @@ SJ.HeroSection = function HeroSection() {
                         </div>
                         <div className="col-span-12 lg:col-span-4 lg:pb-4">
                             <SJ.FadeUp delay={0.5}>
-                                <p className="text-primary/70 text-xs sm:text-sm md:text-base mb-6" style={{ lineHeight: 1.2 }}>
+                                <p className="text-xs sm:text-sm md:text-base mb-5" style={{ lineHeight: 1.35, color: 'rgba(222,219,200,0.7)' }}>
                                     Sıhana Jorin Köy Derneği, köyümüzün zengin kültürel mirasını yaşatan, dayanışmayı güçlendiren ve gelecek nesillere aktaran bir birlik ruhudur.
                                 </p>
                             </SJ.FadeUp>
                             <SJ.FadeUp delay={0.7}>
-                                <a href="gonullu.html" className="inline-flex items-center gap-2 bg-primary rounded-full px-5 py-2.5 text-black font-medium text-sm sm:text-base group hover:gap-3 transition-all">
+                                <a href="gonullu.html"
+                                    className="group inline-flex items-center gap-3 transition-all duration-300 hover:gap-4"
+                                    style={{
+                                        background: '#DEDBC8',
+                                        color: '#000',
+                                        fontWeight: 500,
+                                        fontSize: '0.875rem',
+                                        borderRadius: '9999px',
+                                        padding: '10px 10px 10px 20px',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        textDecoration: 'none',
+                                        boxShadow: '0 2px 16px rgba(0,0,0,0.3)',
+                                    }}>
                                     Derneğe Katıl
-                                    <span className="bg-black rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                        <SJ.ArrowRight size={18} className="text-[#E1E0CC]" />
+                                    <span style={{
+                                        background: '#000',
+                                        borderRadius: '50%',
+                                        width: '34px',
+                                        height: '34px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transition: 'transform 0.3s ease',
+                                        flexShrink: 0,
+                                    }} className="group-hover:scale-110">
+                                        <SJ.ArrowRight size={16} className="text-[#E1E0CC]" />
                                     </span>
                                 </a>
                             </SJ.FadeUp>
@@ -39,3 +62,4 @@ SJ.HeroSection = function HeroSection() {
         </section>
     );
 };
+

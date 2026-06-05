@@ -1,9 +1,31 @@
 (function() {
 const SJ = window.SJ || {};
 const { useState, useEffect, useRef } = React;
+const h = React.createElement;
+
+/* ── SVG Arrow Icons ── */
+function ArrowLeft({ size = 18 }) {
+  return h('svg', {
+    xmlns: 'http://www.w3.org/2000/svg', width: size, height: size,
+    viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+    strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'
+  },
+    h('line', { x1: '19', y1: '12', x2: '5', y2: '12' }),
+    h('polyline', { points: '12 19 5 12 12 5' })
+  );
+}
+function ArrowRight2({ size = 18 }) {
+  return h('svg', {
+    xmlns: 'http://www.w3.org/2000/svg', width: size, height: size,
+    viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+    strokeWidth: '2', strokeLinecap: 'round', strokeLinejoin: 'round'
+  },
+    h('line', { x1: '5', y1: '12', x2: '19', y2: '12' }),
+    h('polyline', { points: '12 5 19 12 12 19' })
+  );
+}
 
 const Card = function Card({ data, showCarousel = true }) {
-  const h = React.createElement;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isSingleCard, setIsSingleCard] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -36,7 +58,7 @@ const Card = function Card({ data, showCarousel = true }) {
     return h('div', { className: 'text-[#E1E0CC]/60 text-center py-12' }, 'No card data available');
   }
 
-  // Calculate width percentage for each card based on cardsPerView (YAP.MD exact logic)
+  // Calculate width percentage for each card based on cardsPerView
   const cardWidth = 75 / cardsPerView;
 
   const nextSlide = () => {
@@ -45,20 +67,15 @@ const Card = function Card({ data, showCarousel = true }) {
     const nextIndex = (currentIndex + 1) % data.length;
 
     if (containerRef.current) {
-      // Apply slide out animation (YAP.MD exact logic)
       containerRef.current.style.transition = "transform 500ms ease";
       containerRef.current.style.transform = "translateX(-" + cardWidth + "%)";
 
-      // After animation completes, reset position and update index
       setTimeout(() => {
         setCurrentIndex(nextIndex);
         if (containerRef.current) {
           containerRef.current.style.transition = "none";
           containerRef.current.style.transform = "translateX(0)";
-
-          // Force reflow
           void containerRef.current.offsetWidth;
-
           setIsAnimating(false);
         }
       }, 500);
@@ -71,30 +88,21 @@ const Card = function Card({ data, showCarousel = true }) {
     const prevIndex = (currentIndex - 1 + data.length) % data.length;
 
     if (containerRef.current) {
-      // First move instantly to the right position
       containerRef.current.style.transition = "none";
       containerRef.current.style.transform = "translateX(-" + cardWidth + "%)";
-
-      // Update the index immediately
       setCurrentIndex(prevIndex);
-
-      // Force reflow
       void containerRef.current.offsetWidth;
 
-      // Then animate back to center
       setTimeout(() => {
         if (containerRef.current) {
           containerRef.current.style.transition = "transform 500ms ease";
           containerRef.current.style.transform = "translateX(0)";
         }
-        setTimeout(() => {
-          setIsAnimating(false);
-        }, 500);
+        setTimeout(() => { setIsAnimating(false); }, 500);
       }, 50);
     }
   };
 
-  // Calculate which cards to show (YAP.MD exact logic)
   const getVisibleCards = () => {
     if (!showCarousel || !data) return data || [];
     const visibleCards = [];
@@ -110,23 +118,75 @@ const Card = function Card({ data, showCarousel = true }) {
   const visibleCards = getVisibleCards();
   const showControls = showCarousel && data.length > cardsPerView;
 
+  /* ── Nav Buttons — design-system consistent ── */
+  const navBtnStyle = {
+    position: 'absolute',
+    top: '-44px',
+    width: '38px',
+    height: '38px',
+    borderRadius: '50%',
+    background: '#1a1a1a',
+    border: '1px solid rgba(222,219,200,0.15)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    cursor: isAnimating ? 'not-allowed' : 'pointer',
+    opacity: isAnimating ? 0.4 : 1,
+    transition: 'background 0.25s, border-color 0.25s, opacity 0.25s',
+    color: '#DEDBC8',
+    zIndex: 10,
+    flexShrink: 0,
+  };
+
   const buttons = [];
   if (showControls) {
     buttons.push(
-      h('button', {
-        key: 'prev',
-        onClick: prevSlide,
-        className: 'absolute -left-4 sm:left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 border border-[#DEDBC8]/10 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 disabled:opacity-50 cursor-pointer',
-        disabled: isAnimating,
-        'aria-label': 'Previous slide'
-      }, '<'),
-      h('button', {
-        key: 'next',
-        onClick: nextSlide,
-        className: 'absolute -right-4 sm:right-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 border border-[#DEDBC8]/10 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 disabled:opacity-50 cursor-pointer',
-        disabled: isAnimating,
-        'aria-label': 'Next slide'
-      }, '>')
+      h('div', {
+        key: 'nav-row',
+        style: {
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          justifyContent: 'flex-end',
+          marginBottom: '16px',
+        }
+      },
+        h('button', {
+          key: 'prev',
+          onClick: prevSlide,
+          disabled: isAnimating,
+          'aria-label': 'Önceki',
+          style: {
+            width: '38px', height: '38px', borderRadius: '50%',
+            background: '#1a1a1a', border: '1px solid rgba(222,219,200,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: isAnimating ? 'not-allowed' : 'pointer',
+            opacity: isAnimating ? 0.4 : 1,
+            transition: 'background 0.25s, border-color 0.25s, opacity 0.25s',
+            color: '#DEDBC8', flexShrink: 0,
+          },
+          onMouseEnter: (e) => { if (!isAnimating) { e.currentTarget.style.background = 'rgba(222,219,200,0.1)'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.3)'; } },
+          onMouseLeave: (e) => { e.currentTarget.style.background = '#1a1a1a'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.15)'; },
+        }, h(ArrowLeft, { size: 16 })),
+
+        h('button', {
+          key: 'next',
+          onClick: nextSlide,
+          disabled: isAnimating,
+          'aria-label': 'Sonraki',
+          style: {
+            width: '38px', height: '38px', borderRadius: '50%',
+            background: '#1a1a1a', border: '1px solid rgba(222,219,200,0.15)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: isAnimating ? 'not-allowed' : 'pointer',
+            opacity: isAnimating ? 0.4 : 1,
+            transition: 'background 0.25s, border-color 0.25s, opacity 0.25s',
+            color: '#DEDBC8', flexShrink: 0,
+          },
+          onMouseEnter: (e) => { if (!isAnimating) { e.currentTarget.style.background = 'rgba(222,219,200,0.1)'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.3)'; } },
+          onMouseLeave: (e) => { e.currentTarget.style.background = '#1a1a1a'; e.currentTarget.style.borderColor = 'rgba(222,219,200,0.15)'; },
+        }, h(ArrowRight2, { size: 16 }))
+      )
     );
   }
 
@@ -140,20 +200,20 @@ const Card = function Card({ data, showCarousel = true }) {
       style: { width: singleCardWidth + '%' }
     },
       h('div', {
-        className: 'relative overflow-hidden rounded-lg shadow-md group h-72 border border-[#DEDBC8]/5 hover:border-[#DEDBC8]/20 transition-colors duration-300'
+        className: 'relative overflow-hidden rounded-xl shadow-md group h-72 border border-[#DEDBC8]/5 hover:border-[#DEDBC8]/20 transition-colors duration-300'
       },
         h('div', { className: 'w-full h-full' },
           h('img', {
             src: card.imgUrl,
             alt: '',
-            className: 'w-full h-full object-cover transition-transform duration-300 group-hover:scale-105'
+            className: 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105'
           })
         ),
         h('div', {
-          className: 'absolute inset-0 bg-black/80 text-white p-6 transition-transform duration-300 transform translate-y-full group-hover:translate-y-0 overflow-y-auto z-20 flex flex-col justify-start'
+          className: 'absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex flex-col justify-end p-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 overflow-y-auto'
         },
           h('p', {
-            className: 'text-sm',
+            className: 'text-sm text-[#E1E0CC]/90 leading-relaxed',
             dangerouslySetInnerHTML: { __html: card.content }
           })
         )
@@ -161,7 +221,7 @@ const Card = function Card({ data, showCarousel = true }) {
     );
   });
 
-  return h('div', { className: 'w-full px-4' },
+  return h('div', { className: 'w-full px-2 sm:px-4' },
     h('div', { className: 'relative ' + (isSingleCard ? 'max-w-sm mx-auto' : 'w-full') },
       buttons,
       h('div', { className: 'overflow-hidden rounded-xl' },
@@ -180,3 +240,5 @@ const Card = function Card({ data, showCarousel = true }) {
 
 SJ.CarouselCard = Card;
 })();
+
+
