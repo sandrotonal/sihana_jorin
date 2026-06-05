@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hikayemiz — Sıhana Jorin Köy Derneği</title>
+    <meta name="description"
+        content="Sıhana Jorin Köy Derneği'nin hikayesi, değerleri ve yönetim kurulu hakkında bilgi edinin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap"
+        rel="stylesheet">
+    <script>window.tailwind = window.tailwind || {}; window.tailwind.config = { theme: { extend: { colors: { primary: '#DEDBC8' }, fontFamily: { serif: ['"Instrument Serif"', 'serif'] } } } }</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .hak-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(2rem, 5vw, 5rem);
+            align-items: center;
+        }
+
+        @media (max-width:768px) {
+            .hak-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hak-grid>div:last-child {
+            aspect-ratio: 4/5;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            border: 1px solid rgba(222, 219, 200, 0.08);
+        }
+
+        @media (max-width:768px) {
+            .hak-grid>div:last-child {
+                aspect-ratio: 16/9;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="site-nav"></div>
+    <script src="js/site-nav.js"></script>
+    <script src="js/hooks.js"></script>
+    <script src="js/components/page-header.js"></script>
+    <script src="js/components/flipping-card.js"></script>
+    <script src="js/animations-init.js"></script>
+
+    <main>
+        <div id="page-header-root"></div>
+        <script type="text/babel">
+                (function () {
+                    const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
+                    root.render(React.createElement(SJ.PageHeader, {
+                        title: 'Hikayemiz',
+                        description: 'Sıhana Jorin, yüzyıllar boyunca farklı kültürlere ev sahipliği yapmış köklü bir yerleşimdir. Derneğimiz, bu mirası korumak ve hemşehrilerimiz arasındaki bağları güçlendirmek amacıyla kurulmuştur.',
+                        buttons: [
+                            { label: 'Değerlerimiz', href: '#values', variant: 'primary' },
+                            { label: 'İletişime Geç', href: 'iletisim.html', variant: 'ghost' }
+                        ]
+                    }));
+                })();
+        </script>
+
+        <!-- Köyün Geçmişi -->
+        <section class="sj-section" data-reveal>
+            <div class="sj-container">
+                <div class="hak-grid">
+                    <div>
+                        <span class="sj-label">Geçmişten Bugüne</span>
+                        <h2 class="sj-h2">Köyümüzün<br><em
+                                style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400;">derin
+                                kökleri</em></h2>
+                        <p class="sj-body" style="margin-top:1.25rem; margin-bottom:1.25rem;">Sıhana Jorin, yüzyıllar
+                            boyunca farklı kültürlere ev sahipliği yapmış, köklü bir geçmişe sahip bir yerleşimdir.
+                            Doğal güzellikleri ve zengin tarihi mirasıyla bölgenin en özel noktalarından birini
+                            oluşturmaktadır.</p>
+                        <p class="sj-body" style="margin-bottom:1.75rem;">Derneğimiz, bu mirası korumak, köyümüzün
+                            kalkınmasına katkıda bulunmak ve hemşehrilerimiz arasında dayanışmayı güçlendirmek amacıyla
+                            kurulmuştur.</p>
+                        <a href="#values" class="sj-link">
+                            Değerlerimizi Keşfedin
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M5 12h14M12 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
+                    <div
+                        style="position:relative; aspect-ratio:4/5; border-radius:1.5rem; overflow:hidden; border:1px solid rgba(222,219,200,0.08);">
+                        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80"
+                            alt="Sıhana Jorin Köyü" style="width:100%; height:100%; object-fit:cover;">
+                        <div
+                            style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="sj-divider"></div>
+
+        <!-- Değerler - Flipping Cards -->
+        <section class="sj-section" id="values" data-reveal>
+            <div class="sj-container">
+                <div style="text-align:center; margin-bottom:3rem;">
+                    <span class="sj-label">Temel İlkeler</span>
+                    <h2 class="sj-h2">Değerlerimiz</h2>
+                    <p class="sj-body" style="max-width:480px; margin:0.875rem auto 0;">Köyümüzün kalkınması ve kültürel
+                        mirasımızın yaşatılması için benimsediğimiz temel ilkeler.</p>
+                </div>
+                <div id="flipping-cards-root" style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem;">
+                </div>
+                <script type="text/babel">
+                    (function () {
+                        const h = React.createElement;
+                        const root = ReactDOM.createRoot(document.getElementById('flipping-cards-root'));
+
+                        const values = [
+                            {
+                                id: 'dayanisma', num: '01', title: 'Dayanışma',
+                                summary: 'Birlikte hareket ederek köyümüzün sorunlarına çözüm üretiyoruz.',
+                                detail: 'Hemşehrilerimiz arasında güçlü bağlar kurarak, birlikte hareket ediyor ve köyümüzün zorluklarına ortak çözümler geliştiriyoruz.'
+                            },
+                            {
+                                id: 'kultur', num: '02', title: 'Kültür',
+                                summary: 'Zengin kültürel mirasımızı gelecek nesillere aktarıyoruz.',
+                                detail: 'Geleneklerimizi yaşatarak kimliğimizi koruyor, köyümüzün zengin kültürel dokusunu gelecek nesillere aktarıyoruz.'
+                            },
+                            {
+                                id: 'gelenek', num: '03', title: 'Gelenek',
+                                summary: 'Köy geleneklerimizi yaşatarak kimliğimizi koruyoruz.',
+                                detail: 'Köy geleneklerimizi yaşatarak kimliğimizi koruyor, gelecek nesillere aktarılmasını sağlıyoruz.'
+                            }
+                        ];
+
+                        root.render(h('div', { style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' } },
+                            values.map(function (v) {
+                                return h(SJ.FlippingCard, {
+                                    key: v.id,
+                                    width: 270,
+                                    height: 290,
+                                    frontContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', flex: 1 } },
+                                        h('span', { style: { fontFamily: 'inherit', fontSize: '0.625rem', color: 'rgba(222,219,200,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' } }, v.num + ' / İLKE'),
+                                        h('h3', { style: { fontSize: '1.25rem', fontWeight: 500, color: '#E1E0CC', marginBottom: '0.75rem' } }, v.title),
+                                        h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.45)', lineHeight: 1.65 } }, v.summary)
+                                    ),
+                                    backContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left', flex: 1 } },
+                                        h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.55)', lineHeight: 1.7, marginBottom: '1.5rem' } }, v.detail),
+                                        h('a', { href: 'iletisim.html', style: { fontSize: '0.75rem', color: '#DEDBC8', textDecoration: 'none', borderBottom: '1px solid rgba(222,219,200,0.3)', paddingBottom: '2px' } }, 'Bize Ulaşın')
+                                    )
+                                });
+                            })
+                        ));
+                    })();
+                </script>
+            </div>
+        </section>
+
+        <div class="sj-divider"></div>
+
+        <!-- Yönetim CTA -->
+        <section class="sj-section sj-section--alt" data-reveal>
+            <div class="sj-container--narrow">
+                <div class="sj-card sj-card--lg" style="text-align:center; position:relative; overflow:hidden;">
+                    <div
+                        style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(222,219,200,0.04) 0%, transparent 60%); pointer-events:none;">
+                    </div>
+                    <div style="position:relative; z-index:1;">
+                        <span class="sj-label">Yönetim</span>
+                        <h2 class="sj-h2" style="margin-bottom:1rem;">Yönetim Kurulumuz</h2>
+                        <p class="sj-body" style="max-width:480px; margin:0 auto 2rem;">Derneğimiz, köyümüzün farklı
+                            kesimlerini temsil eden gönüllü üyelerden oluşan bir yönetim kurulu tarafından
+                            yönetilmektedir.</p>
+                        <a href="iletisim.html" class="sj-btn-primary">İletişime Geç</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+
+</html>

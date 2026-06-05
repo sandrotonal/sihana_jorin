@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duyurular — Sıhana Jorin Köy Derneği</title>
+    <meta name="description"
+        content="Sıhana Jorin Köy Derneği'nin en güncel haberleri, etkinlik duyuruları ve önemli gelişmeleri.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap"
+        rel="stylesheet">
+    <script>window.tailwind = window.tailwind || {}; window.tailwind.config = { theme: { extend: { colors: { primary: '#DEDBC8' }, fontFamily: { serif: ['"Instrument Serif"', 'serif'] } } } }</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .duy-timeline {
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .duy-timeline {
+                padding-left: 0;
+            }
+        }
+
+        .duy-line {
+            position: absolute;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: rgba(222, 219, 200, 0.08);
+        }
+
+        @media (min-width: 768px) {
+            .duy-line {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        .duy-item {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .duy-item {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0;
+                align-items: start;
+            }
+
+            .duy-item:nth-child(odd) {}
+
+            .duy-item:nth-child(odd) .duy-date-col {
+                text-align: right;
+                padding-right: 2.5rem;
+                order: -1;
+            }
+
+            .duy-item:nth-child(odd) .duy-content-col {
+                padding-left: 2.5rem;
+            }
+
+            .duy-item:nth-child(even) .duy-date-col {
+                text-align: left;
+                padding-left: 2.5rem;
+                order: 1;
+            }
+
+            .duy-item:nth-child(even) .duy-content-col {
+                padding-right: 2.5rem;
+                order: -1;
+                text-align: right;
+            }
+
+            .duy-item:nth-child(even) .duy-content-col .duy-card {
+                text-align: left;
+            }
+        }
+
+        .duy-dot {
+            position: absolute;
+            left: -24px;
+            top: 6px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #DEDBC8;
+            border: 3px solid #000;
+            z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .duy-dot--dim {
+            background: rgba(222, 219, 200, 0.25);
+        }
+
+        @media (min-width: 768px) {
+            .duy-dot {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 8px;
+            }
+        }
+
+        .duy-date {
+            font-size: 0.75rem;
+            color: rgba(222, 219, 200, 0.3);
+            letter-spacing: 0.04em;
+            padding-top: 0.5rem;
+        }
+
+        .duy-card {
+            background: #111;
+            border: 1px solid rgba(222, 219, 200, 0.07);
+            border-radius: 1.25rem;
+            padding: 1.75rem 2rem;
+            transition: border-color 0.3s;
+        }
+
+        .duy-card:hover {
+            border-color: rgba(222, 219, 200, 0.14);
+        }
+
+        .duy-cat {
+            font-size: 0.625rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(222, 219, 200, 0.3);
+            margin-bottom: 0.625rem;
+        }
+
+        .duy-title {
+            font-size: 1.0625rem;
+            font-weight: 500;
+            color: #E1E0CC;
+            margin: 0 0 0.75rem;
+        }
+
+        .duy-body {
+            font-size: 0.875rem;
+            color: rgba(222, 219, 200, 0.45);
+            line-height: 1.7;
+            margin: 0 0 1.125rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="site-nav"></div>
+    <script src="js/site-nav.js"></script>
+    <script src="js/hooks.js"></script>
+    <script src="js/components/page-header.js"></script>
+    <script src="js/animations-init.js"></script>
+
+    <main>
+        <div id="page-header-root"></div>
+        <script type="text/babel">
+                (function () {
+                    const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
+                    root.render(React.createElement(SJ.PageHeader, {
+                        title: 'Duyurular',
+                        description: 'Köy derneğimizin en güncel haberleri, etkinlik duyuruları ve önemli gelişmelerden haberdar olun.'
+                    }));
+                })();
+        </script>
+
+        <!-- Timeline -->
+        <section class="sj-section" data-reveal>
+            <div class="sj-container--narrow">
+                <div class="duy-timeline">
+                    <div class="duy-line"></div>
+
+                    <!-- Item 1 -->
+                    <div class="duy-item">
+                        <div class="duy-date-col">
+                            <p class="duy-date">Haziran 2026</p>
+                        </div>
+                        <div class="duy-content-col" style="position:relative;">
+                            <div class="duy-dot"></div>
+                            <div class="duy-card">
+                                <div class="duy-cat">Etkinlik · Duyuru</div>
+                                <h2 class="duy-title">Yaz Şenliği Duyurusu</h2>
+                                <p class="duy-body">Bu yıl geleneksel Yaz Şenliğimiz 15–16 Ağustos tarihlerinde köy
+                                    meydanında gerçekleşecektir. Tüm köy halkımız ve misafirlerimiz davetlidir.</p>
+                                <a href="#" class="sj-link">
+                                    Devamını Oku
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="duy-item">
+                        <div class="duy-date-col">
+                            <p class="duy-date">Mayıs 2026</p>
+                        </div>
+                        <div class="duy-content-col" style="position:relative;">
+                            <div class="duy-dot duy-dot--dim"></div>
+                            <div class="duy-card">
+                                <div class="duy-cat">Altyapı</div>
+                                <h2 class="duy-title">Köy Yolu Çalışmaları Tamamlandı</h2>
+                                <p class="duy-body">Köyümüzün ana yolunda yürütülen yenileme çalışmaları başarıyla
+                                    tamamlanmıştır. Katkılarınız için tüm hemşehrilerimize teşekkür ederiz.</p>
+                                <a href="#" class="sj-link">
+                                    Devamını Oku
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="duy-item">
+                        <div class="duy-date-col">
+                            <p class="duy-date">Nisan 2026</p>
+                        </div>
+                        <div class="duy-content-col" style="position:relative;">
+                            <div class="duy-dot duy-dot--dim"></div>
+                            <div class="duy-card">
+                                <div class="duy-cat">Üyelik</div>
+                                <h2 class="duy-title">Yeni Dönem Kayıtları Başladı</h2>
+                                <p class="duy-body">Derneğimizin 2026–2027 dönemi üyelik kayıtları başlamıştır. Kayıt
+                                    yaptırmak isteyen hemşehrilerimiz bizimle iletişime geçebilir.</p>
+                                <a href="iletisim.html" class="sj-link">
+                                    İletişime Geç
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="duy-item">
+                        <div class="duy-date-col">
+                            <p class="duy-date">Mart 2026</p>
+                        </div>
+                        <div class="duy-content-col" style="position:relative;">
+                            <div class="duy-dot duy-dot--dim"></div>
+                            <div class="duy-card">
+                                <div class="duy-cat">Kültür</div>
+                                <h2 class="duy-title">El Sanatları Sergisi Açıldı</h2>
+                                <p class="duy-body">Köyümüzün geleneksel el sanatlarını tanıtan sergi, dernek binasında
+                                    ziyaretçilerin beğenisine sunulmuştur.</p>
+                                <a href="#" class="sj-link">
+                                    Devamını Oku
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M5 12h14M12 5l7 7-7 7" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+
+</html>

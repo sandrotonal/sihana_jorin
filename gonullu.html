@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gönüllü Ol — Sıhana Jorin Köy Derneği</title>
+    <meta name="description" content="Sıhana Jorin Köy Derneği'nin projelerinde aktif rol alın, yeteneklerinizi köyünüzün yararına kullanın.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
+    <script>window.tailwind=window.tailwind||{};window.tailwind.config={theme:{extend:{colors:{primary:'#DEDBC8'},fontFamily:{serif:['"Instrument Serif"','serif']}}}}</script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        .gon-benefit { display: flex; gap: 1.25rem; align-items: flex-start; padding: 1.75rem 0; border-bottom: 1px solid rgba(222,219,200,0.06); }
+        .gon-benefit:last-child { border-bottom: none; }
+        .gon-benefit-num { font-size: 0.625rem; letter-spacing: 0.14em; color: rgba(222,219,200,0.25); font-family: ui-monospace, monospace; padding-top: 0.25rem; flex-shrink: 0; width: 32px; }
+        .gon-benefit-body h3 { font-size: 1rem; font-weight: 500; color: #E1E0CC; margin: 0 0 0.375rem; }
+        .gon-benefit-body p { font-size: 0.875rem; color: rgba(222,219,200,0.45); line-height: 1.65; margin: 0; }
+        .gon-main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(3rem,6vw,8rem); align-items: start; }
+        @media (max-width: 768px) { .gon-main-grid { grid-template-columns: 1fr; gap: 3rem; } }
+        .gon-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 480px) { .gon-form-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div id="site-nav"></div>
+    <script src="js/site-nav.js"></script>
+    <script src="js/hooks.js"></script>
+    <script src="js/components/page-header.js"></script>
+    <script src="js/animations-init.js"></script>
+
+    <main>
+        <div id="page-header-root"></div>
+        <script type="text/babel">
+            (function() {
+                const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
+                root.render(React.createElement(SJ.PageHeader, {
+                    title: 'Gönüllü Ol',
+                    description: 'Köyümüzün projelerinde aktif rol almak, yeteneklerinizi köyümüzün yararına kullanmak ister misiniz? Sizi aramıza bekliyoruz.',
+                    buttons: [
+                        { label: 'Hemen Başvur', href: '#form', variant: 'primary' },
+                        { label: 'Projeleri İncele', href: 'calismalar.html', variant: 'ghost' }
+                    ]
+                }));
+            })();
+        </script>
+
+        <!-- Neden Gönüllü? -->
+        <section class="sj-section" data-reveal>
+            <div class="sj-container">
+                <div class="gon-main-grid">
+                    <div>
+                        <span class="sj-label">Katkı</span>
+                        <h2 class="sj-h2" style="margin-bottom:0.625rem;">Neden gönüllü<br><em style="font-family:'Instrument Serif',serif; font-style:italic; font-weight:400;">olmalısınız?</em></h2>
+                        <p class="sj-body" style="margin-top:1rem;">Köyünüze katkı sağlarken kendinizi de geliştireceğiniz anlamlı bir yolculuk sizi bekliyor.</p>
+                        <div style="margin-top:2.5rem;">
+                            <div class="gon-benefit">
+                                <span class="gon-benefit-num">01</span>
+                                <div class="gon-benefit-body">
+                                    <h3>Topluluğa Katkı</h3>
+                                    <p>Köyünüzün kalkınmasına doğrudan katkı sağlar, kalıcı bir fark yaratırsınız.</p>
+                                </div>
+                            </div>
+                            <div class="gon-benefit">
+                                <span class="gon-benefit-num">02</span>
+                                <div class="gon-benefit-body">
+                                    <h3>Yeni Deneyimler</h3>
+                                    <p>Yeni insanlarla tanışır, yeteneklerinizi köyünüzün yararına kullanma fırsatı bulursunuz.</p>
+                                </div>
+                            </div>
+                            <div class="gon-benefit">
+                                <span class="gon-benefit-num">03</span>
+                                <div class="gon-benefit-body">
+                                    <h3>Kültürel Miras</h3>
+                                    <p>Kültürel mirasımızın yaşatılmasına ve gelecek nesillere aktarılmasına katkıda bulunursunuz.</p>
+                                </div>
+                            </div>
+                            <div class="gon-benefit">
+                                <span class="gon-benefit-num">04</span>
+                                <div class="gon-benefit-body">
+                                    <h3>Etki Yaratma</h3>
+                                    <p>Yaptığınız çalışmaların somut sonuçlarını görür, gurur duyarsınız.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Başvuru Formu -->
+                    <div id="form">
+                        <div class="sj-card sj-card--lg">
+                            <h2 class="sj-h3" style="margin-bottom:0.375rem;">Başvuru Formu</h2>
+                            <p class="sj-body" style="margin-bottom:2rem; font-size:0.8125rem;">Formu doldurun, size en kısa sürede dönüş yapalım.</p>
+                            <form style="display:flex; flex-direction:column; gap:1.25rem;">
+                                <div class="gon-form-grid">
+                                    <div>
+                                        <label class="sj-label-text">Ad</label>
+                                        <input type="text" class="sj-input" placeholder="Adınız" id="gonullu-ad">
+                                    </div>
+                                    <div>
+                                        <label class="sj-label-text">Soyad</label>
+                                        <input type="text" class="sj-input" placeholder="Soyadınız" id="gonullu-soyad">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="sj-label-text">E-posta</label>
+                                    <input type="email" class="sj-input" placeholder="ornek@email.com" id="gonullu-email">
+                                </div>
+                                <div>
+                                    <label class="sj-label-text">İlgi Alanınız</label>
+                                    <select class="sj-select" id="gonullu-alan">
+                                        <option style="background:#111">Kültürel Etkinlikler</option>
+                                        <option style="background:#111">Eğitim ve Öğretim</option>
+                                        <option style="background:#111">Altyapı ve Çevre</option>
+                                        <option style="background:#111">Tarım ve Hayvancılık</option>
+                                        <option style="background:#111">Dijital ve Teknoloji</option>
+                                        <option style="background:#111">Diğer</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="sj-label-text">Kısa Mesaj</label>
+                                    <textarea rows="4" class="sj-textarea" placeholder="Kendiniz hakkında kısaca bilgi verin..." id="gonullu-mesaj"></textarea>
+                                </div>
+                                <button type="submit" class="sj-btn-primary" style="width:100%;">Başvur</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="site-footer"></div>
+</body>
+</html>
