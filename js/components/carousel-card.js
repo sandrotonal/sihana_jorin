@@ -1,180 +1,186 @@
 const SJ = window.SJ || {};
 const { useState, useEffect, useRef } = React;
 
-SJ.CarouselCard = function CarouselCard({ data, showCarousel = true }) {
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [isAnimating, setIsAnimating] = useState(false);
-    const [cardsPerView, setCardsPerView] = useState(3);
-    const containerRef = useRef(null);
+const Card = ({ data, showCarousel = true }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSingleCard, setIsSingleCard] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const containerRef = useRef(null);
 
-    // Responsive cardsPerView calculation
-    useEffect(() => {
-        const handleResize = () => {
-            const width = window.innerWidth;
-            if (width < 640) {
-                setCardsPerView(1);
-            } else if (width < 1024) {
-                setCardsPerView(2);
-            } else {
-                setCardsPerView(3);
-            }
-        };
+  // Responsive cardsPerView calculation
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setCardsPerView(1);
+      } else if (width < 1024) {
+        setCardsPerView(2);
+      } else {
+        setCardsPerView(3);
+      }
+    };
 
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-    if (!data || data.length === 0) {
-        return <div className="text-[#E1E0CC]/60 text-center py-12">Duyuru bulunamadı.</div>;
+  useEffect(() => {
+    setIsSingleCard(data?.length === 1);
+  }, [data]);
+
+  if (!data || data.length === 0) {
+    return <div className="text-[#E1E0CC]/60 text-center py-12">No card data available</div>;
+  }
+
+  // Calculate width percentage for each card based on cardsPerView (YAP.MD exact logic)
+  const cardWidth = 75 / cardsPerView;
+
+  const nextSlide = () => {
+    if (isAnimating || !showCarousel || !data) return;
+
+    // Don't allow navigation if there aren't enough cards
+    if (data.length <= cardsPerView) return;
+
+    setIsAnimating(true);
+    const nextIndex = (currentIndex + 1) % data.length;
+
+    if (containerRef.current) {
+      // Apply slide out animation (YAP.MD exact values)
+      containerRef.current.style.transition = "transform 500ms ease";
+      containerRef.current.style.transform = `translateX(-${cardWidth}%)`;
+
+      // After animation completes, reset position and update index
+      setTimeout(() => {
+        setCurrentIndex(nextIndex);
+        if (containerRef.current) {
+          containerRef.current.style.transition = "none";
+          containerRef.current.style.transform = "translateX(0)";
+
+          // Force reflow
+          void containerRef.current.offsetWidth;
+
+          setIsAnimating(false);
+        }
+      }, 500);
+    }
+  };
+
+  const prevSlide = () => {
+    if (isAnimating || !showCarousel || !data) return;
+    if (data.length <= cardsPerView) return;
+
+    setIsAnimating(true);
+    const prevIndex = (currentIndex - 1 + data.length) % data.length;
+
+    if (containerRef.current) {
+      // First move instantly to the right position
+      containerRef.current.style.transition = "none";
+      containerRef.current.style.transform = `translateX(-${cardWidth}%)`;
+
+      // Update the index immediately
+      setCurrentIndex(prevIndex);
+
+      // Force reflow
+      void containerRef.current.offsetWidth;
+
+      // Then animate back to center
+      setTimeout(() => {
+        if (containerRef.current) {
+          containerRef.current.style.transition = "transform 500ms ease";
+          containerRef.current.style.transform = "translateX(0)";
+        }
+        setTimeout(() => {
+          setIsAnimating(false);
+        }, 500);
+      }, 50);
+    }
+  };
+
+  // Calculate which cards to show (YAP.MD exact logic)
+  const getVisibleCards = () => {
+    if (!showCarousel || !data) return data || [];
+
+    const visibleCards = [];
+    const totalCards = data.length;
+
+    // For next slide animation, we need current cards + 1 extra
+    const count = data.length <= cardsPerView ? data.length : cardsPerView + 1;
+    for (let i = 0; i < count; i++) {
+      const index = (currentIndex + i) % totalCards;
+      visibleCards.push(data[index]);
     }
 
-    // Each card's width in percentage based on cardsPerView
-    const cardWidth = 75 / cardsPerView;
+    return visibleCards;
+  };
 
-    const nextSlide = () => {
-        if (isAnimating || !showCarousel || data.length <= cardsPerView) return;
+  const visibleCards = getVisibleCards();
+  const showControls = showCarousel && data.length > cardsPerView;
 
-        setIsAnimating(true);
-        const nextIndex = (currentIndex + 1) % data.length;
+  return (
+    <div className="w-full px-4">
+      <div className={`relative ${isSingleCard ? 'max-w-sm mx-auto' : 'w-full'}`}>
+        {/* Carousel Controls (YAP.MD design) */}
+        {showControls && (
+          <>
+            <button
+              onClick={prevSlide}
+              className="absolute -left-4 sm:left-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 border border-[#DEDBC8]/10 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+              disabled={isAnimating}
+              aria-label="Previous slide"
+            >
+              &lt;
+            </button>
+            <button
+              onClick={nextSlide}
+              className="absolute -right-4 sm:right-0 top-1/2 -translate-y-1/2 z-30 bg-black/60 border border-[#DEDBC8]/10 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+              disabled={isAnimating}
+              aria-label="Next slide"
+            >
+              &gt;
+            </button>
+          </>
+        )}
 
-        if (containerRef.current) {
-            containerRef.current.style.transition = "transform 500ms ease";
-            containerRef.current.style.transform = `translateX(-${cardWidth}%)`;
-
-            setTimeout(() => {
-                setCurrentIndex(nextIndex);
-                if (containerRef.current) {
-                    containerRef.current.style.transition = "none";
-                    containerRef.current.style.transform = "translateX(0)";
-                    // Force reflow
-                    void containerRef.current.offsetWidth;
-                }
-                setIsAnimating(false);
-            }, 500);
-        }
-    };
-
-    const prevSlide = () => {
-        if (isAnimating || !showCarousel || data.length <= cardsPerView) return;
-
-        setIsAnimating(true);
-        const prevIndex = (currentIndex - 1 + data.length) % data.length;
-
-        if (containerRef.current) {
-            containerRef.current.style.transition = "none";
-            containerRef.current.style.transform = `translateX(-${cardWidth}%)`;
-            setCurrentIndex(prevIndex);
-
-            // Force reflow
-            void containerRef.current.offsetWidth;
-
-            setTimeout(() => {
-                if (containerRef.current) {
-                    containerRef.current.style.transition = "transform 500ms ease";
-                    containerRef.current.style.transform = "translateX(0)";
-                }
-                setTimeout(() => {
-                    setIsAnimating(false);
-                }, 500);
-            }, 50);
-        }
-    };
-
-    const getVisibleCards = () => {
-        if (!showCarousel || data.length <= cardsPerView) return data;
-
-        const visibleCards = [];
-        const totalCards = data.length;
-
-        for (let i = 0; i < cardsPerView + 1; i++) {
-            const index = (currentIndex + i) % totalCards;
-            visibleCards.push(data[index]);
-        }
-
-        return visibleCards;
-    };
-
-    return (
-        <div className="w-full px-4">
-            <div className={`relative ${data.length === 1 ? 'max-w-sm mx-auto' : 'w-full'}`}>
-                {/* Carousel Controls */}
-                {showCarousel && data.length > cardsPerView && (
-                    <>
-                        <button
-                            onClick={prevSlide}
-                            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-300 cursor-pointer"
-                            disabled={isAnimating}
-                            aria-label="Previous slide"
-                        >
-                            &lt;
-                        </button>
-                        <button
-                            onClick={nextSlide}
-                            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-all duration-300 cursor-pointer"
-                            disabled={isAnimating}
-                            aria-label="Next slide"
-                        >
-                            &gt;
-                        </button>
-                    </>
-                )}
-
-                {/* Cards Container Wrapper - limits visible area */}
-                <div className="overflow-hidden">
-                    {/* Sliding Cards Container */}
-                    <div
-                        ref={containerRef}
-                        className="flex"
-                        style={{
-                            transform: "translateX(0)",
-                            width: showCarousel && data.length > cardsPerView ? `${((cardsPerView + 1) * 100) / cardsPerView}%` : '100%'
-                        }}
-                    >
-                        {getVisibleCards().map((card, idx) => (
-                            <div
-                                key={`${card.id || idx}-${currentIndex}`}
-                                style={{
-                                    width: showCarousel && data.length > cardsPerView ? `${100 / (cardsPerView + 1)}%` : `${100 / Math.min(cardsPerView, data.length)}%`
-                                }}
-                                className="px-2"
-                            >
-                                <div className="relative overflow-hidden rounded-lg shadow-md group h-96">
-                                    {/* Image Section */}
-                                    <div className="w-full h-full">
-                                        <img
-                                            src={card.imgUrl}
-                                            alt={card.title || ''}
-                                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        />
-                                    </div>
-                                    
-                                    {/* Info Overlay at the bottom when not hovered */}
-                                    <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/85 via-black/50 to-transparent group-hover:opacity-0 transition-opacity duration-300 z-10 pointer-events-none">
-                                        <span className="text-[10px] tracking-widest uppercase text-primary/70 block mb-1">{card.category} — {card.date}</span>
-                                        <h3 className="text-base font-medium text-[#E1E0CC] line-clamp-1">{card.title}</h3>
-                                    </div>
-
-                                    {/* Hover Slide-up Details Panel */}
-                                    <div className="absolute inset-0 bg-black/90 text-white p-6 flex flex-col justify-between transition-all duration-300 transform translate-y-full group-hover:translate-y-0 overflow-y-auto z-20">
-                                        <div>
-                                            <div className="flex items-center justify-between border-b border-[#DEDBC8]/10 pb-2 mb-3 text-xs text-[#DEDBC8]/60">
-                                                <span>{card.category}</span>
-                                                <span>{card.date}</span>
-                                            </div>
-                                            <h4 className="text-lg font-medium text-primary mb-3 leading-snug">{card.title}</h4>
-                                            <p className="text-sm text-gray-300 leading-relaxed whitespace-pre-line">{card.content}</p>
-                                        </div>
-                                        <div className="text-[10px] text-gray-500 mt-4 text-right">
-                                            Sıhana Jorin Köy Derneği
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
+        {/* Cards Container Wrapper - limits visible area */}
+        <div className="overflow-hidden rounded-xl">
+          {/* Sliding Cards Container */}
+          <div
+            ref={containerRef}
+            className="flex"
+            style={{
+              transform: "translateX(0)",
+              width: showCarousel && data.length > cardsPerView ? `${(cardsPerView + 1) * 100 / cardsPerView}%` : '100%'
+            }}
+          >
+            {visibleCards.map((card, idx) => (
+              <div
+                key={`card-${currentIndex}-${idx}-${card.id}`}
+                style={{
+                  width: showCarousel && data.length > cardsPerView ? `${100 / (cardsPerView + 1)}%` : `${100 / Math.min(cardsPerView, data.length)}%`
+                }}
+                className="px-2"
+              >
+                <div className="relative overflow-hidden rounded-lg shadow-md group h-72 border border-[#DEDBC8]/5 hover:border-[#DEDBC8]/20 transition-colors duration-300">
+                  <div className="w-full h-full">
+                    <img
+                      src={card.imgUrl}
+                      alt=""
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="absolute inset-0 bg-black/80 text-white p-6 transition-transform duration-300 transform translate-y-full group-hover:translate-y-0 overflow-y-auto z-20 flex flex-col justify-start">
+                    <p className="text-sm" dangerouslySetInnerHTML={{ __html: card.content }} />
+                  </div>
                 </div>
-            </div>
+              </div>
+            ))}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
+
+SJ.CarouselCard = Card;

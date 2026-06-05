@@ -1,9 +1,3 @@
-kanka ş ve ğ harflerı falan  sitede fartklı gorunuyor ayrıca dıteyı deploy ettım kanak vıdeodlsr hepsı durdu oynatma butonu cıktı kontrol edıp vıdeonun otomnatık sekıdle onay vermden calsımasını sagla guvelı hatasız sekılde guncxelel kontrol et
-
-çalışmalr sayfsaını kaldır kanka 
-duyurular sayfsaını da guncelle kanak 
-
-duyurular sayfsaıın tasarımını bu tasarım prompla guncelle knaka 
 You are given a task to integrate an existing React component in the codebase
 
 The codebase should support:
@@ -436,12 +430,6 @@ Steps to integrate
  1. Install external dependencies
  2. Fill image assets with Unsplash stock images you know exist
  3. Use lucide-react icons for svgs or logos if component requires them
-
-
-
-
-
-mobıl masmaurne uyumlu olmasına dıkkat et 
 
 
 
