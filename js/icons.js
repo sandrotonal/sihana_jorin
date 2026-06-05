@@ -78,6 +78,33 @@ SJ.Heart = function Heart({ size=18, className='' }) {
     );
 };
 
+SJ.Instagram = function Instagram({ size=20, className='' }) {
+    return React.createElement('svg', { xmlns:"http://www.w3.org/2000/svg", width:size, height:size, viewBox:"0 0 24 24", fill:"none", stroke:"currentColor", strokeWidth:"2", strokeLinecap:"round", strokeLinejoin:"round", className },
+        React.createElement('rect', { width:"20", height:"20", x:"2", y:"2", rx:"5", ry:"5" }),
+        React.createElement('path', { d:"M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" }),
+        React.createElement('line', { x1:"17.5", y1:"6.5", x2:"17.51", y2:"6.5" })
+    );
+};
+
+SJ.Facebook = function Facebook({ size=20, className='' }) {
+    return React.createElement('svg', { xmlns:"http://www.w3.org/2000/svg", width:size, height:size, viewBox:"0 0 24 24", fill:"currentColor", stroke:"none", className },
+        React.createElement('path', { d:"M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" })
+    );
+};
+
+SJ.YouTube = function YouTube({ size=20, className='' }) {
+    return React.createElement('svg', { xmlns:"http://www.w3.org/2000/svg", width:size, height:size, viewBox:"0 0 24 24", fill:"none", stroke:"currentColor", strokeWidth:"2", strokeLinecap:"round", strokeLinejoin:"round", className },
+        React.createElement('path', { d:"M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" }),
+        React.createElement('polygon', { points:"9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" })
+    );
+};
+
+SJ.XIcon_social = function XIcon_social({ size=20, className='' }) {
+    return React.createElement('svg', { xmlns:"http://www.w3.org/2000/svg", width:size, height:size, viewBox:"0 0 24 24", fill:"currentColor", stroke:"none", className },
+        React.createElement('path', { d:"M4 4l6.25 8.5L4 20h2.5l5.5-7.25L17 20h5l-7-9.5L21 4h-2.5l-5.25 7L9 4H4z" })
+    );
+};
+
 SJ.Bell = function Bell({ size=20, className='' }) {
     return React.createElement('svg', { xmlns:"http://www.w3.org/2000/svg", width:size, height:size, viewBox:"0 0 24 24", fill:"none", stroke:"currentColor", strokeWidth:"2", strokeLinecap:"round", strokeLinejoin:"round", className },
         React.createElement('path', { d:"M6 8a6 6 0 0 1 12 0c0 7 4 9 4 9H2s4-2 4-9" }),

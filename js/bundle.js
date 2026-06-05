@@ -106,6 +106,29 @@ window.SJ.useInView = function useInView(options = {}) {
             h('path', { d: "M9.5 17c0 1.38.62 2.5 1.5 2.5s1.5-1.12 1.5-2.5" })
         );
     };
+    SJ.Instagram = function Instagram({ size = 20, className = '' }) {
+        return h('svg', { xmlns: "http://www.w3.org/2000/svg", width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className },
+            h('rect', { width: "20", height: "20", x: "2", y: "2", rx: "5", ry: "5" }),
+            h('path', { d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" }),
+            h('line', { x1: "17.5", y1: "6.5", x2: "17.51", y2: "6.5" })
+        );
+    };
+    SJ.Facebook = function Facebook({ size = 20, className = '' }) {
+        return h('svg', { xmlns: "http://www.w3.org/2000/svg", width: size, height: size, viewBox: "0 0 24 24", fill: "currentColor", stroke: "none", className },
+            h('path', { d: "M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" })
+        );
+    };
+    SJ.YouTube = function YouTube({ size = 20, className = '' }) {
+        return h('svg', { xmlns: "http://www.w3.org/2000/svg", width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", className },
+            h('path', { d: "M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" }),
+            h('polygon', { points: "9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" })
+        );
+    };
+    SJ.XIcon_social = function XIcon_social({ size = 20, className = '' }) {
+        return h('svg', { xmlns: "http://www.w3.org/2000/svg", width: size, height: size, viewBox: "0 0 24 24", fill: "currentColor", stroke: "none", className },
+            h('path', { d: "M4 4l6.25 8.5L4 20h2.5l5.5-7.25L17 20h5l-7-9.5L21 4h-2.5l-5.25 7L9 4H4z" })
+        );
+    };
 })();
 
 // ---- js/components/ui.js ----
@@ -680,7 +703,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <div className="col-span-12 lg:col-span-4 lg:pb-4">
                                     <SJ.FadeUp delay={0.5}>
                                         <p className="text-xs sm:text-sm md:text-base mb-5" style={{ lineHeight: 1.35, color: 'rgba(222,219,200,0.7)' }}>
-                                            Sıhana Jorin Köy Derneği, köyümüzün zengin kültürel mirasını yaşatan, dayanışmayı güçlendiren ve gelecek nesillere aktaran bir birlik ruhudur.
+                                            Besler Köyü, kadim adıyla Sîhana Jorin; sarsılmaz bağların, emeğin ve misafirperverliğin merkezidir. Doğubayazıt'ın güneyinde, nesiller boyu aktarılan güçlü bir aidiyetin sembolüdür.
                                         </p>
                                     </SJ.FadeUp>
                                     <SJ.FadeUp delay={0.7}>
@@ -735,15 +758,15 @@ window.SJ.useInView = function useInView(options = {}) {
         return (
             <section id="about" className="bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6" aria-label="Hakkımızda">
                 <div className="bg-[#101010] rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-12 w-full max-w-[95%] xl:max-w-7xl mx-auto text-center">
-                    <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-8 block">Köy Derneği</span></SJ.FadeUp>
+                    <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-8 block">Geçmişin Mirası, Geleceğin İnancı</span></SJ.FadeUp>
                     <h2 data-toc data-toc-title="Hikayemiz" data-toc-depth="1" id="about-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-w-3xl mx-auto leading-[0.95] sm:leading-[0.9]" style={{ color: '#E1E0CC' }}>
                         <SJ.WordsPullUpMultiStyle segments={[
-                            { text: 'Ben Mahmut Yılmaz,', className: '' },
-                            { text: 'köklerime bağlı bir yöneticiyim.', className: 'italic font-serif' },
-                            { text: 'Kültürel miras, dayanışma ve gelecek inşası benim önceliğim.', className: '' }
+                            { text: 'Serhat bölgesinin kalbinde, Ağrı Dağı\'nın gölgesinde köklü bir geçmişe ev sahipliği yapan Besler Köyü,', className: '' },
+                            { text: 'bilinen ve kadim adıyla Sîhana Jorin;', className: 'italic font-serif' },
+                            { text: 'sarsılmaz bağların, emeğin ve misafirperverliğin merkezidir.', className: '' }
                         ]} />
                     </h2>
-                    <SJ.AnimatedText text="Son yedi yıldır Sıhana Jorin köyünün kültürel mirasını korumak, komşuluk bağlarını güçlendirmek ve köyümüzü daha yaşanabilir kılmak için çalışıyoruz. Diasporadan köye uzanan bu yolculukta, birliğimize olan inancımız her geçen gün büyüyor."
+                    <SJ.AnimatedText text="Sert kışlarına inat sıcak insan hikayeleriyle filizlenen köyümüz, geleneksel hayvancılık kültürüyle toprağına bağlı kalırken; metropollerden Avrupa'ya uzanan güçlü diasporasıyla da bağlarını asla koparmamıştır. Bugün Sîhana Jorin; geçmişin kültürel mirasını koruyan, genç nesillerin enerjisiyle geleceğe umutla bakan ve nerede olursak olalım hepimizi aynı samimiyette buluşturan ortak evimizdir."
                         className="text-[#DEDBC8] text-xs sm:text-sm md:text-base max-w-2xl mx-auto mt-10 md:mt-14 leading-relaxed" />
                     <div data-toc data-toc-title="Kültürel Mirasımız" data-toc-depth="2" id="about-heritage" className="mt-16 md:mt-20 max-w-2xl mx-auto text-left">
                         <h3 className="text-xl sm:text-2xl md:text-3xl font-medium mb-4" style={{ color: '#E1E0CC' }}>Kültürel Mirasımız</h3>
@@ -905,7 +928,8 @@ window.SJ.useInView = function useInView(options = {}) {
     SJ.Footer = function Footer() {
         const links = [
             { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
-            { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] }
+            { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] },
+            { group: 'Sosyal Medya', items: [{ label: 'Instagram', href: 'https://instagram.com' }, { label: 'Facebook', href: 'https://facebook.com' }, { label: 'YouTube', href: 'https://youtube.com' }, { label: 'X', href: 'https://x.com' }] }
         ];
         return (
             <footer className="bg-[#050505] border-t border-[#DEDBC8]/5 pt-16 pb-8 px-4 md:px-6">
@@ -931,7 +955,12 @@ window.SJ.useInView = function useInView(options = {}) {
                     </div>
                     <div className="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-gray-600 text-xs">&copy; {new Date().getFullYear()} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
-                        <div style={{ display: 'none' }}></div>
+                        <div className="flex items-center gap-3">
+                            <a href="https://instagram.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Instagram"><SJ.Instagram size={16} /></a>
+                            <a href="https://facebook.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Facebook"><SJ.Facebook size={16} /></a>
+                            <a href="https://youtube.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="YouTube"><SJ.YouTube size={16} /></a>
+                            <a href="https://x.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="X"><SJ.XIcon_social size={14} /></a>
+                        </div>
                     </div>
                 </div>
             </footer>

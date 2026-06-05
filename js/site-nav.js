@@ -15,6 +15,7 @@
     const FOOTER_GROUPS = [
         { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
         { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] },
+        { group: 'Sosyal Medya', items: [{ label: 'Instagram', href: 'https://instagram.com' }, { label: 'Facebook', href: 'https://facebook.com' }, { label: 'YouTube', href: 'https://youtube.com' }, { label: 'X', href: 'https://x.com' }] },
     ];
 
     function isActive(href) {
@@ -144,6 +145,12 @@
                         </div>
                         <div class="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                             <p class="text-gray-600 text-xs">&copy; ${year} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
+                            <div class="flex items-center gap-3">
+                                <a href="https://instagram.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+                                <a href="https://facebook.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+                                <a href="https://youtube.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="YouTube"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.94 2C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg></a>
+                                <a href="https://x.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="X"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4l6.25 8.5L4 20h2.5l5.5-7.25L17 20h5l-7-9.5L21 4h-2.5l-5.25 7L9 4H4z"/></svg></a>
+                            </div>
                         </div>
                     </div>
                 </footer>

@@ -21,7 +21,7 @@ SJ.HeroSection = function HeroSection() {
                         <div className="col-span-12 lg:col-span-4 lg:pb-4">
                             <SJ.FadeUp delay={0.5}>
                                 <p className="text-xs sm:text-sm md:text-base mb-5" style={{ lineHeight: 1.35, color: 'rgba(222,219,200,0.7)' }}>
-                                    Sıhana Jorin Köy Derneği, köyümüzün zengin kültürel mirasını yaşatan, dayanışmayı güçlendiren ve gelecek nesillere aktaran bir birlik ruhudur.
+                                    Besler Köyü, kadim adıyla Sîhana Jorin; sarsılmaz bağların, emeğin ve misafirperverliğin merkezidir. Doğubayazıt'ın güneyinde, nesiller boyu aktarılan güçlü bir aidiyetin sembolüdür.
                                 </p>
                             </SJ.FadeUp>
                             <SJ.FadeUp delay={0.7}>

@@ -3,7 +3,8 @@ const SJ = window.SJ;
 SJ.Footer = function Footer() {
     const links = [
         { group:'Keşfet', items:[{label:'Hikayemiz',href:'hakkimizda.html'},{label:'Galeri',href:'galeri.html'},{label:'Duyurular',href:'duyurular.html'}] },
-        { group:'Destek', items:[{label:'Bağış Yap',href:'bagis.html'},{label:'Gönüllü Ol',href:'gonullu.html'},{label:'İletişim',href:'iletisim.html'}] }
+        { group:'Destek', items:[{label:'Bağış Yap',href:'bagis.html'},{label:'Gönüllü Ol',href:'gonullu.html'},{label:'İletişim',href:'iletisim.html'}] },
+        { group:'Sosyal Medya', items:[{label:'Instagram',href:'https://instagram.com'},{label:'Facebook',href:'https://facebook.com'},{label:'YouTube',href:'https://youtube.com'},{label:'X',href:'https://x.com'}] }
     ];
 
     return (
@@ -32,7 +33,12 @@ SJ.Footer = function Footer() {
 
                 <div className="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <p className="text-gray-600 text-xs">&copy; {new Date().getFullYear()} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
-                    <div style={{display:'none'}}></div>
+                    <div className="flex items-center gap-3">
+                        <a href="https://instagram.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Instagram"><SJ.Instagram size={16} /></a>
+                        <a href="https://facebook.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Facebook"><SJ.Facebook size={16} /></a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="YouTube"><SJ.YouTube size={16} /></a>
+                        <a href="https://x.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="X"><SJ.XIcon_social size={14} /></a>
+                    </div>
                 </div>
             </div>
         </footer>
