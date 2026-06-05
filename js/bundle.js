@@ -130,13 +130,33 @@ window.SJ.useInView = function useInView(options = {}) {
 
         return (
             <>
+                {/* Backdrop — z-index 200, above hamburger button (z-190) */}
                 <div onClick={onClose}
-                    className="fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-500"
-                    style={{ opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }} />
-                <div className="fixed inset-0 z-50 bg-[#050505] transition-opacity duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex flex-col items-center justify-center"
-                    style={{ opacity: isOpen ? 1 : 0, pointerEvents: isOpen ? 'auto' : 'none' }}>
-                    <button onClick={onClose} className="absolute top-6 right-6 p-2 text-[#E1E0CC]/50 hover:text-[#E1E0CC] transition-colors cursor-pointer" aria-label="Menüyü kapat">
-                        <SJ.XIcon size={22} className="text-[#E1E0CC]" />
+                    style={{
+                        position: 'fixed', inset: 0, zIndex: 200,
+                        background: 'rgba(0,0,0,0.65)',
+                        backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)',
+                        opacity: isOpen ? 1 : 0,
+                        pointerEvents: isOpen ? 'auto' : 'none',
+                        transition: 'opacity 0.5s ease'
+                    }} />
+                {/* Menu panel — z-index 205 */}
+                <div style={{
+                    position: 'fixed', inset: 0, zIndex: 205,
+                    background: '#050505',
+                    display: 'flex', flexDirection: 'column',
+                    alignItems: 'center', justifyContent: 'center',
+                    opacity: isOpen ? 1 : 0,
+                    pointerEvents: isOpen ? 'auto' : 'none',
+                    transition: 'opacity 0.5s cubic-bezier(0.16,1,0.3,1)'
+                }}>
+                    <button onClick={onClose} style={{
+                        position: 'absolute', top: 24, right: 24,
+                        padding: 8, background: 'none', border: 'none',
+                        cursor: 'pointer', color: 'rgba(225,224,204,0.6)',
+                        zIndex: 206
+                    }} aria-label="Menüyü kapat">
+                        <SJ.XIcon size={24} style={{ color: '#E1E0CC' }} />
                     </button>
                     <div className="flex flex-col items-center justify-center w-full p-8 text-center">
                         <span className="text-xs tracking-[0.2em] text-[#DEDBC8]/40 uppercase mb-12">Sıhana Jorin</span>
@@ -617,10 +637,18 @@ window.SJ.useInView = function useInView(options = {}) {
 // ---- js/sections/hero.js ----
 (function () {
     const SJ = window.SJ;
-    const { useState } = React;
+    const { useState, useEffect } = React;
 
     SJ.HeroSection = function HeroSection() {
         const [menuOpen, setMenuOpen] = useState(false);
+        const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 640);
+
+        useEffect(() => {
+            const handleResize = () => setIsMobile(window.innerWidth < 640);
+            window.addEventListener('resize', handleResize);
+            return () => window.removeEventListener('resize', handleResize);
+        }, []);
+
         return (
             <>
                 <section id="hero" className="h-screen" aria-label="Ana bölüm">
@@ -651,38 +679,40 @@ window.SJ.useInView = function useInView(options = {}) {
                                 </div>
                                 <div className="col-span-12 lg:col-span-4 lg:pb-4">
                                     <SJ.FadeUp delay={0.5}>
-                                        <p className="text-primary/70 text-xs sm:text-sm md:text-base mb-5" style={{ lineHeight: 1.35, color: 'rgba(222,219,200,0.7)' }}>
+                                        <p className="text-xs sm:text-sm md:text-base mb-5" style={{ lineHeight: 1.35, color: 'rgba(222,219,200,0.7)' }}>
                                             Sıhana Jorin Köy Derneği, köyümüzün zengin kültürel mirasını yaşatan, dayanışmayı güçlendiren ve gelecek nesillere aktaran bir birlik ruhudur.
                                         </p>
                                     </SJ.FadeUp>
                                     <SJ.FadeUp delay={0.7}>
                                         <a href="gonullu.html"
-                                            className="group inline-flex items-center gap-3 transition-all duration-300 hover:gap-4"
                                             style={{
+                                                display: 'flex',
+                                                width: isMobile ? '100%' : 'auto',
+                                                alignItems: 'center',
+                                                justifyContent: isMobile ? 'space-between' : 'flex-start',
+                                                gap: '12px',
                                                 background: '#DEDBC8',
                                                 color: '#000',
                                                 fontWeight: 500,
                                                 fontSize: '0.875rem',
                                                 borderRadius: '9999px',
-                                                padding: '10px 10px 10px 20px',
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
+                                                padding: '12px 12px 12px 24px',
                                                 textDecoration: 'none',
-                                                boxShadow: '0 2px 16px rgba(0,0,0,0.3)',
+                                                boxShadow: '0 2px 20px rgba(0,0,0,0.35)',
+                                                transition: 'opacity 0.2s',
                                             }}>
                                             Derneğe Katıl
                                             <span style={{
                                                 background: '#000',
                                                 borderRadius: '50%',
-                                                width: '34px',
-                                                height: '34px',
+                                                width: '38px',
+                                                height: '38px',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                transition: 'transform 0.3s ease',
                                                 flexShrink: 0,
-                                            }} className="group-hover:scale-110">
-                                                <SJ.ArrowRight size={16} className="text-[#E1E0CC]" />
+                                            }}>
+                                                <SJ.ArrowRight size={16} style={{ color: '#E1E0CC' }} />
                                             </span>
                                         </a>
                                     </SJ.FadeUp>
@@ -953,23 +983,13 @@ window.SJ.useInView = function useInView(options = {}) {
     const SJ = window.SJ;
 
     SJ.AnnouncementsSection = function AnnouncementsSection() {
-        const announcements = [
-            {
-                id: "yaz-senligi",
-                front: { title: "Yaz Şenliği 2025", description: "15-17 Ağustos'ta köy meydanında" },
-                back: { description: "Geleneksel yaz şenliğimizde konserler, yarışmalar, yöresel lezzetler ve daha fazlası sizleri bekliyor. Tüm köy halkı davetlidir.", buttonText: "Detaylar" },
-            },
-            {
-                id: "bagis-kampanyasi",
-                front: { title: "Bağış Kampanyası", description: "Köy çeşmesinin restorasyonu için" },
-                back: { description: "Tarihi köy çeşmemizin restorasyonu için bağış kampanyası başlatıyoruz. Her bağış köyümüze değer katar.", buttonText: "Bağış Yap" },
-            },
-            {
-                id: "el-sanatlari",
-                front: { title: "El Sanatları Atölyesi", description: "Ekim ayında başlıyor, kayıtlar açık" },
-                back: { description: "Geleneksel el sanatları atölyemizde nakış, kilim dokuma ve seramik yapımını öğrenebilirsiniz. Kontenjan sınırlıdır.", buttonText: "Kayıt Ol" },
-            },
-        ];
+        // Shared data from js/data/announcements.js — edit that file to update both pages
+        const raw = (window.SJ.DUYURULAR_DATA || []);
+        const announcements = raw.map(item => ({
+            id: item.id,
+            front: { title: item.title, description: item.summary },
+            back: { description: item.description, buttonText: item.buttonText, href: item.buttonHref }
+        }));
 
         return (
             <section id="announcements" className="bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6" aria-label="Duyurular">
@@ -992,6 +1012,13 @@ window.SJ.useInView = function useInView(options = {}) {
                             </div>
                         ))}
                     </div>
+                    <SJ.FadeUp delay={0.3}>
+                        <div className="text-center mt-10">
+                            <a href="duyurular.html" className="inline-flex items-center gap-2 text-sm text-[#DEDBC8]/50 hover:text-[#DEDBC8] transition-colors">
+                                Tüm duyuruları gör <SJ.ArrowRight size={14} />
+                            </a>
+                        </div>
+                    </SJ.FadeUp>
                 </div>
             </section>
         );
@@ -1017,9 +1044,9 @@ window.SJ.useInView = function useInView(options = {}) {
         return (
             <div className="flex flex-col items-center justify-center h-full w-full p-6">
                 <p className="text-[13.5px] text-gray-400 text-center">{data.description}</p>
-                <button className="mt-6 bg-[#DEDBC8] text-black px-4 py-2 rounded-full text-[13.5px] font-medium hover:bg-[#E8E5D4] transition-colors active:scale-95">
+                <a href={data.href || 'duyurular.html'} className="mt-6 bg-[#DEDBC8] text-black px-4 py-2 rounded-full text-[13.5px] font-medium hover:bg-[#E8E5D4] transition-colors active:scale-95 inline-block text-center">
                     {data.buttonText}
-                </button>
+                </a>
             </div>
         );
     }
