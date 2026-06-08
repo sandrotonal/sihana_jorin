@@ -1,0 +1,51 @@
+{
+  "about": {
+    "badge": "Geçmişin Mirası, Geleceğin İnancı",
+    "title": "Serhat bölgesinin kalbinde, Ağrı Dağı'nın gölgesinde köklü bir geçmişe ev sahipliği yapan Besler Köyü, bilinen ve kadim adıyla Sîhana Jorin; sarsılmaz bağların, emeğin ve misafirperverliğin merkezidir.",
+    "animatedText": "Sert kışlarına inat sıcak insan hikayeleriyle filizlenen köyümüz, geleneksel hayvancılık kültürüyle toprağına bağlı kalırken; metropollerden Avrupa'ya uzanan güçlü diasporasıyla da bağlarını asla koparmamıştır. Bugün Sîhana Jorin; geçmişin kültürel mirasını koruyan, genç nesillerin enerjisiyle geleceğe umutla bakan ve nerede olursak olalım hepimizi aynı samimiyette buluşturan ortak evimizdir.",
+    "heritageTitle": "Kültürel Mirasımız",
+    "heritageText": "Köyümüzün köklü gelenekleri, yöresel tatları, müziği ve el sanatları nesiller boyu aktarılan bir hazinedir. Bu mirası korumak ve yaşatmak hepimizin görevidir.",
+    "solidarityTitle": "Dayanışma Ruhu",
+    "solidarityText": "Sıhana Jorin Derneği olarak, köy halkının birlik ve beraberliğini güçlendirmek için durmaksızın çalışıyoruz."
+  },
+  "features": {
+    "title": "Köyümüz için güçlü bir gelecek inşa ediyoruz.",
+    "subtitle": "Birlikten doğan güç. Gelenekten beslenen gelecek.",
+    "card1Label": "Köyümüzün güzellikleri",
+    "card2Title": "Kültürel Etkinlikler",
+    "card2Items": [
+      "Yıllık köy festivali ve şenlikleri",
+      "Geleneksel el sanatları atölyeleri",
+      "Yöresel müzik ve halk oyunları",
+      "Kültürel miras belgesel çalışmaları"
+    ],
+    "card3Title": "Dayanışma Ağı",
+    "card3Items": [
+      "Dijital arşiv ve belge tarama sistemi",
+      "Köy hikayeleri ve anı derlemeleri",
+      "İletişim ağı ve yardımlaşma platformu"
+    ],
+    "card4Title": "Eğitim Destekleri",
+    "card4Items": [
+      "Burs programları ve eğitim desteği",
+      "Gençlik kampları ve atölye çalışmaları",
+      "Program takvimi ve etkinlik senkronizasyonu"
+    ]
+  },
+  "contact": {
+    "badge": "Bize Ulaşın",
+    "title": "Birlikte daha güçlüyüz",
+    "description": "Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız.",
+    "address": "Sıhana Jorin Köyü, Merkez Mahallesi, No:1",
+    "phone": "+90 (555) 123 4567",
+    "email": "info@sihanajorin.org"
+  },
+  "footer": {
+    "description": "Sıhana Jorin Köyü Derneği — birlikte daha güçlüyüz.",
+    "email": "omerozbay104@gmail.com",
+    "phone": "+90 (555) 123 4567",
+    "facebook": "#",
+    "instagram": "#",
+    "twitter": "#"
+  }
+}

@@ -1,23 +1,12 @@
 const SJ = window.SJ;
 
 SJ.AnnouncementsSection = function AnnouncementsSection() {
-  const announcements = [
-    {
-      id: "yaz-senligi",
-      front: { title: "Yaz Şenliği 2025", description: "15-17 Ağustos'ta köy meydanında" },
-      back: { description: "Geleneksel yaz şenliğimizde konserler, yarışmalar, yöresel lezzetler ve daha fazlası sizleri bekliyor. Tüm köy halkı davetlidir.", buttonText: "Detaylar" },
-    },
-    {
-      id: "bagis-kampanyasi",
-      front: { title: "Bağış Kampanyası", description: "Köy çeşmesinin restorasyonu için" },
-      back: { description: "Tarihi köy çeşmemizin restorasyonu için bağış kampanyası başlatıyoruz. Her bağış köyümüze değer katar.", buttonText: "Bağış Yap" },
-    },
-    {
-      id: "el-sanatlari",
-      front: { title: "El Sanatları Atölyesi", description: "Ekim ayında başlıyor, kayıtlar açık" },
-      back: { description: "Geleneksel el sanatları atölyemizde nakış, kilim dokuma ve seramik yapımını öğrenebilirsiniz. Kontenjan sınırlıdır.", buttonText: "Kayıt Ol" },
-    },
-  ];
+  const raw = (window.SJ.DUYURULAR_DATA || []);
+  const announcements = raw.slice(0, 4).map(item => ({
+    id: item.id,
+    front: { title: item.title, description: item.summary },
+    back: { description: item.description, buttonText: item.buttonText, href: item.buttonHref }
+  }));
 
   return (
     <section id="announcements" className="bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6" aria-label="Duyurular">
@@ -40,6 +29,13 @@ SJ.AnnouncementsSection = function AnnouncementsSection() {
             </div>
           ))}
         </div>
+        <SJ.FadeUp delay={0.3}>
+          <div className="text-center mt-10">
+            <a href="duyurular.html" className="inline-flex items-center gap-2 text-sm text-[#DEDBC8]/50 hover:text-[#DEDBC8] transition-colors">
+              Tüm duyuruları gör <SJ.ArrowRight size={14} />
+            </a>
+          </div>
+        </SJ.FadeUp>
       </div>
     </section>
   );
@@ -65,9 +61,9 @@ function AnnouncementBack({ data }) {
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-6">
       <p className="text-[13.5px] text-gray-400 text-center">{data.description}</p>
-      <button className="mt-6 bg-[#DEDBC8] text-black px-4 py-2 rounded-full text-[13.5px] font-medium hover:bg-[#E8E5D4] transition-colors active:scale-95">
+      <a href={data.href || 'duyurular.html'} className="mt-6 bg-[#DEDBC8] text-black px-4 py-2 rounded-full text-[13.5px] font-medium hover:bg-[#E8E5D4] transition-colors active:scale-95 inline-block text-center">
         {data.buttonText}
-      </button>
+      </a>
     </div>
   );
 }

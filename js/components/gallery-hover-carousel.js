@@ -9,7 +9,8 @@ SJ.GalleryHoverCarousel = function GalleryHoverCarousel(props) {
   const { useRef, useState, useEffect, useCallback } = React;
 
   const heading = props.heading || "Köyümüzden Kareler";
-  const items = props.items || [
+  const galleryData = (window.SJ && window.SJ.GALLERY_DATA) || [];
+  const hardcodedItems = [
     {
       id: "item-1",
       title: "Köy Meydanı",
@@ -46,6 +47,17 @@ SJ.GalleryHoverCarousel = function GalleryHoverCarousel(props) {
       image: "https://images.unsplash.com/photo-1550070881-a5d71eda5800?w=800&q=80",
     }
   ];
+  const mergedItems = galleryData.length > 0 ? [
+    ...galleryData.map((g, i) => ({
+      id: g.id || 'gallery-' + i,
+      title: g.title || '',
+      summary: g.description || g.category || '',
+      url: g.url || '#',
+      image: g.image || ''
+    })),
+    ...hardcodedItems
+  ] : hardcodedItems;
+  const items = props.items || mergedItems;
 
   const scrollRef = useRef(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);

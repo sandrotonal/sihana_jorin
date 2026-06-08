@@ -4,16 +4,8 @@
    components/*.js, sections/*.js, app.js
    ============================================================ */
 
-// ---- js/config.js ----
+// ---- js/config.js (dev fallback) ----
 window.SJ = window.SJ || {};
-window.SJ.SLIDER_DATA = [
-    { title: "Yaz Şenliği 2024", image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1920&auto=format&fit=crop", category: "Kültürel Etkinlik", year: "2024", description: "Köyün geleneksel yaz festivali" },
-    { title: "El Sanatları Atölyesi", image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1920&auto=format&fit=crop", category: "Atölye Çalışması", year: "2024", description: "Geleneksel el sanatları eğitim programı" },
-    { title: "Doğa Yürüyüşü", image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920&auto=format&fit=crop", category: "Doğa Aktivitesi", year: "2024", description: "Köy çevresinde doğa yürüyüşleri" },
-    { title: "Bağ Bozumu Festivali", image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop", category: "Tarım Projesi", year: "2023", description: "Geleneksel bağ bozumu kutlamaları" },
-    { title: "Kış Toplantısı", image: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1920&auto=format&fit=crop", category: "Topluluk Buluşması", year: "2023", description: "Yıllık kış toplantısı ve değerlendirme" },
-];
-window.SJ.SLIDER_CONFIG = { SCROLL_SPEED: 0.75, LERP_FACTOR: 0.05, BUFFER_SIZE: 5, MAX_VELOCITY: 150, SNAP_DURATION: 500, MINIMAP_HEIGHT: 250 };
 
 // ---- js/hooks.js ----
 window.SJ.useInView = function useInView(options = {}) {
@@ -209,14 +201,43 @@ window.SJ.useInView = function useInView(options = {}) {
     SJ.CookieBanner = function CookieBanner() {
         const [isVisible, setIsVisible] = useState(false);
         const [isClosing, setIsClosing] = useState(false);
+        const [showOptions, setShowOptions] = useState(false);
+        const [prefs, setPrefs] = useState({ necessary: true, analytics: false, marketing: false });
         useEffect(() => {
-            const a = localStorage.getItem('sj-cookies');
-            if (!a) { const t = setTimeout(() => setIsVisible(true), 2500); return () => clearTimeout(t); }
+            const saved = localStorage.getItem('sj-cookies');
+            if (!saved) { const t = setTimeout(() => setIsVisible(true), 2500); return () => clearTimeout(t); }
+            try { const p = JSON.parse(saved); if (p && typeof p === 'object') setPrefs(p); } catch {}
         }, []);
         const close = () => { setIsClosing(true); setTimeout(() => setIsVisible(false), 400); };
-        const accept = () => { localStorage.setItem('sj-cookies', 'true'); close(); };
-        const decline = () => { localStorage.setItem('sj-cookies', 'declined'); close(); };
+        const savePrefs = (p) => { localStorage.setItem('sj-cookies', JSON.stringify(p)); close(); };
+        const acceptAll = () => { const p = { necessary: true, analytics: true, marketing: true }; setPrefs(p); savePrefs(p); };
+        const acceptSelected = () => { savePrefs(prefs); };
+        const decline = () => { const p = { necessary: true, analytics: false, marketing: false }; setPrefs(p); savePrefs(p); };
         if (!isVisible) return null;
+        if (showOptions) {
+            return (
+                <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4" role="dialog" aria-label="Çerez tercihleri">
+                    <div className="bg-[#101010] border border-[#DEDBC8]/20 rounded-2xl p-6 sm:p-8 w-full max-w-md shadow-2xl">
+                        <h3 className="text-[#E1E0CC] text-lg font-medium mb-2">Çerez Tercihleri</h3>
+                        <p className="text-gray-400 text-sm mb-6">Hangi çerez türlerine izin vereceğinizi seçin.</p>
+                        {[
+                            { key: 'necessary', label: 'Gerekli Çerezler', desc: 'Siteyi çalıştırmak için zorunludur.', disabled: true },
+                            { key: 'analytics', label: 'Analitik Çerezler', desc: 'Site kullanımını anonim olarak izlememize yardımcı olur.' },
+                            { key: 'marketing', label: 'Pazarlama Çerezleri', desc: 'Size özel içerik ve reklamlar göstermemizi sağlar.' }
+                        ].map(c => (
+                            <label key={c.key} className={`flex items-start gap-3 py-3 border-b border-[#DEDBC8]/5 ${c.disabled ? 'opacity-50' : 'cursor-pointer'}`}>
+                                <input type="checkbox" checked={prefs[c.key]} disabled={c.disabled} onChange={e => setPrefs({...prefs, [c.key]: e.target.checked})} className="mt-0.5 accent-[#DEDBC8]" />
+                                <div><span className="text-[#E1E0CC] text-sm">{c.label}</span><p className="text-gray-500 text-xs mt-0.5">{c.desc}</p></div>
+                            </label>
+                        ))}
+                        <div className="flex gap-2 mt-6">
+                            <button onClick={acceptSelected} className="flex-1 px-4 py-2.5 bg-[#DEDBC8] text-black text-sm font-medium rounded-full hover:bg-[#E8E5D4] active:scale-95 transition-all">Seçimleri Kaydet</button>
+                            <button onClick={acceptAll} className="flex-1 px-4 py-2.5 border border-[#DEDBC8]/20 text-[#DEDBC8] text-sm font-medium rounded-full hover:border-[#DEDBC8]/40 active:scale-95 transition-all">Tümünü Kabul Et</button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
         return (
             <div className={cn('fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9990] max-w-[calc(100vw-2rem)] sm:max-w-none', isClosing ? 'cookie-exit' : 'cookie-enter')} role="dialog" aria-label="Çerez bildirimi">
                 <div className="bg-[#101010] border border-[#DEDBC8]/20 rounded-2xl p-5 sm:p-6 sm:w-80 shadow-2xl">
@@ -228,10 +249,10 @@ window.SJ.useInView = function useInView(options = {}) {
                         Sitemiz, deneyiminizi iyileştirmek için çerezleri kullanmaktadır.
                     </p>
                     <div className="flex items-center justify-between gap-3">
-                        <a href="#" className="text-[#DEDBC8]/60 underline text-sm hover:text-[#DEDBC8] transition-colors shrink-0">Seçenekler</a>
+                        <button onClick={() => setShowOptions(true)} className="text-[#DEDBC8]/60 underline text-sm hover:text-[#DEDBC8] transition-colors shrink-0 bg-transparent border-none cursor-pointer">Seçenekler</button>
                         <div className="flex gap-2">
                             <button onClick={decline} className="px-4 py-2 border border-[#DEDBC8]/20 rounded-full text-gray-400 text-sm hover:border-[#DEDBC8]/40 hover:text-[#DEDBC8] active:scale-95 transition-all">Reddet</button>
-                            <button onClick={accept} className="px-4 py-2 bg-[#DEDBC8] rounded-full text-black text-sm font-medium active:scale-95 transition-all hover:bg-[#E8E5D4]">Kabul Et</button>
+                            <button onClick={acceptAll} className="px-4 py-2 bg-[#DEDBC8] rounded-full text-black text-sm font-medium active:scale-95 transition-all hover:bg-[#E8E5D4]">Kabul Et</button>
                         </div>
                     </div>
                 </div>
@@ -687,7 +708,6 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <a href="hakkimizda.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Hikayemiz</a>
                                 <a href="galeri.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Galeri</a>
                                 <a href="duyurular.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Duyurular</a>
-                                <a href="calismalar.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Çalışmalar</a>
                                 <a href="iletisim.html" className="nav-link text-[10px] sm:text-xs md:text-sm">İletişim</a>
                             </div>
                         </nav>
@@ -756,26 +776,27 @@ window.SJ.useInView = function useInView(options = {}) {
     const SJ = window.SJ;
 
     SJ.AboutSection = function AboutSection() {
+        const a = (SJ.SITE_DATA && SJ.SITE_DATA.about) || {};
         return (
             <section id="about" className="bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6" aria-label="Hakkımızda">
                 <div className="bg-[#101010] rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-12 w-full max-w-[95%] xl:max-w-7xl mx-auto text-center">
-                    <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-8 block">Geçmişin Mirası, Geleceğin İnancı</span></SJ.FadeUp>
+                    <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-8 block">{a.badge || "Geçmişin Mirası, Geleceğin İnancı"}</span></SJ.FadeUp>
                     <h2 data-toc data-toc-title="Hikayemiz" data-toc-depth="1" id="about-heading" className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl max-w-3xl mx-auto leading-[0.95] sm:leading-[0.9]" style={{ color: '#E1E0CC' }}>
                         <SJ.WordsPullUpMultiStyle segments={[
-                            { text: 'Serhat bölgesinin kalbinde, Ağrı Dağı\'nın gölgesinde köklü bir geçmişe ev sahipliği yapan Besler Köyü,', className: '' },
+                            { text: a.title || "Serhat bölgesinin kalbinde, Ağrı Dağı'nın gölgesinde köklü bir geçmişe ev sahipliği yapan Besler Köyü,", className: '' },
                             { text: 'bilinen ve kadim adıyla Sîhana Jorin;', className: 'italic font-serif' },
                             { text: 'sarsılmaz bağların, emeğin ve misafirperverliğin merkezidir.', className: '' }
                         ]} />
                     </h2>
-                    <SJ.AnimatedText text="Sert kışlarına inat sıcak insan hikayeleriyle filizlenen köyümüz, geleneksel hayvancılık kültürüyle toprağına bağlı kalırken; metropollerden Avrupa'ya uzanan güçlü diasporasıyla da bağlarını asla koparmamıştır. Bugün Sîhana Jorin; geçmişin kültürel mirasını koruyan, genç nesillerin enerjisiyle geleceğe umutla bakan ve nerede olursak olalım hepimizi aynı samimiyette buluşturan ortak evimizdir."
+                    <SJ.AnimatedText text={a.animatedText || "Sert kışlarına inat sıcak insan hikayeleriyle filizlenen köyümüz, geleneksel hayvancılık kültürüyle toprağına bağlı kalırken; metropollerden Avrupa'ya uzanan güçlü diasporasıyla da bağlarını asla koparmamıştır. Bugün Sîhana Jorin; geçmişin kültürel mirasını koruyan, genç nesillerin enerjisiyle geleceğe umutla bakan ve nerede olursak olalım hepimizi aynı samimiyette buluşturan ortak evimizdir."}
                         className="text-[#DEDBC8] text-xs sm:text-sm md:text-base max-w-2xl mx-auto mt-10 md:mt-14 leading-relaxed" />
                     <div data-toc data-toc-title="Kültürel Mirasımız" data-toc-depth="2" id="about-heritage" className="mt-16 md:mt-20 max-w-2xl mx-auto text-left">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium mb-4" style={{ color: '#E1E0CC' }}>Kültürel Mirasımız</h3>
-                        <p className="text-gray-400 text-sm sm:text-base leading-relaxed">Köyümüzün köklü gelenekleri, yöresel tatları, müziği ve el sanatları nesiller boyu aktarılan bir hazinedir. Bu mirası korumak ve yaşatmak hepimizin görevidir.</p>
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium mb-4" style={{ color: '#E1E0CC' }}>{a.heritageTitle || "Kültürel Mirasımız"}</h3>
+                        <p className="text-gray-400 text-sm sm:text-base leading-relaxed">{a.heritageText || "Köyümüzün köklü gelenekleri, yöresel tatları, müziği ve el sanatları nesiller boyu aktarılan bir hazinedir."}</p>
                     </div>
                     <div data-toc data-toc-title="Dayanışma Ruhu" data-toc-depth="2" id="about-solidarity" className="mt-12 max-w-2xl mx-auto text-left">
-                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium mb-4" style={{ color: '#E1E0CC' }}>Dayanışma Ruhu</h3>
-                        <p className="text-gray-400 text-sm sm:text-base leading-relaxed">Sıhana Jorin Derneği olarak, köy halkının birlik ve beraberliğini güçlendirmek için durmaksızın çalışıyoruz. Acı gününde de, sevinçli gününde de yan yana yürüyoruz.</p>
+                        <h3 className="text-xl sm:text-2xl md:text-3xl font-medium mb-4" style={{ color: '#E1E0CC' }}>{a.solidarityTitle || "Dayanışma Ruhu"}</h3>
+                        <p className="text-gray-400 text-sm sm:text-base leading-relaxed">{a.solidarityText || "Sıhana Jorin Derneği olarak, köy halkının birlik ve beraberliğini güçlendirmek için durmaksızın çalışıyoruz."}</p>
                     </div>
                 </div>
             </section>
@@ -806,16 +827,17 @@ window.SJ.useInView = function useInView(options = {}) {
     const SJ = window.SJ;
 
     SJ.FeaturesSection = function FeaturesSection() {
+        const f = (SJ.SITE_DATA && SJ.SITE_DATA.features) || {};
         return (
             <section id="features" className="min-h-screen bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6 relative" aria-label="Çalışmalarımız">
                 <div className="bg-noise opacity-[0.15] absolute inset-0 z-0" aria-hidden="true"></div>
                 <div className="relative z-10 max-w-7xl mx-auto">
                     <div className="text-center mb-12 md:mb-16">
                         <h2 data-toc data-toc-title="Çalışmalarımız" data-toc-depth="1" id="features-heading" className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal" style={{ color: '#E1E0CC' }}>
-                            <SJ.WordsPullUpMultiStyle segments={[{ text: 'Köyümüz için güçlü bir gelecek inşa ediyoruz.', className: '' }]} />
+                            <SJ.WordsPullUpMultiStyle segments={[{ text: f.title || "Köyümüz için güçlü bir gelecek inşa ediyoruz.", className: '' }]} />
                         </h2>
                         <p className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-normal text-gray-500 mt-3">
-                            <SJ.WordsPullUpMultiStyle segments={[{ text: 'Birlikten doğan güç. Gelenekten beslenen gelecek.', className: '' }]} />
+                            <SJ.WordsPullUpMultiStyle segments={[{ text: f.subtitle || "Birlikten doğan güç. Gelenekten beslenen gelecek.", className: '' }]} />
                         </p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-2 md:gap-1">
@@ -824,15 +846,15 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_133058_0504132a-0cf3-4450-a370-8ea3b05c95d4.mp4" type="video/mp4" />
                             </video>
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" aria-hidden="true"></div>
-                            <div className="absolute bottom-0 left-0 right-0 p-5"><p className="text-sm sm:text-base font-medium" style={{ color: '#E1E0CC' }}>Köyümüzün güzellikleri</p></div>
+                            <div className="absolute bottom-0 left-0 right-0 p-5"><p className="text-sm sm:text-base font-medium" style={{ color: '#E1E0CC' }}>{f.card1Label || "Köyümüzün güzellikleri"}</p></div>
                         </SJ.CardEntrance>
                         <SJ.CardEntrance delay={0.15} className="feature-card bg-[#212121] rounded-2xl p-5 sm:p-6 lg:h-[480px] flex flex-col">
                             <div data-toc data-toc-title="Kültürel Etkinlikler" data-toc-depth="2" id="feat-culture">
                                 <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20260405_171918_4a5edc79-d78f-4637-ac8b-53c43c220606.png&w=1280&q=85" alt="Kültürel etkinlikler ikonu" className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover mb-4" />
-                                <div className="mb-4"><span className="text-gray-500 text-xs">(01)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>Kültürel Etkinlikler</h3></div>
+                                <div className="mb-4"><span className="text-gray-500 text-xs">(01)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>{f.card2Title || "Kültürel Etkinlikler"}</h3></div>
                             </div>
                             <div className="flex-1 space-y-3">
-                                {['Yıllık köy festivali ve şenlikleri', 'Geleneksel el sanatları atölyeleri', 'Yöresel müzik ve halk oyunları', 'Kültürel miras belgesel çalışmaları'].map((item, i) => (
+                                {(f.card2Items || ['Yıllık köy festivali ve şenlikleri', 'Geleneksel el sanatları atölyeleri', 'Yöresel müzik ve halk oyunları', 'Kültürel miras belgesel çalışmaları']).map((item, i) => (
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
@@ -841,10 +863,10 @@ window.SJ.useInView = function useInView(options = {}) {
                         <SJ.CardEntrance delay={0.3} className="feature-card bg-[#212121] rounded-2xl p-5 sm:p-6 lg:h-[480px] flex flex-col">
                             <div data-toc data-toc-title="Dayanışma Ağı" data-toc-depth="2" id="feat-network">
                                 <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20250405_171741_ed9845ab-f5b2-4018-8ce7-07cc01823522.png&w=1280&q=85" alt="Dayanışma ağı ikonu" className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover mb-4" />
-                                <div className="mb-4"><span className="text-gray-500 text-xs">(02)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>Dayanışma Ağı</h3></div>
+                                <div className="mb-4"><span className="text-gray-500 text-xs">(02)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>{f.card3Title || "Dayanışma Ağı"}</h3></div>
                             </div>
                             <div className="flex-1 space-y-3">
-                                {['Dijital arşiv ve belge tarama sistemi', 'Köy hikayeleri ve anı derlemeleri', 'İletişim ağı ve yardımlaşma platformu'].map((item, i) => (
+                                {(f.card3Items || ['Dijital arşiv ve belge tarama sistemi', 'Köy hikayeleri ve anı derlemeleri', 'İletişim ağı ve yardımlaşma platformu']).map((item, i) => (
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
@@ -853,10 +875,10 @@ window.SJ.useInView = function useInView(options = {}) {
                         <SJ.CardEntrance delay={0.45} className="feature-card bg-[#212121] rounded-2xl p-5 sm:p-6 lg:h-[480px] flex flex-col">
                             <div data-toc data-toc-title="Eğitim Destekleri" data-toc-depth="2" id="feat-education">
                                 <img src="https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20250405_171809_f56666dc-c099-4778-ad82-9ad4f209567b.png&w=1280&q=85" alt="Eğitim destekleri ikonu" className="w-10 h-10 sm:w-12 sm:h-12 rounded object-cover mb-4" />
-                                <div className="mb-4"><span className="text-gray-500 text-xs">(03)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>Eğitim Destekleri</h3></div>
+                                <div className="mb-4"><span className="text-gray-500 text-xs">(03)</span><h3 className="text-lg sm:text-xl font-medium mt-1" style={{ color: '#E1E0CC' }}>{f.card4Title || "Eğitim Destekleri"}</h3></div>
                             </div>
                             <div className="flex-1 space-y-3">
-                                {['Burs programları ve eğitim desteği', 'Gençlik kampları ve atölye çalışmaları', 'Program takvimi ve etkinlik senkronizasyonu'].map((item, i) => (
+                                {(f.card4Items || ['Burs programları ve eğitim desteği', 'Gençlik kampları ve atölye çalışmaları', 'Program takvimi ve etkinlik senkronizasyonu']).map((item, i) => (
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
@@ -874,24 +896,25 @@ window.SJ.useInView = function useInView(options = {}) {
     const SJ = window.SJ;
 
     SJ.ContactSection = function ContactSection() {
+        const c = (SJ.SITE_DATA && SJ.SITE_DATA.contact) || {};
         return (
             <section id="contact" className="bg-black py-20 md:py-28 lg:py-36 px-4 md:px-6" aria-label="İletişim">
                 <div data-toc data-toc-title="İletişim" data-toc-depth="1" id="contact-heading" className="bg-[#101010] rounded-2xl md:rounded-[2rem] py-16 md:py-24 px-6 md:px-12 w-full max-w-[95%] xl:max-w-7xl mx-auto">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
                         <div>
-                            <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-6 block">Bize Ulaşın</span></SJ.FadeUp>
-                            <SJ.FadeUp delay={0.1}><h2 className="text-3xl sm:text-4xl md:text-5xl font-medium leading-tight mb-8" style={{ color: '#E1E0CC' }}>Birlikte daha güçlüyüz</h2></SJ.FadeUp>
-                            <SJ.FadeUp delay={0.2}><p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8">Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız.</p></SJ.FadeUp>
+                            <SJ.FadeUp delay={0}><span className="text-primary text-[10px] sm:text-xs tracking-widest uppercase mb-6 block">{c.badge || "Bize Ulaşın"}</span></SJ.FadeUp>
+                            <SJ.FadeUp delay={0.1}><h2 className="text-3xl sm:text-4xl md:text-5xl font-medium leading-tight mb-8" style={{ color: '#E1E0CC' }}>{c.title || "Birlikte daha güçlüyüz"}</h2></SJ.FadeUp>
+                            <SJ.FadeUp delay={0.2}><p className="text-gray-400 text-sm sm:text-base leading-relaxed mb-8">{c.description || "Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız."}</p></SJ.FadeUp>
                             <SJ.FadeUp delay={0.3}>
                                 <div className="space-y-4">
                                     <div className="flex items-center gap-3 text-gray-400 text-sm">
-                                        <SJ.MapPin size={18} className="text-[#DEDBC8] shrink-0" /><span>Sıhana Jorin Köyü, Merkez Mahallesi, No:1</span>
+                                        <SJ.MapPin size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.address || "Sıhana Jorin Köyü, Merkez Mahallesi, No:1"}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-gray-400 text-sm">
-                                        <SJ.Phone size={18} className="text-[#DEDBC8] shrink-0" /><span>+90 (555) 123 4567</span>
+                                        <SJ.Phone size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.phone || "+90 (555) 123 4567"}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-gray-400 text-sm">
-                                        <SJ.Mail size={18} className="text-[#DEDBC8] shrink-0" /><span>info@sihanajorin.org</span>
+                                        <SJ.Mail size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.email || "info@sihanajorin.org"}</span>
                                     </div>
                                 </div>
                             </SJ.FadeUp>
@@ -927,10 +950,12 @@ window.SJ.useInView = function useInView(options = {}) {
     const SJ = window.SJ;
 
     SJ.Footer = function Footer() {
-        const links = [
-            { group: 'Keşfet', items: [{ label: 'Hikayemiz', href: 'hakkimizda.html' }, { label: 'Galeri', href: 'galeri.html' }, { label: 'Duyurular', href: 'duyurular.html' }] },
-            { group: 'Destek', items: [{ label: 'Bağış Yap', href: 'bagis.html' }, { label: 'Gönüllü Ol', href: 'gonullu.html' }, { label: 'İletişim', href: 'iletisim.html' }] },
-            { group: 'Sosyal Medya', items: [{ label: 'Instagram', href: 'https://instagram.com' }, { label: 'Facebook', href: 'https://facebook.com' }, { label: 'YouTube', href: 'https://youtube.com' }, { label: 'X', href: 'https://x.com' }] }
+        const f = (SJ.SITE_DATA && SJ.SITE_DATA.footer) || {};
+        const socialLinks = [
+            { label:'Instagram', href: f.instagram || 'https://instagram.com', icon:'Instagram' },
+            { label:'Facebook', href: f.facebook || 'https://facebook.com', icon:'Facebook' },
+            { label:'YouTube', href: 'https://youtube.com', icon:'YouTube' },
+            { label:'X', href: f.twitter || 'https://x.com', icon:'XIcon_social' }
         ];
         return (
             <footer className="bg-[#050505] border-t border-[#DEDBC8]/5 pt-16 pb-8 px-4 md:px-6">
@@ -938,29 +963,42 @@ window.SJ.useInView = function useInView(options = {}) {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                         <div className="col-span-2 md:col-span-1">
                             <h3 className="text-2xl font-medium mb-3" style={{ color: '#E1E0CC' }}>Sıhana Jorin</h3>
-                            <p className="text-gray-500 text-sm leading-relaxed mb-4">Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız.</p>
+                            <p className="text-gray-500 text-sm leading-relaxed mb-4">{f.description || "Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız."}</p>
                             <div className="flex items-center gap-1 text-gray-500 text-xs">
                                 <SJ.Heart size={12} className="text-[#DEDBC8]" /> ile yapıldı
                             </div>
                         </div>
-                        {links.map(group => (
-                            <div key={group.group}>
-                                <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">{group.group}</h4>
-                                <ul className="space-y-2.5">
-                                    {group.items.map(item => (
-                                        <li key={item.label}><a href={item.href} className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">{item.label}</a></li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ))}
+                        <div>
+                            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">İletişim</h4>
+                            <ul className="space-y-2.5">
+                                <li className="text-gray-500 text-sm">{f.email || "info@sihanajorin.org"}</li>
+                                <li className="text-gray-500 text-sm">{f.phone || "+90 (555) 123 4567"}</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">Keşfet</h4>
+                            <ul className="space-y-2.5">
+                                <li><a href="hakkimizda.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Hikayemiz</a></li>
+                                <li><a href="galeri.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Galeri</a></li>
+                                <li><a href="duyurular.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Duyurular</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">Destek</h4>
+                            <ul className="space-y-2.5">
+                                <li><a href="bagis.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Bağış Yap</a></li>
+                                <li><a href="gonullu.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Gönüllü Ol</a></li>
+                                <li><a href="iletisim.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">İletişim</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div className="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-gray-600 text-xs">&copy; {new Date().getFullYear()} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
                         <div className="flex items-center gap-3">
-                            <a href="https://instagram.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Instagram"><SJ.Instagram size={16} /></a>
-                            <a href="https://facebook.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="Facebook"><SJ.Facebook size={16} /></a>
-                            <a href="https://youtube.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="YouTube"><SJ.YouTube size={16} /></a>
-                            <a href="https://x.com" target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label="X"><SJ.XIcon_social size={14} /></a>
+                            {socialLinks.map(s => {
+                                const Icon = SJ[s.icon];
+                                return Icon ? <a key={s.label} href={s.href} target="_blank" rel="noopener" className="hover:opacity-70 transition-opacity" style={{display:'flex', alignItems:'center', justifyContent:'center', width:'36px', height:'36px', borderRadius:'50%', background:'rgba(222,219,200,0.08)', color:'rgba(222,219,200,0.5)'}} aria-label={s.label}><Icon size={16} /></a> : null;
+                            })}
                         </div>
                     </div>
                 </div>
@@ -1015,7 +1053,7 @@ window.SJ.useInView = function useInView(options = {}) {
     SJ.AnnouncementsSection = function AnnouncementsSection() {
         // Shared data from js/data/announcements.js — edit that file to update both pages
         const raw = (window.SJ.DUYURULAR_DATA || []);
-        const announcements = raw.map(item => ({
+        const announcements = raw.slice(0, 4).map(item => ({
             id: item.id,
             front: { title: item.title, description: item.summary },
             back: { description: item.description, buttonText: item.buttonText, href: item.buttonHref }
@@ -1093,7 +1131,6 @@ window.SJ.useInView = function useInView(options = {}) {
                 <SJ.AboutSection />
                 <SJ.GallerySection />
                 <SJ.AnnouncementsSection />
-                <SJ.FeaturesSection />
                 <SJ.ContactSection />
                 <SJ.Footer />
                 <SJ.CookieBanner />
