@@ -687,6 +687,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <a href="hakkimizda.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Hikayemiz</a>
                                 <a href="galeri.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Galeri</a>
                                 <a href="duyurular.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Duyurular</a>
+                                <a href="calismalar.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Çalışmalar</a>
                                 <a href="iletisim.html" className="nav-link text-[10px] sm:text-xs md:text-sm">İletişim</a>
                             </div>
                         </nav>
@@ -835,7 +836,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
-                            <a href="#" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
+                            <a href="duyurular.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
                         </SJ.CardEntrance>
                         <SJ.CardEntrance delay={0.3} className="feature-card bg-[#212121] rounded-2xl p-5 sm:p-6 lg:h-[480px] flex flex-col">
                             <div data-toc data-toc-title="Dayanışma Ağı" data-toc-depth="2" id="feat-network">
@@ -847,7 +848,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
-                            <a href="#" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
+                            <a href="iletisim.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
                         </SJ.CardEntrance>
                         <SJ.CardEntrance delay={0.45} className="feature-card bg-[#212121] rounded-2xl p-5 sm:p-6 lg:h-[480px] flex flex-col">
                             <div data-toc data-toc-title="Eğitim Destekleri" data-toc-depth="2" id="feat-education">
@@ -859,7 +860,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
-                            <a href="#" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
+                            <a href="bagis.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
                         </SJ.CardEntrance>
                     </div>
                 </div>
