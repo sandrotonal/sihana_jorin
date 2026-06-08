@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri — Sıhana Jorin</title>
+    <title>Çalışmalarımız — Sıhana Jorin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
@@ -13,13 +13,15 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 </head>
 <body class="flex flex-col min-h-screen">
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
     <script src="js/hooks.js"></script>
     <script src="js/components/page-header.js"></script>
-    <script src="js/components/gallery-hover-carousel.js"></script>
+    <script src="js/components/executive-impact-carousel.js"></script>
     <script src="js/animations-init.js"></script>
 
     <main class="flex-grow pt-12">
@@ -28,20 +30,21 @@
             (function() {
                 const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
                 root.render(React.createElement(SJ.PageHeader, {
-                    title: 'Galeri',
-                    description: 'Köyümüzün güzelliklerini, etkinliklerimizi ve birlikte geçirdiğimiz anları keşfedin.'
+                    title: 'Çalışmalarımız',
+                    description: 'Köyümüzün kalkınması, kültürel mirasımızın yaşatılması ve gelecek nesillere aktarılması için yürüttüğümüz projeler.',
+                    buttons: [
+                        { label: 'Proje Öner', href: 'iletisim.html', variant: 'primary' },
+                        { label: 'Gönüllü Ol', href: 'gonullu.html', variant: 'ghost' }
+                    ]
                 }));
             })();
         </script>
 
-        <!-- GalleryHoverCarousel Component -->
-        <div id="gallery-root" data-reveal></div>
+        <div id="eic-root" data-reveal></div>
         <script type="text/babel">
             (function() {
-                const root = ReactDOM.createRoot(document.getElementById('gallery-root'));
-                root.render(React.createElement(SJ.GalleryHoverCarousel, {
-                    heading: 'Köyümüzden Kareler'
-                }));
+                const root = ReactDOM.createRoot(document.getElementById('eic-root'));
+                root.render(React.createElement(SJ.ExecutiveImpactCarousel));
             })();
         </script>
     </main>
