@@ -1,1 +1,16 @@
-[]
+[
+  {
+    "title": "Test",
+    "image": "/uploads/gallery/1781040456558-bbny.jpeg",
+    "description": "",
+    "category": "",
+    "year": "2026"
+  },
+  {
+    "title": "Logo",
+    "image": "/uploads/gallery/1781040422530-93m7.png",
+    "description": "",
+    "category": "",
+    "year": "2026"
+  }
+]
