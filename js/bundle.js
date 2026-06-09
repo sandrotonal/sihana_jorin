@@ -714,14 +714,14 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <a href="iletisim.html" className="nav-link text-[10px] sm:text-xs md:text-sm">İletişim</a>
                             </div>
                         </nav>
-                        <div className="fixed top-0 left-0 right-0 z-[180] flex items-center justify-between px-4 py-2 md:hidden bg-black/80 backdrop-blur-sm">
-                            <a href="index.html" className="flex-shrink-0">
-                                <img src="/logo.png" alt="Sıhana Jorin" className="h-8 w-auto" />
+                        <div className="fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 h-14 md:hidden">
+                            <a href="index.html" className="flex-shrink-0 leading-none">
+                                <img src="/logo.png" alt="Sıhana Jorin" className="h-7 w-auto" />
                             </a>
+                            <button onClick={() => setMenuOpen(true)} className="flex items-center justify-center w-9 h-9 rounded-full bg-black cursor-pointer" aria-label="Menüyü aç">
+                                <SJ.MenuIcon size={18} className="text-[#E1E0CC]" />
+                            </button>
                         </div>
-                        <button onClick={() => setMenuOpen(true)} className="fixed top-3 right-4 z-[190] bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden" aria-label="Menüyü aç">
-                            <SJ.MenuIcon size={20} className="text-[#E1E0CC]" />
-                        </button>
                         <div className="absolute bottom-0 left-0 right-0 z-30 p-6 md:p-10 lg:p-14">
                             <div className="grid grid-cols-12 gap-4 items-end">
                                 <div className="col-span-12 lg:col-span-8">

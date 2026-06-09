@@ -122,7 +122,7 @@
                     <p class="sj-body" style="max-width:480px; margin:0.875rem auto 0;" id="hakkimizda-values-text"></p>
                     <script>(function(){var p=(SJ.SITE_DATA&&SJ.SITE_DATA.pages&&SJ.SITE_DATA.pages.hakkimizda)||{};document.getElementById('hakkimizda-values-title').textContent=p.valuesTitle||'Değerlerimiz';document.getElementById('hakkimizda-values-text').textContent=p.valuesText||'';})();</script>
                 </div>
-                <div id="flipping-cards-root" style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem;">
+                <div id="flipping-cards-root" class="overflow-x-auto md:overflow-visible scrollbar-none px-4 md:px-0 pb-2 snap-x snap-mandatory" style="-webkit-overflow-scrolling:touch; scrollbar-width:none;">
                 </div>
                 <script type="text/babel">
                     (function () {
@@ -147,22 +147,23 @@
                             }
                         ];
 
-                        root.render(h('div', { style: { display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1.5rem' } },
+                        root.render(h('div', { className: 'flex flex-nowrap md:flex-wrap gap-6 md:justify-center' },
                             values.map(function (v) {
-                                return h(SJ.FlippingCard, {
-                                    key: v.id,
-                                    width: 270,
-                                    height: 290,
-                                    frontContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', flex: 1 } },
-                                        h('span', { style: { fontFamily: 'inherit', fontSize: '0.625rem', color: 'rgba(222,219,200,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' } }, v.num + ' / İLKE'),
-                                        h('h3', { style: { fontSize: '1.25rem', fontWeight: 500, color: '#E1E0CC', marginBottom: '0.75rem' } }, v.title),
-                                        h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.45)', lineHeight: 1.65 } }, v.summary)
-                                    ),
-                                    backContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left', flex: 1 } },
-                                        h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.55)', lineHeight: 1.7, marginBottom: '1.5rem' } }, v.detail),
-                                        h('a', { href: 'iletisim.html', style: { fontSize: '0.75rem', color: '#DEDBC8', textDecoration: 'none', borderBottom: '1px solid rgba(222,219,200,0.3)', paddingBottom: '2px' } }, 'Bize Ulaşın')
-                                    )
-                                });
+                                return h('div', { key: v.id, className: 'snap-start shrink-0' },
+                                    h(SJ.FlippingCard, {
+                                        width: 270,
+                                        height: 290,
+                                        frontContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', flex: 1 } },
+                                            h('span', { style: { fontFamily: 'inherit', fontSize: '0.625rem', color: 'rgba(222,219,200,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' } }, v.num + ' / İLKE'),
+                                            h('h3', { style: { fontSize: '1.25rem', fontWeight: 500, color: '#E1E0CC', marginBottom: '0.75rem' } }, v.title),
+                                            h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.45)', lineHeight: 1.65 } }, v.summary)
+                                        ),
+                                        backContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left', flex: 1 } },
+                                            h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.55)', lineHeight: 1.7, marginBottom: '1.5rem' } }, v.detail),
+                                            h('a', { href: 'iletisim.html', style: { fontSize: '0.75rem', color: '#DEDBC8', textDecoration: 'none', borderBottom: '1px solid rgba(222,219,200,0.3)', paddingBottom: '2px' } }, 'Bize Ulaşın')
+                                        )
+                                    })
+                                );
                             })
                         ));
                     })();

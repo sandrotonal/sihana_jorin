@@ -45,26 +45,20 @@
             `;
             nav.appendChild(desktopNav);
 
-            /* Mobile header — logo left, hamburger right */
+            /* Mobile header — logo left + hamburger right, no black bar */
             const mobileHeader = document.createElement('div');
-            mobileHeader.className = 'fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 py-2 md:hidden bg-black/80 backdrop-blur-sm';
+            mobileHeader.className = 'fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 h-14 md:hidden';
             mobileHeader.innerHTML = `
-                <a href="index.html" class="flex-shrink-0">
-                    <img src="/logo.png" alt="Sıhana Jorin" class="h-8 w-auto" />
+                <a href="index.html" class="flex-shrink-0 leading-none">
+                    <img src="/logo.png" alt="Sıhana Jorin" class="h-7 w-auto" />
                 </a>
+                <button id="site-menu-btn" aria-label="Menü" class="flex items-center justify-center w-9 h-9 rounded-full bg-black cursor-pointer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1E0CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
+                    </svg>
+                </button>
             `;
             nav.appendChild(mobileHeader);
-
-            const menuBtn = document.createElement('button');
-            menuBtn.className = 'fixed top-3 right-4 z-[190] bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden cursor-pointer';
-            menuBtn.id = 'site-menu-btn';
-            menuBtn.setAttribute('aria-label', 'Menü');
-            menuBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E1E0CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/>
-                </svg>
-            `;
-            nav.appendChild(menuBtn);
 
             /* Fullscreen drawer (matches hero SJ.HamburgerMenu) */
             const backdrop = document.createElement('div');
@@ -121,7 +115,7 @@
                 document.body.style.overflow = '';
             }
 
-            menuBtn.addEventListener('click', openDrawer);
+            document.getElementById('site-menu-btn').addEventListener('click', openDrawer);
             closeBtn.addEventListener('click', closeDrawer);
             backdrop.addEventListener('click', closeDrawer);
             drawer.querySelectorAll('nav a').forEach(function (a) {
