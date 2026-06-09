@@ -1,6 +1,7 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 const multer = require('multer');
 
 const app = express();
@@ -344,6 +345,25 @@ app.get('/js/data/site.js', (req, res) => {
 /* ─── API: Site Data ─── */
 app.get('/api/site', (req, res) => {
     res.json(readJSON('site.json'));
+});
+
+/* ─── API: Git Sync (sadece commit, push yok) ─── */
+app.post('/api/git-sync', (req, res) => {
+    const run = (cmd) => execSync(cmd, { cwd: __dirname, stdio: 'pipe', encoding: 'utf-8' });
+    try {
+        run('git add data/ uploads/');
+        try {
+            run('git diff --cached --quiet');
+            return res.json({ ok: true, warning: 'Kaydedilecek yeni veri yok' });
+        } catch {
+            // staged changes var, commit'e devam
+        }
+        run('git commit -m "admin: veri senkronizasyonu"');
+        res.json({ ok: true });
+    } catch (err) {
+        const msg = (err.stderr || err.message || '').trim();
+        res.status(500).json({ error: msg || 'Git islemi basarisiz' });
+    }
 });
 
 app.put('/api/site', (req, res) => {

@@ -92,7 +92,8 @@
             fd.append('file', file);
             return this.request('POST', '/api/upload', fd);
         },
-        getUploads() { return this.request('GET', '/api/uploads'); }
+        getUploads() { return this.request('GET', '/api/uploads'); },
+        gitSync() { return this.request('POST', '/api/git-sync'); }
     };
 
     /* ─── Password ─── */
@@ -300,6 +301,7 @@
                         <div class="subtitle" id="stats-line">Yukleniyor...</div>
                     </div>
                     <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" onclick="SJ_ADMIN.gitSync()" title="Degisiklikleri Git e kaydet" id="git-sync-btn">Git e Kaydet</button>
                         <button class="btn btn-outline btn-sm" onclick="SJ_ADMIN.refresh()" title="Verileri yenile">Yenile</button>
                         <button class="btn btn-outline btn-sm" onclick="SJ_ADMIN.logout()">Cikis</button>
                     </div>
@@ -974,10 +976,30 @@
         toast('Veriler yenilendi');
     }
 
+    async function gitSync() {
+        const btn = $('#git-sync-btn');
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = 'Kaydediliyor...';
+        try {
+            const result = await API.gitSync();
+            if (result.warning) {
+                toast(result.warning, 'warning');
+            } else {
+                toast('Veriler Git e kaydedildi ve pushlandi');
+            }
+        } catch (err) {
+            toast('Git senkron hatasi: ' + err.message, 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    }
+
     window.SJ_ADMIN = {
         addItem, editItem, deleteItem, moveItem,
         closeModal, saveSiteContent, openGalleryUpload, logout,
-        refresh, deleteSelectedGallery
+        refresh, gitSync, deleteSelectedGallery
     };
 
     (async function init() {
