@@ -10,54 +10,15 @@ SJ.GalleryHoverCarousel = function GalleryHoverCarousel(props) {
 
   const heading = props.heading || "Köyümüzden Kareler";
   const galleryData = (window.SJ && window.SJ.GALLERY_DATA) || [];
-  const hardcodedItems = [
-    {
-      id: "item-1",
-      title: "Köy Meydanı",
-      summary: "Geleneksel etkinliklerimizden ve köy halkının buluşmalarından unutulmaz anlar.",
-      url: "#",
-      image: "https://images.unsplash.com/photo-1551250928-243dc937c49d?w=800&q=80",
-    },
-    {
-      id: "item-2",
-      title: "Doğa Yürüyüşü",
-      summary: "Köyümüzün eşsiz coğrafyasında gerçekleştirdiğimiz doğa keşifleri ve yürüyüş yolları.",
-      url: "#",
-      image: "https://images.unsplash.com/photo-1551250928-e4a05afaed1e?w=800&q=80",
-    },
-    {
-      id: "item-3",
-      title: "Yemek Festivali",
-      summary: "Köyümüzün yöresel lezzetlerinin ve geleneksel mutfağının yaşatıldığı festivallerimiz.",
-      url: "#",
-      image: "https://images.unsplash.com/photo-1536735561749-fc87494598cb?w=800&q=80",
-    },
-    {
-      id: "item-4",
-      title: "Köy Kültür Evi",
-      summary: "Köyümüzün tarihi binasının restore edilerek bir kültür evine dönüştürülmesi süreci.",
-      url: "#",
-      image: "https://images.unsplash.com/photo-1548324215-9133768e4094?w=800&q=80",
-    },
-    {
-      id: "item-5",
-      title: "Hasat Zamanı",
-      summary: "Bereketli topraklarımızda imece usulü gerçekleştirdiğimiz hasat faaliyetleri.",
-      url: "#",
-      image: "https://images.unsplash.com/photo-1550070881-a5d71eda5800?w=800&q=80",
-    }
-  ];
-  const mergedItems = galleryData.length > 0 ? [
-    ...galleryData.map((g, i) => ({
+  const items = props.items || (galleryData.length > 0 ? galleryData.map(function(g, i) {
+    return {
       id: g.id || 'gallery-' + i,
       title: g.title || '',
       summary: g.description || g.category || '',
       url: g.url || '#',
       image: g.image || ''
-    })),
-    ...hardcodedItems
-  ] : hardcodedItems;
-  const items = props.items || mergedItems;
+    };
+  }) : []);
 
   const scrollRef = useRef(null);
   const [canScrollPrev, setCanScrollPrev] = useState(false);

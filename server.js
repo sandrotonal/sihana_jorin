@@ -300,6 +300,21 @@ app.post('/api/upload', upload.single('file'), (req, res) => {
     res.json({ url: '/uploads/' + sub + '/' + req.file.filename, filename: req.file.filename });
 });
 
+app.get('/api/uploads', (req, res) => {
+    const list = [];
+    const walk = (dir, prefix) => {
+        let items;
+        try { items = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
+        for (const item of items) {
+            if (item.isDirectory()) walk(path.join(dir, item.name), prefix + item.name + '/');
+            else if (/\.(jpg|jpeg|png|gif|webp|svg|avif|mp4|webm)$/i.test(item.name))
+                list.push({ name: item.name, url: '/uploads/' + prefix + item.name });
+        }
+    };
+    walk(UPLOAD_DIR, '');
+    res.json(list);
+});
+
 app.use((err, req, res, next) => {
     if (err instanceof multer.MulterError) {
         return res.status(400).json({ error: 'Dosya boyutu 10MB sinirini asiyor' });

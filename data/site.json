@@ -38,14 +38,64 @@
     "description": "Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız.",
     "address": "Sıhana Jorin Köyü, Merkez Mahallesi, No:1",
     "phone": "+90 (555) 123 4567",
-    "email": "info@sihanajorin.org"
+    "email": "omerozbay104@gmail.com"
   },
   "footer": {
     "description": "Sıhana Jorin Köyü Derneği — birlikte daha güçlüyüz.",
-    "email": "omerozbay104@gmail.com",
+    "email": "info@sihanajorin.org",
     "phone": "+90 (555) 123 4567",
     "facebook": "#",
     "instagram": "#",
     "twitter": "#"
+  },
+  "pages": {
+    "hakkimizda": {
+      "title": "Hikayemiz",
+      "description": "Sıhana Jorin Köy Derneği'nin hikayesi, değerleri ve yönetim kurulu hakkında bilgi edinin.",
+      "koklerTitle": "Besler / Sîhana Jorin",
+      "koklerText": "Köyümüzün köklü tarihi, doğal güzellikleri ve kültürel mirası ile geçmişten geleceğe uzanan bir hikayenin parçasıdır.",
+      "koklerImage": "",
+      "culturalTitle": "Kültürel Kimlik",
+      "culturalText": "Köyümüz, yüzyıllardır süregelen gelenekleri, dili ve yaşam biçimiyle kendine özgü bir kültürel kimliğe sahiptir.",
+      "geographicTitle": "Coğrafi Karakter",
+      "geographicText": "Ağrı Dağı'nın eteklerinde, serhat bölgesinin kalbinde yer alan köyümüz, eşsiz bir coğrafyaya sahiptir.",
+      "globalTitle": "Global Bağ",
+      "globalText": "Yurt dışına uzanan güçlü diasporamızla köyümüz, dünyanın dört bir yanındaki hemşehrilerimizi bir araya getirmektedir.",
+      "valuesTitle": "Değerlerimiz",
+      "valuesText": "Köyümüzün kalkınması ve kültürel mirasımızın yaşatılması için benimsediğimiz temel ilkeler.",
+      "managementTitle": "Yönetim Kurulumuz",
+      "managementText": "Derneğimiz, köyümüzün farklı kesimlerini temsil eden gönüllü üyelerden oluşan bir yönetim kurulu tarafından yönetilmektedir."
+    },
+    "iletisim": {
+      "title": "İletişim",
+      "description": "Soru, öneri veya görüşleriniz için bize ulaşabilirsiniz. Size en kısa sürede dönüş yapacağız.",
+      "address": "Besler Köyü (Sîhana Jorin)\nDoğubayazıt / Ağrı",
+      "email": "info@sihanajorin.org",
+      "socialText": "Bizi sosyal medyada takip edin.",
+      "responseTime": "Mesajlarınıza genellikle 1-2 iş günü içinde yanıt veriyoruz."
+    },
+    "bagis": {
+      "title": "Bağış Yap",
+      "description": "Köyümüzün projelerine destek olmak için bağışta bulunabilirsiniz. Her katkı, köyümüzün geleceğine yapılan bir yatırımdır.",
+      "bankName": "Ziraat Bankası",
+      "iban": "TR12 0000 0000 0000 0000 0000",
+      "accountName": "Sıhana Jorin Köy Derneği",
+      "branch": "Doğubayazıt / Ağrı",
+      "infoText": "Bağışlarınız, köyümüzün projeleri ve faaliyetleri için kullanılacaktır. Bağış makbuzu talepleriniz için bizimle iletişime geçebilirsiniz.",
+      "ctaTitle": "Her Bağış Değerlidir",
+      "ctaText": "Köyümüzün kalkınması ve kültürel mirasımızın yaşatılması için siz de destek olun."
+    },
+    "galeri": {
+      "title": "Galeri",
+      "description": "Köyümüzün güzelliklerini, etkinliklerimizi ve birlikte geçirdiğimiz anları keşfedin."
+    },
+    "gonullu": {
+      "title": "Gönüllü Ol",
+      "description": "Köyümüzün projelerinde aktif rol almak, yeteneklerinizi köyümüzün yararına kullanmak ister misiniz? Sizi aramıza bekliyoruz.",
+      "whyTitle": "Neden gönüllü olmalısınız?",
+      "whyText": "Köyünüze katkı sağlarken kendinizi de geliştireceğiniz anlamlı bir yolculuk sizi bekliyor.",
+      "formTitle": "Başvuru Formu",
+      "formText": "Formu doldurun, size en kısa sürede dönüş yapalım."
+    }
   }
 }

@@ -8,7 +8,9 @@
         data: { announcements: [], slider: [], gallery: [], site: {} },
         editingItem: null,
         searchQuery: '',
-        loading: false
+        loading: false,
+        lastSync: null,
+        selectedIds: new Set()
     };
 
     const PASSWORD_KEY = 'sj_admin_pass';
@@ -89,7 +91,8 @@
             if (subdir) fd.append('subdir', subdir);
             fd.append('file', file);
             return this.request('POST', '/api/upload', fd);
-        }
+        },
+        getUploads() { return this.request('GET', '/api/uploads'); }
     };
 
     /* ─── Password ─── */
@@ -109,6 +112,7 @@
             APP.data.slider = slider;
             APP.data.gallery = gallery;
             APP.data.site = site;
+            APP.lastSync = new Date();
         } catch (err) {
             toast(err.message, 'error');
         } finally {
@@ -147,12 +151,12 @@
 
     /* ─── Image upload helper ─── */
     function createUploadButton(inputEl, subdir) {
+        const wrap = inputEl.parentNode;
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'btn btn-outline btn-sm';
         btn.textContent = 'Yukle';
         btn.style.cssText = 'font-size:0.7rem;padding:0.3rem 0.6rem;flex-shrink:0';
-        const wrap = inputEl.parentNode;
         wrap.style.display = 'flex';
         wrap.style.gap = '0.35rem';
         wrap.style.alignItems = 'center';
@@ -179,6 +183,45 @@
                 btn.disabled = false;
                 fileInput.value = '';
             }
+        });
+
+        const galBtn = document.createElement('button');
+        galBtn.type = 'button';
+        galBtn.className = 'btn btn-outline btn-sm';
+        galBtn.textContent = 'Galeri';
+        galBtn.style.cssText = 'font-size:0.7rem;padding:0.3rem 0.6rem;flex-shrink:0';
+        galBtn.addEventListener('click', () => openMediaPicker(inputEl));
+        wrap.appendChild(galBtn);
+    }
+
+    /* ─── Media Picker ─── */
+    let allUploads = [];
+    async function openMediaPicker(inputEl) {
+        if (allUploads.length === 0) {
+            try { allUploads = await API.getUploads(); } catch { toast('Gorseller yuklenemedi', 'error'); return; }
+        }
+        const overlay = $('#modal-overlay');
+        const content = $('#modal-content');
+        content.innerHTML = `
+            <div class="modal-header">
+                <h2>Gorsel Sec</h2>
+                <button class="modal-close" onclick="SJ_ADMIN.closeModal()">X</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:0.5rem;padding:0.5rem 0">
+                ${allUploads.length === 0 ? '<p style="grid-column:1/-1;color:var(--text3);text-align:center">Henuz yuklenmis gorsel yok</p>' : allUploads.map(f => `
+                    <div class="media-item" data-url="${f.url}" style="cursor:pointer;border:2px solid transparent;border-radius:8px;overflow:hidden;aspect-ratio:1;background:var(--bg3);transition:border-color 0.2s">
+                        <img src="${f.url}" loading="lazy" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'" />
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        overlay.classList.add('open');
+        $$('.media-item', content).forEach(el => {
+            el.addEventListener('click', () => {
+                inputEl.value = el.dataset.url;
+                closeModal();
+                toast('Gorsel secildi');
+            });
         });
     }
 
@@ -257,6 +300,7 @@
                         <div class="subtitle" id="stats-line">Yukleniyor...</div>
                     </div>
                     <div class="header-actions">
+                        <button class="btn btn-outline btn-sm" onclick="SJ_ADMIN.refresh()" title="Verileri yenile">Yenile</button>
                         <button class="btn btn-outline btn-sm" onclick="SJ_ADMIN.logout()">Cikis</button>
                     </div>
                 </header>
@@ -554,11 +598,13 @@
         if (!container) return;
         const data = APP.data.gallery || [];
         const filtered = filterData(data);
+        APP.selectedIds = new Set();
 
         container.innerHTML = `
             <div class="toolbar">
                 <div class="toolbar-left">
                     <span style="color:var(--text3);font-size:0.8rem">${filtered.length} oge</span>
+                    <button class="btn btn-danger btn-sm" id="gallery-delete-selected" style="display:none;font-size:0.7rem;padding:0.3rem 0.6rem" onclick="SJ_ADMIN.deleteSelectedGallery()">Secilenleri Sil</button>
                 </div>
                 <div class="toolbar-right">
                     <button class="btn btn-primary btn-sm" onclick="SJ_ADMIN.openGalleryUpload()">+ Gorsel Ekle</button>
@@ -569,11 +615,13 @@
                     ? '<div class="empty-state" style="grid-column:1/-1"><p>Henuz gorsel bulunmuyor</p></div>'
                     : filtered.map((item, i) => `
                         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;overflow:hidden">
-                            <div style="aspect-ratio:16/10;overflow:hidden;background:var(--bg3)">
+                            <div style="position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg3)">
+                                <input type="checkbox" data-index="${i}" class="gallery-select" style="position:absolute;top:0.4rem;left:0.4rem;z-index:2;width:1.1rem;height:1.1rem;cursor:pointer;accent-color:var(--primary)" />
                                 ${item.image ? `<img src="${item.image}" alt="${escapeHtml(item.title)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'" />` : '<div style="height:100%;display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:0.8rem">Gorsel yok</div>'}
                             </div>
                             <div style="padding:0.6rem 0.75rem">
                                 <div style="font-size:0.85rem;font-weight:500;color:var(--primary);margin-bottom:0.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(item.title)}</div>
+                                ${item.description ? `<div style="font-size:0.7rem;color:var(--text3);margin-bottom:0.2rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(item.description)}</div>` : ''}
                                 ${item.category ? `<div style="font-size:0.7rem;color:var(--text3)">${escapeHtml(item.category)}${item.year ? ' · ' + escapeHtml(item.year) : ''}</div>` : ''}
                                 <button class="btn btn-danger btn-sm" style="margin-top:0.5rem;width:100%;justify-content:center" onclick="SJ_ADMIN.deleteItem('gallery',${i},'${escapeJs(item.title)}')">Sil</button>
                             </div>
@@ -581,6 +629,35 @@
                     `).join('')}
             </div>
         `;
+
+        $$('.gallery-select', container).forEach(cb => {
+            cb.addEventListener('change', function () {
+                const idx = parseInt(this.dataset.index);
+                if (this.checked) APP.selectedIds.add(idx);
+                else APP.selectedIds.delete(idx);
+                const btn = $('#gallery-delete-selected');
+                if (btn) btn.style.display = APP.selectedIds.size > 0 ? 'inline-flex' : 'none';
+            });
+        });
+    }
+
+    async function deleteSelectedGallery() {
+        if (APP.selectedIds.size === 0) return;
+        const count = APP.selectedIds.size;
+        if (!confirm(count + ' gorsel silinecek. Emin misiniz?')) return;
+        const ids = Array.from(APP.selectedIds).sort((a,b)=>b-a);
+        try {
+            showLoading(true);
+            for (const idx of ids) await API.deleteGallery(idx);
+            await loadAllData();
+            renderGalleryContent();
+            updateHeaderStats();
+            toast(count + ' gorsel silindi');
+        } catch (err) {
+            toast(err.message, 'error');
+        } finally {
+            showLoading(false);
+        }
     }
 
     function openGalleryUpload() {
@@ -603,6 +680,7 @@
                     </div>
                 </div>
                 <div class="form-group"><label>Baslik *</label><input type="text" id="gallery-title" required /></div>
+                <div class="form-group"><label>Kisa Aciklama</label><textarea id="gallery-description" placeholder="Gorsel hakkinda kisa bir aciklama..." style="min-height:60px"></textarea></div>
                 <div class="form-group"><label>Kategori</label><input type="text" id="gallery-category" /></div>
                 <div class="form-group"><label>Yil</label><input type="text" id="gallery-year" placeholder="orn: 2026" /></div>
                 <div class="form-actions">
@@ -648,7 +726,7 @@
             if (!uploadedUrl) { toast('Lutfen bir gorsel yukleyin', 'error'); return; }
             try {
                 showLoading(true);
-                await API.addGallery({ title, image: uploadedUrl, category: $('#gallery-category').value, year: $('#gallery-year').value });
+                await API.addGallery({ title, image: uploadedUrl, description: $('#gallery-description').value, category: $('#gallery-category').value, year: $('#gallery-year').value });
                 closeModal();
                 await loadAllData();
                 renderTabContent();
@@ -663,73 +741,175 @@
     }
 
     /* ─── Site Icerigi Tab ─── */
-    function renderSiteContent() {
-        const container = $('#tab-content');
-        if (!container) return;
-        const site = APP.data.site || {};
+    const SITE_GROUPS = {
+        anasayfa: { label: 'Ana Sayfa', sections: [
+            { id: 'about', title: 'Hakkımızda', fields: [
+                { key: 'about.badge', label: 'Rozet', type: 'text' },
+                { key: 'about.title', label: 'Baslik', type: 'textarea' },
+                { key: 'about.animatedText', label: 'Animasyonlu Metin', type: 'textarea' },
+                { key: 'about.heritageTitle', label: 'Kulturel Miras Baslik', type: 'text' },
+                { key: 'about.heritageText', label: 'Kulturel Miras Metni', type: 'textarea' },
+                { key: 'about.solidarityTitle', label: 'Dayanisma Baslik', type: 'text' },
+                { key: 'about.solidarityText', label: 'Dayanisma Metni', type: 'textarea' }
+            ]},
+            { id: 'contact', title: 'Iletisim', fields: [
+                { key: 'contact.badge', label: 'Rozet', type: 'text' },
+                { key: 'contact.title', label: 'Baslik', type: 'text' },
+                { key: 'contact.description', label: 'Aciklama', type: 'textarea' },
+                { key: 'contact.address', label: 'Adres', type: 'text' },
+                { key: 'contact.phone', label: 'Telefon', type: 'text' },
+                { key: 'contact.email', label: 'E-posta', type: 'text' }
+            ]},
+            { id: 'footer', title: 'Alt Bilgi', fields: [
+                { key: 'footer.description', label: 'Aciklama', type: 'text' },
+                { key: 'footer.email', label: 'E-posta', type: 'text' },
+                { key: 'footer.phone', label: 'Telefon', type: 'text' },
+                { key: 'footer.facebook', label: 'Facebook Link', type: 'text' },
+                { key: 'footer.instagram', label: 'Instagram Link', type: 'text' },
+                { key: 'footer.twitter', label: 'Twitter Link', type: 'text' }
+            ]}
+        ]},
+        sayfalar: { label: 'Sayfalar', sections: [
+            { id: 'pages.hakkimizda', title: 'Hakkimizda', fields: [
+                { key: 'pages.hakkimizda.title', label: 'Sayfa Basligi', type: 'text' },
+                { key: 'pages.hakkimizda.description', label: 'Sayfa Aciklamasi', type: 'textarea' },
+                { key: 'pages.hakkimizda.koklerTitle', label: 'Kokler Baslik', type: 'text' },
+                { key: 'pages.hakkimizda.koklerText', label: 'Kokler Metni', type: 'textarea' },
+                { key: 'pages.hakkimizda.koklerImage', label: 'Kokler Gorsel URL', type: 'text' },
+                { key: 'pages.hakkimizda.culturalTitle', label: 'Kulturel Kimlik Baslik', type: 'text' },
+                { key: 'pages.hakkimizda.culturalText', label: 'Kulturel Kimlik Metni', type: 'textarea' },
+                { key: 'pages.hakkimizda.geographicTitle', label: 'Cografi Karakter Baslik', type: 'text' },
+                { key: 'pages.hakkimizda.geographicText', label: 'Cografi Karakter Metni', type: 'textarea' },
+                { key: 'pages.hakkimizda.globalTitle', label: 'Global Bag Baslik', type: 'text' },
+                { key: 'pages.hakkimizda.globalText', label: 'Global Bag Metni', type: 'textarea' },
+                { key: 'pages.hakkimizda.valuesTitle', label: 'Degerler Basligi', type: 'text' },
+                { key: 'pages.hakkimizda.valuesText', label: 'Degerler Metni', type: 'textarea' },
+                { key: 'pages.hakkimizda.managementTitle', label: 'Yonetim Basligi', type: 'text' },
+                { key: 'pages.hakkimizda.managementText', label: 'Yonetim Metni', type: 'textarea' }
+            ]},
+            { id: 'pages.iletisim', title: 'Iletisim', fields: [
+                { key: 'pages.iletisim.title', label: 'Sayfa Basligi', type: 'text' },
+                { key: 'pages.iletisim.description', label: 'Sayfa Aciklamasi', type: 'textarea' },
+                { key: 'pages.iletisim.address', label: 'Adres', type: 'textarea' },
+                { key: 'pages.iletisim.email', label: 'E-posta', type: 'text' },
+                { key: 'pages.iletisim.socialText', label: 'Sosyal Medya Yazisi', type: 'text' },
+                { key: 'pages.iletisim.responseTime', label: 'Yanit Suresi', type: 'text' }
+            ]},
+            { id: 'pages.bagis', title: 'Bagis', fields: [
+                { key: 'pages.bagis.title', label: 'Sayfa Basligi', type: 'text' },
+                { key: 'pages.bagis.description', label: 'Sayfa Aciklamasi', type: 'textarea' },
+                { key: 'pages.bagis.bankName', label: 'Banka Adi', type: 'text' },
+                { key: 'pages.bagis.iban', label: 'IBAN', type: 'text' },
+                { key: 'pages.bagis.accountName', label: 'Hesap Adi', type: 'text' },
+                { key: 'pages.bagis.branch', label: 'Sube', type: 'text' },
+                { key: 'pages.bagis.infoText', label: 'Bilgi Metni', type: 'textarea' },
+                { key: 'pages.bagis.ctaTitle', label: 'CTA Basligi', type: 'text' },
+                { key: 'pages.bagis.ctaText', label: 'CTA Metni', type: 'textarea' }
+            ]},
+            { id: 'pages.galeri', title: 'Galeri', fields: [
+                { key: 'pages.galeri.title', label: 'Sayfa Basligi', type: 'text' },
+                { key: 'pages.galeri.description', label: 'Sayfa Aciklamasi', type: 'textarea' }
+            ]},
+            { id: 'pages.gonullu', title: 'Gonullu', fields: [
+                { key: 'pages.gonullu.title', label: 'Sayfa Basligi', type: 'text' },
+                { key: 'pages.gonullu.description', label: 'Sayfa Aciklamasi', type: 'textarea' },
+                { key: 'pages.gonullu.whyTitle', label: 'Neden Gonullu Basligi', type: 'text' },
+                { key: 'pages.gonullu.whyText', label: 'Neden Gonullu Metni', type: 'textarea' },
+                { key: 'pages.gonullu.formTitle', label: 'Form Basligi', type: 'text' },
+                { key: 'pages.gonullu.formText', label: 'Form Metni', type: 'textarea' }
+            ]}
+        ]}
+    };
 
-        container.innerHTML = `
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-                ${renderSiteSection('about', 'Hakkimizda', [
-                    { key: 'about.badge', label: 'Rozet', type: 'text' },
-                    { key: 'about.title', label: 'Baslik', type: 'textarea' },
-                    { key: 'about.animatedText', label: 'Animasyonlu Metin', type: 'textarea' },
-                    { key: 'about.heritageTitle', label: 'Kulturel Miras Baslik', type: 'text' },
-                    { key: 'about.heritageText', label: 'Kulturel Miras Metni', type: 'textarea' },
-                    { key: 'about.solidarityTitle', label: 'Dayanisma Baslik', type: 'text' },
-                    { key: 'about.solidarityText', label: 'Dayanisma Metni', type: 'textarea' }
-                ], site)}
-                ${renderSiteSection('features', 'Calismalar', [
-                    { key: 'features.title', label: 'Baslik', type: 'text' },
-                    { key: 'features.subtitle', label: 'Alt Baslik', type: 'text' },
-                    { key: 'features.card1Label', label: 'Video Karti Yazisi', type: 'text' },
-                    { key: 'features.card2Title', label: 'Kart 2 Baslik', type: 'text' },
-                    { key: 'features.card3Title', label: 'Kart 3 Baslik', type: 'text' },
-                    { key: 'features.card4Title', label: 'Kart 4 Baslik', type: 'text' }
-                ], site)}
-                ${renderSiteSection('contact', 'Iletisim', [
-                    { key: 'contact.badge', label: 'Rozet', type: 'text' },
-                    { key: 'contact.title', label: 'Baslik', type: 'text' },
-                    { key: 'contact.description', label: 'Aciklama', type: 'textarea' },
-                    { key: 'contact.address', label: 'Adres', type: 'text' },
-                    { key: 'contact.phone', label: 'Telefon', type: 'text' },
-                    { key: 'contact.email', label: 'E-posta', type: 'text' }
-                ], site)}
-                ${renderSiteSection('footer', 'Alt Bilgi (Footer)', [
-                    { key: 'footer.description', label: 'Aciklama', type: 'text' },
-                    { key: 'footer.email', label: 'E-posta', type: 'text' },
-                    { key: 'footer.phone', label: 'Telefon', type: 'text' },
-                    { key: 'footer.facebook', label: 'Facebook Link', type: 'text' },
-                    { key: 'footer.instagram', label: 'Instagram Link', type: 'text' },
-                    { key: 'footer.twitter', label: 'Twitter Link', type: 'text' }
-                ], site)}
-            </div>
-            <div style="margin-top:1.5rem;text-align:right">
-                <button class="btn btn-primary" onclick="SJ_ADMIN.saveSiteContent()">Tumunu Kaydet</button>
-            </div>
-        `;
+    function getSiteVal(key, site) {
+        var parts = key.split('.');
+        var obj = site;
+        for (var i = 0; i < parts.length; i++) { if (obj) obj = obj[parts[i]]; }
+        return obj || '';
     }
 
-    function renderSiteSection(prefix, title, fields, site) {
-        const getVal = (key) => {
-            const parts = key.split('.');
-            let obj = site;
-            for (const p of parts) { if (obj) obj = obj[p]; }
-            return obj || '';
-        };
-        return `
-            <div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1rem 1.25rem">
-                <h3 style="font-size:0.95rem;font-weight:600;color:var(--primary);margin-bottom:1rem">${title}</h3>
-                ${fields.map(f => `
-                    <div class="form-group">
-                        <label>${f.label}</label>
-                        ${f.type === 'textarea'
-                            ? `<textarea name="${f.key}" style="min-height:60px">${escapeHtml(getVal(f.key))}</textarea>`
-                            : `<input type="text" name="${f.key}" value="${escapeHtml(getVal(f.key))}" />`}
-                    </div>
-                `).join('')}
-            </div>
-        `;
+    function renderSiteContent() {
+        var container = $('#tab-content');
+        if (!container) return;
+        var site = APP.data.site || {};
+
+        APP.siteGroup = APP.siteGroup || 'anasayfa';
+        var group = SITE_GROUPS[APP.siteGroup];
+        APP.siteSection = APP.siteSection || group.sections[0].id;
+
+        /* ─── Build sidebar items ─── */
+        var sidebarHtml = '';
+        for (var s = 0; s < group.sections.length; s++) {
+            var sec = group.sections[s];
+            var isActive = APP.siteSection === sec.id;
+            sidebarHtml += '<button class="site-sidebar-item' + (isActive ? ' active' : '') + '" data-section="' + sec.id + '">' +
+                '<span class="dot"></span>' + escapeHtml(sec.title) + '</button>';
+        }
+
+        /* ─── Build form sections (all rendered, only active visible) ─── */
+        var formsHtml = '';
+        for (var g in SITE_GROUPS) {
+            for (var s = 0; s < SITE_GROUPS[g].sections.length; s++) {
+                var sec = SITE_GROUPS[g].sections[s];
+                var isActive = APP.siteSection === sec.id;
+                formsHtml += '<div class="site-section-form" data-section="' + sec.id + '" style="' + (isActive ? '' : 'display:none') + '">' +
+                    '<div style="background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.25rem">' +
+                    '<h3 style="font-size:0.95rem;font-weight:600;color:var(--primary);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)">' + escapeHtml(sec.title) + '</h3>' +
+                    sec.fields.map(function(f) {
+                        var val = getSiteVal(f.key, site);
+                        return '<div class="form-group">' +
+                            '<label>' + escapeHtml(f.label) + '</label>' +
+                            (f.type === 'textarea'
+                                ? '<textarea name="' + f.key + '" style="min-height:60px">' + escapeHtml(val) + '</textarea>'
+                                : '<input type="text" name="' + f.key + '" value="' + escapeHtml(val) + '" />') +
+                            '</div>';
+                    }).join('') +
+                    '</div></div>';
+            }
+        }
+
+        container.innerHTML =
+            '<div style="display:flex;gap:0.5rem;margin-bottom:1.25rem;flex-wrap:wrap">' +
+                Object.keys(SITE_GROUPS).map(function(g) {
+                    var grp = SITE_GROUPS[g];
+                    var active = APP.siteGroup === g;
+                    return '<button class="btn ' + (active ? 'btn-primary' : 'btn-outline') + ' btn-sm site-group-tab" data-group="' + g + '" style="font-size:0.75rem;padding:0.35rem 0.85rem">' + escapeHtml(grp.label) + '</button>';
+                }).join('') +
+            '</div>' +
+            '<div class="site-content-layout">' +
+                '<div class="site-sidebar">' +
+                    '<div class="site-sidebar-label">' + escapeHtml(group.label) + '</div>' +
+                    sidebarHtml +
+                '</div>' +
+                '<div class="site-main-form" id="site-sections-container">' +
+                    formsHtml +
+                    '<div style="margin-top:1.25rem;text-align:right">' +
+                        '<button class="btn btn-primary" onclick="SJ_ADMIN.saveSiteContent()">Tumunu Kaydet</button>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+
+        /* ─── Bind group tabs ─── */
+        Array.from(container.querySelectorAll('.site-group-tab')).forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                APP.siteGroup = this.dataset.group;
+                APP.siteSection = SITE_GROUPS[APP.siteGroup].sections[0].id;
+                renderSiteContent();
+            });
+        });
+
+        /* ─── Bind sidebar items ─── */
+        Array.from(container.querySelectorAll('.site-sidebar-item')).forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                APP.siteSection = this.dataset.section;
+                Array.from(container.querySelectorAll('.site-section-form')).forEach(function(el) {
+                    el.style.display = el.dataset.section === APP.siteSection ? '' : 'none';
+                });
+                Array.from(container.querySelectorAll('.site-sidebar-item')).forEach(function(item) {
+                    item.classList.toggle('active', item.dataset.section === APP.siteSection);
+                });
+            });
+        });
     }
 
     async function saveSiteContent() {
@@ -767,7 +947,10 @@
     /* ─── Header Stats ─── */
     function updateHeaderStats() {
         const subtitle = $('#stats-line');
-        if (subtitle) subtitle.textContent = `${APP.data.announcements.length} duyuru / ${APP.data.slider.length} slider / ${APP.data.gallery.length} galeri`;
+        if (subtitle) {
+            const syncTime = APP.lastSync ? APP.lastSync.toLocaleTimeString('tr-TR') : '-';
+            subtitle.innerHTML = `${APP.data.announcements.length} duyuru / ${APP.data.slider.length} slider / ${APP.data.gallery.length} galeri <span style="color:var(--text3);font-size:0.7rem">| Son senkron: ${syncTime}</span>`;
+        }
         $$('.tab .count').forEach(el => {
             const tab = el.closest('.tab');
             if (tab) {
@@ -784,9 +967,17 @@
         render();
     }
 
+    async function refresh() {
+        await loadAllData();
+        renderTabContent();
+        updateHeaderStats();
+        toast('Veriler yenilendi');
+    }
+
     window.SJ_ADMIN = {
         addItem, editItem, deleteItem, moveItem,
-        closeModal, saveSiteContent, openGalleryUpload, logout
+        closeModal, saveSiteContent, openGalleryUpload, logout,
+        refresh, deleteSelectedGallery
     };
 
     (async function init() {

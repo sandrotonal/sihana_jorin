@@ -27,6 +27,7 @@
 <body class="flex flex-col min-h-screen">
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
+    <script src="js/data/site.js"></script>
     <script src="js/hooks.js"></script>
     <script src="js/components/page-header.js"></script>
     <script src="js/animations-init.js"></script>
@@ -35,10 +36,11 @@
         <div id="page-header-root"></div>
         <script type="text/babel">
             (function() {
+                const p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.bagis) || {};
                 const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
                 root.render(React.createElement(SJ.PageHeader, {
-                    title: 'Bağış Yap',
-                    description: 'Köyümüzün projelerine destek olmak için bağışta bulunabilirsiniz. Her katkı, köyümüzün geleceğine yapılan bir yatırımdır.',
+                    title: p.title || 'Bağış Yap',
+                    description: p.description || '',
                     buttons: [
                         { label: 'Hesap Bilgileri', href: '#hesap', variant: 'primary' },
                         { label: 'Gönüllü Ol', href: 'gonullu.html', variant: 'ghost' }
@@ -53,28 +55,38 @@
                 <div class="bagis-main-grid">
 
                     <!-- Banka bilgileri -->
-                    <div class="sj-card sj-card--lg">
+                    <div class="sj-card sj-card--lg" id="bagis-banka">
                         <span class="sj-label">Hesap Bilgileri</span>
                         <h2 class="sj-h3" style="margin-bottom:2rem;">Banka Hesabı</h2>
                         <div>
                             <div class="bagis-row">
                                 <span class="bagis-row-key">Banka</span>
-                                <span class="bagis-row-val">Ziraat Bankası</span>
+                                <span class="bagis-row-val" id="bagis-bank-name"></span>
                             </div>
                             <div class="bagis-row">
                                 <span class="bagis-row-key">IBAN</span>
-                                <span class="bagis-row-val bagis-row-val--mono">TR12 0000 0000 0000 0000 0000</span>
+                                <span class="bagis-row-val bagis-row-val--mono" id="bagis-iban"></span>
                             </div>
                             <div class="bagis-row">
                                 <span class="bagis-row-key">Hesap Adı</span>
-                                <span class="bagis-row-val">Sıhana Jorin Köy Derneği</span>
+                                <span class="bagis-row-val" id="bagis-account-name"></span>
                             </div>
                             <div class="bagis-row">
                                 <span class="bagis-row-key">Şube</span>
-                                <span class="bagis-row-val">Doğubayazıt / Ağrı</span>
+                                <span class="bagis-row-val" id="bagis-branch"></span>
                             </div>
                         </div>
-                        <p class="sj-body" style="margin-top:2rem; font-size:0.8125rem; border-top:1px solid rgba(222,219,200,0.06); padding-top:1.5rem;">Bağışlarınız, köyümüzün projeleri ve faaliyetleri için kullanılacaktır. Bağış makbuzu talepleriniz için bizimle iletişime geçebilirsiniz.</p>
+                        <p class="sj-body" style="margin-top:2rem; font-size:0.8125rem; border-top:1px solid rgba(222,219,200,0.06); padding-top:1.5rem;" id="bagis-info-text"></p>
+                        <script>
+                            (function() {
+                                var p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.bagis) || {};
+                                document.getElementById('bagis-bank-name').textContent = p.bankName || 'Ziraat Bankası';
+                                document.getElementById('bagis-iban').textContent = p.iban || 'TR12 0000 0000 0000 0000 0000';
+                                document.getElementById('bagis-account-name').textContent = p.accountName || 'Sıhana Jorin Köy Derneği';
+                                document.getElementById('bagis-branch').textContent = p.branch || 'Doğubayazıt / Ağrı';
+                                document.getElementById('bagis-info-text').textContent = p.infoText || '';
+                            })();
+                        </script>
                     </div>
 
                     <!-- CTA -->
@@ -85,8 +97,9 @@
                                 <div style="width:48px; height:48px; border-radius:50%; background:rgba(222,219,200,0.07); display:flex; align-items:center; justify-content:center; margin:0 auto 1.25rem;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DEDBC8" stroke-width="1.5"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
                                 </div>
-                                <h3 class="sj-h3" style="margin-bottom:0.625rem;">Her Bağış Değerlidir</h3>
-                                <p class="sj-body" style="font-size:0.8125rem; margin-bottom:1.75rem;">Köyümüzün kalkınması ve kültürel mirasımızın yaşatılması için siz de destek olun.</p>
+                                <h3 class="sj-h3" style="margin-bottom:0.625rem;" id="bagis-cta-title"></h3>
+                                <p class="sj-body" style="font-size:0.8125rem; margin-bottom:1.75rem;" id="bagis-cta-text"></p>
+                                <script>(function(){var p=(SJ.SITE_DATA&&SJ.SITE_DATA.pages&&SJ.SITE_DATA.pages.bagis)||{};document.getElementById('bagis-cta-title').textContent=p.ctaTitle||'Her Bağış Değerlidir';document.getElementById('bagis-cta-text').textContent=p.ctaText||'';})();</script>
                                 <a href="iletisim.html" class="sj-btn-primary">İletişime Geç</a>
                             </div>
                         </div>

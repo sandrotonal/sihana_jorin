@@ -17,6 +17,7 @@
 <body class="flex flex-col min-h-screen">
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
+    <script src="js/data/site.js"></script>
     <script src="js/data/gallery.js"></script>
     <script src="js/hooks.js"></script>
     <script src="js/components/page-header.js"></script>
@@ -27,10 +28,11 @@
         <div id="page-header-root"></div>
         <script type="text/babel">
             (function() {
+                const p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.galeri) || {};
                 const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
                 root.render(React.createElement(SJ.PageHeader, {
-                    title: 'Galeri',
-                    description: 'Köyümüzün güzelliklerini, etkinliklerimizi ve birlikte geçirdiğimiz anları keşfedin.'
+                    title: p.title || 'Galeri',
+                    description: p.description || ''
                 }));
             })();
         </script>
