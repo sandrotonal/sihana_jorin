@@ -174,7 +174,7 @@ window.SJ.useInView = function useInView(options = {}) {
                         <SJ.XIcon size={24} style={{ color: '#E1E0CC' }} />
                     </button>
                     <div className="flex flex-col items-center justify-center w-full p-8 text-center">
-                        <span className="text-xs tracking-[0.2em] text-[#DEDBC8]/40 uppercase mb-12">Sıhana Jorin</span>
+                        <img src="/logo.png" alt="Sıhana Jorin" className="h-10 w-auto mb-10" />
                         <nav className="flex flex-col gap-8 items-center mb-16" role="navigation" aria-label="Mobil menü">
                             {links.map((link, i) => (
                                 <a key={link.href} href={link.href} onClick={onClose}
@@ -702,8 +702,11 @@ window.SJ.useInView = function useInView(options = {}) {
                         </video>
                         <div className="noise-overlay opacity-[0.7] mix-blend-overlay pointer-events-none absolute inset-0 z-10" aria-hidden="true"></div>
                         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60 z-20" aria-hidden="true"></div>
-                        <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8 hidden md:block" role="navigation" aria-label="Ana navigasyon">
-                            <div className="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
+                        <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black/90 backdrop-blur-sm rounded-b-2xl md:rounded-b-3xl px-3 py-1.5 md:px-6 hidden md:block" role="navigation" aria-label="Ana navigasyon">
+                            <div className="flex items-center gap-3 sm:gap-5 md:gap-10 lg:gap-12">
+                                <a href="index.html" className="flex-shrink-0">
+                                    <img src="/logo.png" alt="Sıhana Jorin" className="h-7 md:h-8 w-auto" />
+                                </a>
                                 <a href="index.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Ana Sayfa</a>
                                 <a href="hakkimizda.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Hikayemiz</a>
                                 <a href="galeri.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Galeri</a>
@@ -711,6 +714,11 @@ window.SJ.useInView = function useInView(options = {}) {
                                 <a href="iletisim.html" className="nav-link text-[10px] sm:text-xs md:text-sm">İletişim</a>
                             </div>
                         </nav>
+                        <div className="fixed top-0 left-0 right-0 z-[180] flex items-center justify-between px-4 py-2 md:hidden bg-black/80 backdrop-blur-sm">
+                            <a href="index.html" className="flex-shrink-0">
+                                <img src="/logo.png" alt="Sıhana Jorin" className="h-8 w-auto" />
+                            </a>
+                        </div>
                         <button onClick={() => setMenuOpen(true)} className="fixed top-3 right-4 z-[190] bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden" aria-label="Menüyü aç">
                             <SJ.MenuIcon size={20} className="text-[#E1E0CC]" />
                         </button>
@@ -962,7 +970,9 @@ window.SJ.useInView = function useInView(options = {}) {
                 <div className="w-full max-w-[95%] xl:max-w-7xl mx-auto">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                         <div className="col-span-2 md:col-span-1">
-                            <h3 className="text-2xl font-medium mb-3" style={{ color: '#E1E0CC' }}>Sıhana Jorin</h3>
+                            <a href="index.html" className="inline-block mb-3">
+                                <img src="/logo.png" alt="Sıhana Jorin" style={{ height: '2rem', width: 'auto' }} />
+                            </a>
                             <p className="text-gray-500 text-sm leading-relaxed mb-4">{f.description || "Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız."}</p>
                             <div className="flex items-center gap-1 text-gray-500 text-xs">
                                 <SJ.Heart size={12} className="text-[#DEDBC8]" /> ile yapıldı

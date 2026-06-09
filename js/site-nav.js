@@ -29,12 +29,15 @@
 
         /* Skip sticky header on index.html (hero has its own nav) */
         if (page !== 'index.html' && page !== '') {
-            /* Desktop nav — centered black pill (matches hero nav exactly) */
+            /* Desktop nav — centered black pill with logo + links */
             const desktopNav = document.createElement('nav');
-            desktopNav.className = 'fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black rounded-b-2xl md:rounded-b-3xl px-4 py-2 md:px-8 hidden md:block';
+            desktopNav.className = 'fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black/90 backdrop-blur-sm rounded-b-2xl md:rounded-b-3xl px-3 py-1.5 md:px-6 hidden md:block';
             desktopNav.setAttribute('aria-label', 'Ana navigasyon');
             desktopNav.innerHTML = `
-                <div class="flex items-center gap-3 sm:gap-6 md:gap-12 lg:gap-14">
+                <div class="flex items-center gap-3 sm:gap-5 md:gap-10 lg:gap-12">
+                    <a href="index.html" class="flex-shrink-0">
+                        <img src="/logo.png" alt="Sıhana Jorin" class="h-7 md:h-8 w-auto" />
+                    </a>
                     ${NAV_LINKS.map(l =>
                         `<a href="${l.href}" class="nav-link text-[10px] sm:text-xs md:text-sm transition-colors duration-300 hover:text-[#E1E0CC] ${isActive(l.href) ? 'text-[#E1E0CC] font-medium' : 'text-[#E1E0CC]/60'}">${l.label}</a>`
                     ).join('')}
@@ -42,7 +45,16 @@
             `;
             nav.appendChild(desktopNav);
 
-            /* Mobile hamburger button — black circle (matches hero) */
+            /* Mobile header — logo left, hamburger right */
+            const mobileHeader = document.createElement('div');
+            mobileHeader.className = 'fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 py-2 md:hidden bg-black/80 backdrop-blur-sm';
+            mobileHeader.innerHTML = `
+                <a href="index.html" class="flex-shrink-0">
+                    <img src="/logo.png" alt="Sıhana Jorin" class="h-8 w-auto" />
+                </a>
+            `;
+            nav.appendChild(mobileHeader);
+
             const menuBtn = document.createElement('button');
             menuBtn.className = 'fixed top-3 right-4 z-[190] bg-black rounded-full w-10 h-10 flex items-center justify-center md:hidden cursor-pointer';
             menuBtn.id = 'site-menu-btn';
@@ -69,7 +81,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
                 <div class="flex flex-col items-center justify-center w-full p-8 text-center">
-                    <span class="text-xs tracking-[0.2em] text-[#DEDBC8]/40 uppercase mb-12">Sıhana Jorin</span>
+                    <img src="/logo.png" alt="Sıhana Jorin" class="h-10 w-auto mb-10" />
                     <nav class="flex flex-col gap-8 items-center mb-16" role="navigation" aria-label="Mobil menü">
                         ${NAV_LINKS.map((l, i) =>
                             `<a href="${l.href}" class="text-3xl sm:text-4xl font-medium text-[#E1E0CC]/60 hover:text-[#E1E0CC] transition-all duration-500 translate-y-[20px] opacity-0 ${isActive(l.href) ? 'font-serif italic text-[#E1E0CC]' : ''}" style="transition-delay:${0.1 + i * 0.05}s">${l.label}</a>`
@@ -126,7 +138,9 @@
                     <div class="max-w-[95%] xl:max-w-7xl mx-auto">
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                             <div class="col-span-2 md:col-span-1">
-                                <h3 class="text-2xl font-medium mb-3 text-[#E1E0CC]">Sıhana Jorin</h3>
+                                <a href="index.html" class="inline-block mb-3">
+                                    <img src="/logo.png" alt="Sıhana Jorin" class="h-8 w-auto" />
+                                </a>
                                 <p class="text-gray-500 text-sm leading-relaxed mb-4">Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız.</p>
                                 <div class="flex items-center gap-1 text-gray-500 text-xs">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#DEDBC8]"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg> ile yapıldı
