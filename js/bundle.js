@@ -705,7 +705,7 @@ window.SJ.useInView = function useInView(options = {}) {
                         <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-[190] bg-black/90 backdrop-blur-sm rounded-b-2xl md:rounded-b-3xl px-3 py-1.5 md:px-6 hidden md:block" role="navigation" aria-label="Ana navigasyon">
                             <div className="flex items-center gap-3 sm:gap-5 md:gap-10 lg:gap-12">
                                 <a href="index.html" className="flex-shrink-0">
-                                    <img src="/logo.png" alt="Sıhana Jorin" className="h-7 md:h-8 w-auto" />
+                                    <img src="/logo.png" alt="Sıhana Jorin" className="h-8 md:h-9 w-auto" />
                                 </a>
                                 <a href="index.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Ana Sayfa</a>
                                 <a href="hakkimizda.html" className="nav-link text-[10px] sm:text-xs md:text-sm">Hikayemiz</a>
@@ -716,7 +716,7 @@ window.SJ.useInView = function useInView(options = {}) {
                         </nav>
                         <div className="fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 h-14 md:hidden">
                             <a href="index.html" className="flex-shrink-0 leading-none">
-                                <img src="/logo.png" alt="Sıhana Jorin" className="h-7 w-auto" />
+                                <img src="/logo.png" alt="Sıhana Jorin" className="h-8 w-auto" />
                             </a>
                             <button onClick={() => setMenuOpen(true)} className="flex items-center justify-center w-9 h-9 rounded-full bg-black cursor-pointer" aria-label="Menüyü aç">
                                 <SJ.MenuIcon size={18} className="text-[#E1E0CC]" />
@@ -738,17 +738,17 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <SJ.FadeUp delay={0.7}>
                                         <a href="gonullu.html"
                                             style={{
-                                                display: 'flex',
+                                                display: isMobile ? 'flex' : 'inline-flex',
                                                 width: isMobile ? '100%' : 'auto',
                                                 alignItems: 'center',
                                                 justifyContent: isMobile ? 'space-between' : 'flex-start',
-                                                gap: '12px',
+                                                gap: '10px',
                                                 background: '#DEDBC8',
                                                 color: '#000',
                                                 fontWeight: 500,
                                                 fontSize: '0.875rem',
                                                 borderRadius: '9999px',
-                                                padding: '12px 12px 12px 24px',
+                                                padding: isMobile ? '12px 12px 12px 24px' : '8px 8px 8px 20px',
                                                 textDecoration: 'none',
                                                 boxShadow: '0 2px 20px rgba(0,0,0,0.35)',
                                                 transition: 'opacity 0.2s',
@@ -971,7 +971,7 @@ window.SJ.useInView = function useInView(options = {}) {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                         <div className="col-span-2 md:col-span-1">
                             <a href="index.html" className="inline-block mb-3">
-                                <img src="/logo.png" alt="Sıhana Jorin" style={{ height: '2rem', width: 'auto' }} />
+                                <img src="/logo.png" alt="Sıhana Jorin" style={{ height: '2.25rem', width: 'auto' }} />
                             </a>
                             <p className="text-gray-500 text-sm leading-relaxed mb-4">{f.description || "Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız."}</p>
                             <div className="flex items-center gap-1 text-gray-500 text-xs">
@@ -1003,7 +1003,7 @@ window.SJ.useInView = function useInView(options = {}) {
                         </div>
                     </div>
                     <div className="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                        <p className="text-gray-600 text-xs">&copy; {new Date().getFullYear()} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
+                        <p className="text-gray-600 text-xs">&copy; {new Date().getFullYear()} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır. <a href="https://gucluyumhe.dev" target="_blank" rel="noopener" className="hover:text-[#DEDBC8] transition-colors">gucluyumhe.dev</a> tarafından yapılmıştır.</p>
                         <div className="flex items-center gap-3">
                             {socialLinks.map(s => {
                                 const Icon = SJ[s.icon];

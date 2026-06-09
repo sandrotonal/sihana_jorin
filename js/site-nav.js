@@ -36,7 +36,7 @@
             desktopNav.innerHTML = `
                 <div class="flex items-center gap-3 sm:gap-5 md:gap-10 lg:gap-12">
                     <a href="index.html" class="flex-shrink-0">
-                        <img src="/logo.png" alt="Sıhana Jorin" class="h-7 md:h-8 w-auto" />
+                        <img src="/logo.png" alt="Sıhana Jorin" class="h-8 md:h-9 w-auto" />
                     </a>
                     ${NAV_LINKS.map(l =>
                         `<a href="${l.href}" class="nav-link text-[10px] sm:text-xs md:text-sm transition-colors duration-300 hover:text-[#E1E0CC] ${isActive(l.href) ? 'text-[#E1E0CC] font-medium' : 'text-[#E1E0CC]/60'}">${l.label}</a>`
@@ -50,7 +50,7 @@
             mobileHeader.className = 'fixed top-0 left-0 right-0 z-[190] flex items-center justify-between px-4 h-14 md:hidden';
             mobileHeader.innerHTML = `
                 <a href="index.html" class="flex-shrink-0 leading-none">
-                    <img src="/logo.png" alt="Sıhana Jorin" class="h-7 w-auto" />
+                    <img src="/logo.png" alt="Sıhana Jorin" class="h-8 w-auto" />
                 </a>
                 <button id="site-menu-btn" aria-label="Menü" class="flex items-center justify-center w-9 h-9 rounded-full bg-black cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E1E0CC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -133,7 +133,7 @@
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 mb-12">
                             <div class="col-span-2 md:col-span-1">
                                 <a href="index.html" class="inline-block mb-3">
-                                    <img src="/logo.png" alt="Sıhana Jorin" class="h-8 w-auto" />
+                                    <img src="/logo.png" alt="Sıhana Jorin" class="h-9 w-auto" />
                                 </a>
                                 <p class="text-gray-500 text-sm leading-relaxed mb-4">Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız.</p>
                                 <div class="flex items-center gap-1 text-gray-500 text-xs">
@@ -152,7 +152,7 @@
                             `).join('')}
                         </div>
                         <div class="border-t border-[#DEDBC8]/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <p class="text-gray-600 text-xs">&copy; ${year} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır.</p>
+                            <p class="text-gray-600 text-xs">&copy; ${year} Sıhana Jorin Köy Derneği. Tüm hakları saklıdır. <a href="https://gucluyumhe.dev" target="_blank" rel="noopener" class="hover:text-[#DEDBC8] transition-colors">gucluyumhe.dev</a> tarafından yapılmıştır.</p>
                             <div class="flex items-center gap-3">
                                 <a href="https://instagram.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="Instagram"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
                                 <a href="https://facebook.com" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; background:rgba(222,219,200,0.08); color:rgba(222,219,200,0.5); transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
