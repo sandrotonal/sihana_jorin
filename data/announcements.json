@@ -1,5 +1,16 @@
 [
   {
+    "buttonText": "Gör",
+    "title": "Git Test Yazisi",
+    "date": "2026",
+    "summary": "git test",
+    "buttonHref": "duyurular.html",
+    "subCategory": "Duyuru",
+    "category": "Etkinlik",
+    "description": "git test description",
+    "id": "git-test-yazisi"
+  },
+  {
     "id": "yaz-senligi",
     "category": "Etkinlik",
     "subCategory": "Duyuru",
