@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duyurular — Sıhana Jorin Köy Derneği</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23000'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23DEDBC8'>S</text></svg>">
     <meta name="description"
         content="Sıhana Jorin Köy Derneği'nin en güncel haberleri, etkinlik duyuruları ve önemli gelişmeleri.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +16,7 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         .duy-timeline {
             position: relative;
@@ -168,7 +169,7 @@
         <div id="page-header-root"></div>
         <div id="duyurular-root" class="max-w-[95%] xl:max-w-7xl mx-auto py-12 pb-16"></div>
 
-        <script type="text/babel">
+        <script>
             (function () {
                 const headerRoot = ReactDOM.createRoot(document.getElementById('page-header-root'));
                 headerRoot.render(React.createElement(SJ.PageHeader, {

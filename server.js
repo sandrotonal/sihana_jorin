@@ -1,8 +1,6 @@
 const express = require('express');
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
-const multer = require('multer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,39 +13,9 @@ const ensureDir = (dir) => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 };
 
-const ALLOWED_SUBDIRS = ['general', 'gallery', 'slider', 'announcements'];
-
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        let sub = (req.body.subdir || 'general').replace(/\.\./g, '').replace(/[^a-z0-9_-]/gi, '');
-        if (!sub || !ALLOWED_SUBDIRS.includes(sub)) sub = 'general';
-        const dir = path.join(UPLOAD_DIR, sub);
-        ensureDir(dir);
-        cb(null, dir);
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname) || '.jpg';
-        const name = Date.now() + '-' + Math.random().toString(36).slice(2, 6) + ext;
-        cb(null, name);
-    }
-});
-const upload = multer({
-    storage,
-    limits: { fileSize: 10 * 1024 * 1024 },
-    fileFilter: (req, file, cb) => {
-        const allowedExt = /\.(jpg|jpeg|png|gif|webp|svg|avif|mp4|webm)$/i;
-        const allowedMime = /^image\/(jpeg|png|gif|webp|svg\+xml|avif)|^video\/(mp4|webm)$/i;
-        if (allowedExt.test(path.extname(file.originalname)) && allowedMime.test(file.mimetype)) {
-            cb(null, true);
-        } else {
-            cb(new Error('Sadece gorsel/video dosyalarina izin verilir'));
-        }
-    }
-});
-
+/* ─── File helpers ─── */
 const filePath = (name) => path.join(DATA_DIR, name);
 
-/* ─── Default data ─── */
 const DEFAULTS = {
     'announcements.json': [
         { id: 'yaz-senligi', category: 'Etkinlik', subCategory: 'Duyuru', date: 'Ağustos 2026', title: 'Geleneksel Yaz Şenliği', summary: "15–16 Ağustos'ta köy meydanında", description: 'Bu yıl geleneksel Yaz Şenliğimiz 15–16 Ağustos tarihlerinde köy meydanında gerçekleşecektir.', imgUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=compress&cs=tinysrgb&w=800', buttonText: 'Detaylar', buttonHref: 'duyurular.html' },
@@ -103,7 +71,6 @@ const DEFAULTS = {
     }
 };
 
-/* ─── File helpers ─── */
 const readJSON = (name) => {
     const p = filePath(name);
     if (!fs.existsSync(p)) {
@@ -135,7 +102,7 @@ const writeJSON = (name, data) => {
 /* ─── Middleware ─── */
 app.use(express.json({ limit: '1mb' }));
 
-/* ─── Generate JS from JSON (intercepted routes) ─── */
+/* ─── Dynamic JS: Announcements ─── */
 app.get('/js/data/announcements.js', (req, res) => {
     const data = readJSON('announcements.json');
     res.type('application/javascript');
@@ -144,6 +111,7 @@ app.get('/js/data/announcements.js', (req, res) => {
     );
 });
 
+/* ─── Dynamic JS: Slider ─── */
 app.get('/js/config.js', (req, res) => {
     const data = readJSON('slider.json');
     res.type('application/javascript');
@@ -152,179 +120,7 @@ app.get('/js/config.js', (req, res) => {
     );
 });
 
-/* ─── API: Announcements ─── */
-app.get('/api/announcements', (req, res) => {
-    const data = readJSON('announcements.json');
-    res.json(data);
-});
-
-app.post('/api/announcements', (req, res) => {
-    const item = req.body;
-    if (!item || !item.title) {
-        return res.status(400).json({ error: 'Başlık zorunludur' });
-    }
-    const data = readJSON('announcements.json');
-    item.id = item.id || item.title.toLowerCase().replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u').replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'item-' + Date.now();
-    data.unshift(item);
-    writeJSON('announcements.json', data);
-    res.status(201).json(item);
-});
-
-app.put('/api/announcements/:id', (req, res) => {
-    const { id } = req.params;
-    const updates = req.body;
-    if (!updates || !updates.title) {
-        return res.status(400).json({ error: 'Başlık zorunludur' });
-    }
-    const data = readJSON('announcements.json');
-    const idx = data.findIndex(item => item.id === id);
-    if (idx === -1) return res.status(404).json({ error: 'Bulunamadı' });
-    const updated = { ...data[idx], ...updates, id };
-    data.splice(idx, 1);
-    data.unshift(updated);
-    writeJSON('announcements.json', data);
-    res.json(updated);
-});
-
-app.delete('/api/announcements/:id', (req, res) => {
-    const { id } = req.params;
-    const data = readJSON('announcements.json');
-    const idx = data.findIndex(item => item.id === id);
-    if (idx === -1) return res.status(404).json({ error: 'Bulunamadı' });
-    data.splice(idx, 1);
-    writeJSON('announcements.json', data);
-    res.json({ ok: true });
-});
-
-app.patch('/api/announcements/reorder', (req, res) => {
-    const { fromIndex, toIndex } = req.body;
-    if (fromIndex === undefined || toIndex === undefined) {
-        return res.status(400).json({ error: 'fromIndex ve toIndex zorunludur' });
-    }
-    const data = readJSON('announcements.json');
-    if (fromIndex < 0 || fromIndex >= data.length || toIndex < 0 || toIndex >= data.length) {
-        return res.status(400).json({ error: 'Geçersiz index' });
-    }
-    const [moved] = data.splice(fromIndex, 1);
-    data.splice(toIndex, 0, moved);
-    writeJSON('announcements.json', data);
-    res.json(data);
-});
-
-/* ─── API: Slider ─── */
-app.get('/api/slider', (req, res) => {
-    const data = readJSON('slider.json');
-    res.json(data);
-});
-
-app.post('/api/slider', (req, res) => {
-    const item = req.body;
-    if (!item || !item.title) {
-        return res.status(400).json({ error: 'Başlık zorunludur' });
-    }
-    const data = readJSON('slider.json');
-    data.unshift(item);
-    writeJSON('slider.json', data);
-    res.status(201).json(item);
-});
-
-app.put('/api/slider/:index', (req, res) => {
-    const idx = parseInt(req.params.index, 10);
-    const updates = req.body;
-    if (!updates || !updates.title) {
-        return res.status(400).json({ error: 'Başlık zorunludur' });
-    }
-    const data = readJSON('slider.json');
-    if (idx < 0 || idx >= data.length) return res.status(404).json({ error: 'Bulunamadı' });
-    const updated = { ...data[idx], ...updates };
-    data.splice(idx, 1);
-    data.unshift(updated);
-    writeJSON('slider.json', data);
-    res.json(updated);
-});
-
-app.delete('/api/slider/:index', (req, res) => {
-    const idx = parseInt(req.params.index, 10);
-    const data = readJSON('slider.json');
-    if (idx < 0 || idx >= data.length) return res.status(404).json({ error: 'Bulunamadı' });
-    data.splice(idx, 1);
-    writeJSON('slider.json', data);
-    res.json({ ok: true });
-});
-
-app.patch('/api/slider/reorder', (req, res) => {
-    const { fromIndex, toIndex } = req.body;
-    if (fromIndex === undefined || toIndex === undefined) {
-        return res.status(400).json({ error: 'fromIndex ve toIndex zorunludur' });
-    }
-    const data = readJSON('slider.json');
-    if (fromIndex < 0 || fromIndex >= data.length || toIndex < 0 || toIndex >= data.length) {
-        return res.status(400).json({ error: 'Geçersiz index' });
-    }
-    const [moved] = data.splice(fromIndex, 1);
-    data.splice(toIndex, 0, moved);
-    writeJSON('slider.json', data);
-    res.json(data);
-});
-
-/* ─── API: Gallery ─── */
-app.get('/api/gallery', (req, res) => {
-    const data = readJSON('gallery.json');
-    res.json(data);
-});
-
-app.post('/api/gallery', (req, res) => {
-    const item = req.body;
-    if (!item || !item.title) {
-        return res.status(400).json({ error: 'Başlık zorunludur' });
-    }
-    const data = readJSON('gallery.json');
-    data.unshift(item);
-    writeJSON('gallery.json', data);
-    res.status(201).json(item);
-});
-
-app.delete('/api/gallery/:index', (req, res) => {
-    const idx = parseInt(req.params.index, 10);
-    const data = readJSON('gallery.json');
-    if (idx < 0 || idx >= data.length) return res.status(404).json({ error: 'Bulunamadı' });
-    data.splice(idx, 1);
-    writeJSON('gallery.json', data);
-    res.json({ ok: true });
-});
-
-/* ─── API: Upload ─── */
-app.post('/api/upload', upload.single('file'), (req, res) => {
-    if (!req.file) return res.status(400).json({ error: 'Dosya gerekli' });
-    let sub = (req.body.subdir || 'general').replace(/\.\./g, '').replace(/[^a-z0-9_-]/gi, '');
-    if (!sub || !ALLOWED_SUBDIRS.includes(sub)) sub = 'general';
-    res.json({ url: '/uploads/' + sub + '/' + req.file.filename, filename: req.file.filename });
-});
-
-app.get('/api/uploads', (req, res) => {
-    const list = [];
-    const walk = (dir, prefix) => {
-        let items;
-        try { items = fs.readdirSync(dir, { withFileTypes: true }); } catch { return; }
-        for (const item of items) {
-            if (item.isDirectory()) walk(path.join(dir, item.name), prefix + item.name + '/');
-            else if (/\.(jpg|jpeg|png|gif|webp|svg|avif|mp4|webm)$/i.test(item.name))
-                list.push({ name: item.name, url: '/uploads/' + prefix + item.name });
-        }
-    };
-    walk(UPLOAD_DIR, '');
-    res.json(list);
-});
-
-app.use((err, req, res, next) => {
-    if (err instanceof multer.MulterError) {
-        return res.status(400).json({ error: 'Dosya boyutu 10MB sinirini asiyor' });
-    }
-    if (err) return res.status(400).json({ error: err.message });
-    next();
-});
-
-/* ─── Dynamic JS: Gallery Data ─── */
+/* ─── Dynamic JS: Gallery ─── */
 app.get('/js/data/gallery.js', (req, res) => {
     const data = readJSON('gallery.json');
     res.type('application/javascript');
@@ -342,44 +138,28 @@ app.get('/js/data/site.js', (req, res) => {
     );
 });
 
-/* ─── API: Site Data ─── */
-app.get('/api/site', (req, res) => {
-    res.json(readJSON('site.json'));
-});
-
-/* ─── API: Git Sync (sadece commit, push yok) ─── */
-app.post('/api/git-sync', (req, res) => {
-    const run = (cmd) => execSync(cmd, { cwd: __dirname, stdio: 'pipe', encoding: 'utf-8' });
-    try {
-        run('git add data/ uploads/');
-        try {
-            run('git diff --cached --quiet');
-            return res.json({ ok: true, warning: 'Kaydedilecek yeni veri yok' });
-        } catch {
-            // staged changes var, commit'e devam
-        }
-        run('git commit -m "admin: veri senkronizasyonu"');
-        res.json({ ok: true });
-    } catch (err) {
-        const msg = (err.stderr || err.message || '').trim();
-        res.status(500).json({ error: msg || 'Git islemi basarisiz' });
-    }
-});
-
-app.put('/api/site', (req, res) => {
-    const updates = req.body;
-    if (!updates || typeof updates !== 'object') {
-        return res.status(400).json({ error: 'Gecersiz veri' });
-    }
-    const current = readJSON('site.json');
-    const merged = { ...current, ...updates };
-    writeJSON('site.json', merged);
-    res.json(merged);
-});
-
-/* ─── Static files (after dynamic routes) ─── */
+/* ─── Static files ─── */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use(express.static(__dirname));
+app.use('/resim', express.static(path.join(__dirname, 'resim')));
+app.use('/css', express.static(path.join(__dirname, 'css')));
+app.use('/js', express.static(path.join(__dirname, 'js')));
+
+// Serve specific static root assets
+app.get('/logo.png', (req, res) => res.sendFile(path.join(__dirname, 'logo.png')));
+app.get('/logosıhan.png', (req, res) => res.sendFile(path.join(__dirname, 'logosıhan.png')));
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+// Serve allowed HTML files explicitly
+const ALLOWED_PAGES = ['index.html', 'hakkimizda.html', 'galeri.html', 'duyurular.html', 'gonullu.html', 'iletisim.html'];
+ALLOWED_PAGES.forEach(page => {
+    app.get(`/${page}`, (req, res) => res.sendFile(path.join(__dirname, page)));
+    // Also support root/extensionless accesses if needed
+    const nameWithoutExt = page.replace('.html', '');
+    app.get(`/${nameWithoutExt}`, (req, res) => res.sendFile(path.join(__dirname, page)));
+});
+
+// Fallback to index.html for root "/"
+app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 /* ─── Start ─── */
 ensureDir(DATA_DIR);
@@ -395,7 +175,6 @@ const startServer = (port) => {
         console.log('  Sıhana Jorin — Sunucu çalışıyor');
         console.log('  ─────────────────────────────────');
         console.log(`  Site:  http://localhost:${port}`);
-        console.log(`  Admin: http://localhost:${port}/admin/`);
         console.log('');
     });
     server.on('error', (err) => {

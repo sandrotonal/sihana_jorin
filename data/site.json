@@ -36,7 +36,7 @@
     "badge": "Bize Ulaşın",
     "title": "Birlikte daha güçlüyüz",
     "description": "Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız.",
-    "address": "Sıhana Jorin Köyü, Merkez Mahallesi, No:1",
+    "address": "Dernek Ofisi: Kağıthane / İstanbul | Köyümüz: Besler Köyü (Sîhana Jorin), Doğubayazıt / Ağrı",
     "phone": "+90 (555) 123 4567",
     "email": "omerozbay104@gmail.com"
   },
@@ -44,9 +44,8 @@
     "description": "Sıhana Jorin Köyü Derneği — birlikte daha güçlüyüz.",
     "email": "info@sihanajorin.org",
     "phone": "+90 (555) 123 4567",
-    "facebook": "#",
-    "instagram": "#",
-    "twitter": "#"
+    "facebook": "https://www.facebook.com/share/1aC4jPMM4T/?mibextid=wwXIfr",
+    "tiktok": "https://www.tiktok.com/@sihanajorin04?_r=1&_t=ZS-96uW2pxsEmT"
   },
   "pages": {
     "hakkimizda": {
@@ -74,17 +73,7 @@
       "socialText": "Bizi sosyal medyada takip edin.",
       "responseTime": "Mesajlarınıza genellikle 1-2 iş günü içinde yanıt veriyoruz."
     },
-    "bagis": {
-      "title": "Bağış Yap",
-      "description": "Köyümüzün projelerine destek olmak için bağışta bulunabilirsiniz. Her katkı, köyümüzün geleceğine yapılan bir yatırımdır.",
-      "bankName": "Ziraat Bankası",
-      "iban": "TR12 0000 0000 0000 0000 0000",
-      "accountName": "Sıhana Jorin Köy Derneği",
-      "branch": "Doğubayazıt / Ağrı",
-      "infoText": "Bağışlarınız, köyümüzün projeleri ve faaliyetleri için kullanılacaktır. Bağış makbuzu talepleriniz için bizimle iletişime geçebilirsiniz.",
-      "ctaTitle": "Her Bağış Değerlidir",
-      "ctaText": "Köyümüzün kalkınması ve kültürel mirasımızın yaşatılması için siz de destek olun."
-    },
+
     "galeri": {
       "title": "Galeri",
       "description": "Köyümüzün güzelliklerini, etkinliklerimizi ve birlikte geçirdiğimiz anları keşfedin."

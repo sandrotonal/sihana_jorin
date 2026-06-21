@@ -5,10 +5,10 @@
   "description": "Sıhana Jorin Köy Derneği Web Sitesi",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "build": "npx esbuild js/bundle.js --bundle=false --loader:.js=jsx --jsx=transform --jsx-factory=React.createElement --jsx-fragment=React.Fragment --outfile=js/bundle.compiled.js"
   },
   "dependencies": {
-    "express": "^4.21.0",
-    "multer": "^2.1.1"
+    "express": "^4.21.0"
   }
 }

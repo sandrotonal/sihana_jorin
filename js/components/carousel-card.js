@@ -94,6 +94,7 @@ const Card = function Card({ data, showCarousel = true }) {
         overflowX: 'auto', scrollSnapType: 'x mandatory',
         scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch',
         display: 'flex', gap: '12px',
+        justifyContent: data.length === 1 ? 'center' : 'flex-start',
         scrollbarWidth: 'none', msOverflowStyle: 'none',
       }
     },
@@ -101,7 +102,9 @@ const Card = function Card({ data, showCarousel = true }) {
         h('div', {
           key: card.id,
           className: 'carousel-card flex-shrink-0',
-          style: { width: 'calc(25% - 9px)', minWidth: '280px', scrollSnapAlign: 'start' }
+          style: data.length === 1
+            ? { width: '100%', maxWidth: '450px', scrollSnapAlign: 'start' }
+            : { width: 'calc(25% - 9px)', minWidth: '280px', scrollSnapAlign: 'start' }
         },
           h('div', {
             className: 'relative overflow-hidden rounded-xl shadow-md group h-72 border border-[#DEDBC8]/5 hover:border-[#DEDBC8]/20 transition-colors duration-300'

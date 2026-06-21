@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sıhana Jorin — Köy Derneği</title>
+    <meta name="description" content="Sîhana Jorin Köy Derneği — geçmişin mirasını koruyan, geleceği birlikte inşa eden köy topluluğu.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23000'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23DEDBC8'>S</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -15,9 +17,9 @@
             theme: {
                 extend: {
                     colors: { primary: '#DEDBC8' },
-                    fontFamily: { 
+                    fontFamily: {
                         sans: ['Almarai', 'sans-serif'],
-                        serif: ['"Instrument Serif"', 'serif'] 
+                        serif: ['"Instrument Serif"', 'serif']
                     }
                 }
             }
@@ -29,7 +31,6 @@
 
     <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 </head>
 <body>
     <div id="site-nav"></div>
@@ -39,6 +40,7 @@
     <script src="js/config.js"></script>
     <script src="js/data/announcements.js"></script>
     <script src="js/data/site.js"></script>
-    <script type="text/babel" src="js/bundle.js"></script>
+    <!-- Pre-compiled JSX → React.createElement (Babel gerektirmez) -->
+    <script src="js/bundle.compiled.js"></script>
 </body>
 </html>

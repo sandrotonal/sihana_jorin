@@ -4,51 +4,324 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galeri — Sıhana Jorin</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23000'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23DEDBC8'>S</text></svg>">
+    <meta name="description" content="Sıhana Jorin Köy Derneği fotoğraf galerisi — köyümüzden kareler.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
-    <script>window.tailwind=window.tailwind||{};window.tailwind.config={theme:{extend:{colors:{primary:'#DEDBC8'},fontFamily:{sans:['Almarai','sans-serif'],serif:['"Instrument Serif"','serif']}}}}</script>
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#DEDBC8' },
+                    fontFamily: {
+                        sans: ['Almarai', 'sans-serif'],
+                        serif: ['"Instrument Serif"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #000; color: #E1E0CC; font-family: 'Almarai', sans-serif; min-height: 100vh; }
+
+        /* ── Hero ── */
+        .gl-hero {
+            padding: clamp(6rem, 12vw, 10rem) clamp(1.25rem, 5vw, 5rem) clamp(3rem, 6vw, 5rem);
+            border-bottom: 1px solid rgba(222,219,200,0.06);
+        }
+        .gl-hero-label {
+            font-size: 0.6875rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(222,219,200,0.35);
+            margin-bottom: 1.25rem;
+            display: block;
+        }
+        .gl-hero h1 {
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            font-weight: 400;
+            letter-spacing: -0.04em;
+            line-height: 0.95;
+            color: #E1E0CC;
+        }
+        .gl-hero h1 em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+        }
+
+        /* ── Grid ── */
+        .gl-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            padding: clamp(2rem, 5vw, 4rem) clamp(1.25rem, 5vw, 5rem);
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        @media (max-width: 720px) {
+            .gl-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+                padding: 2rem 1.25rem;
+            }
+        }
+
+        .gl-item {
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            background: #111;
+            aspect-ratio: 3/2;
+            border-radius: 1rem;
+            border: 1px solid rgba(222,219,200,0.06);
+            transition: border-color 0.3s;
+        }
+        .gl-item:hover {
+            border-color: rgba(222,219,200,0.15);
+        }
+        .gl-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.9s cubic-bezier(0.16,1,0.3,1);
+            will-change: transform;
+        }
+        .gl-item:hover img { transform: scale(1.05); }
+
+        .gl-item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+        }
+        .gl-item:hover .gl-item-overlay { opacity: 1; }
+
+        .gl-item-title {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #E1E0CC;
+            transform: translateY(6px);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .gl-item:hover .gl-item-title { transform: translateY(0); }
+
+        .gl-item-meta {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: rgba(222,219,200,0.5);
+            margin-top: 0.25rem;
+            transform: translateY(6px);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1) 0.04s;
+        }
+        .gl-item:hover .gl-item-meta { transform: translateY(0); }
+
+        /* ── Lightbox ── */
+        .gl-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .gl-lightbox.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .gl-lightbox img {
+            max-width: min(90vw, 1100px);
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        .gl-lightbox.open img { transform: scale(1); }
+
+        .gl-lightbox-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid rgba(222,219,200,0.15);
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #E1E0CC;
+            font-size: 1.25rem;
+            transition: all 0.25s;
+        }
+        .gl-lightbox-close:hover {
+            background: rgba(222,219,200,0.1);
+            border-color: rgba(222,219,200,0.35);
+        }
+        .gl-lightbox-caption {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        .gl-lightbox-caption h3 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #E1E0CC;
+        }
+        .gl-lightbox-caption p {
+            font-size: 0.75rem;
+            color: rgba(222,219,200,0.45);
+            margin-top: 0.25rem;
+        }
+
+        /* ── Reveal ── */
+        .gl-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+        }
+        .gl-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
 </head>
-<body class="flex flex-col min-h-screen">
+<body>
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
     <script src="js/data/site.js"></script>
-    <script src="js/data/gallery.js"></script>
-    <script src="js/hooks.js"></script>
-    <script src="js/components/page-header.js"></script>
-    <script src="js/components/gallery-hover-carousel.js"></script>
-    <script src="js/animations-init.js"></script>
 
-    <main class="flex-grow pt-12">
-        <div id="page-header-root"></div>
-        <script type="text/babel">
-            (function() {
-                const p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.galeri) || {};
-                const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
-                root.render(React.createElement(SJ.PageHeader, {
-                    title: p.title || 'Galeri',
-                    description: p.description || ''
-                }));
-            })();
-        </script>
+    <main>
+        <header class="gl-hero" id="gl-hero-section" data-reveal>
+            <span class="gl-hero-label">Sıhana Jorin</span>
+            <h1>Köyümüzden<br><em>Kareler</em></h1>
+        </header>
 
-        <!-- GalleryHoverCarousel Component -->
-        <div id="gallery-root" data-reveal></div>
-        <script type="text/babel">
-            (function() {
-                const root = ReactDOM.createRoot(document.getElementById('gallery-root'));
-                root.render(React.createElement(SJ.GalleryHoverCarousel, {
-                    heading: 'Köyümüzden Kareler'
-                }));
-            })();
-        </script>
+        <div class="gl-grid" id="gl-grid"></div>
     </main>
 
+    <!-- Lightbox -->
+    <div class="gl-lightbox" id="gl-lightbox" role="dialog" aria-label="Fotoğraf görüntüleyici">
+        <button class="gl-lightbox-close" id="gl-lb-close" aria-label="Kapat">✕</button>
+        <img id="gl-lb-img" src="" alt="">
+        <div class="gl-lightbox-caption">
+            <h3 id="gl-lb-title"></h3>
+            <p id="gl-lb-desc"></p>
+        </div>
+    </div>
+
     <div id="site-footer"></div>
+
+    <script>
+    (function () {
+        /* ── Gallery data — gerçek fotoğraflar ── */
+        var PHOTOS = [
+            { title: 'Dernek Buluşması', image: '/resim/5866169159148834141.jpg', category: 'Topluluk', year: '2025', description: 'Sıhana Jorin köy derneği üyeleri bir araya geldi' },
+            { title: 'Genel Kurul Toplantısı', image: '/resim/5866169159148834143.jpg', category: 'Topluluk', year: '2025', description: 'Dernek genel kurul toplantısı' },
+            { title: 'Yeşil Vadi', image: '/resim/5866169159148834153.jpg', category: 'Doğa', year: '2025', description: 'Doğanın içinde huzur dolu bir gün' },
+            { title: 'Bahar Buluşması', image: '/resim/5866169159148834154.jpg', category: 'Doğa', year: '2025', description: 'Bahar mevsiminde köy dayanışması' }
+        ];
+
+        /* ── Build grid ── */
+        var grid = document.getElementById('gl-grid');
+        var lightbox = document.getElementById('gl-lightbox');
+        var lbImg = document.getElementById('gl-lb-img');
+        var lbTitle = document.getElementById('gl-lb-title');
+        var lbDesc = document.getElementById('gl-lb-desc');
+        var lbClose = document.getElementById('gl-lb-close');
+
+        function openLightbox(photo) {
+            lbImg.src = photo.image;
+            lbImg.alt = photo.title;
+            lbTitle.textContent = photo.title;
+            lbDesc.textContent = photo.category + ' · ' + photo.year;
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeLightbox() {
+            lightbox.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        lbClose.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', function (e) {
+            if (e.target === lightbox) closeLightbox();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        PHOTOS.forEach(function (photo, i) {
+            var item = document.createElement('div');
+            item.className = 'gl-item';
+            item.style.transitionDelay = (i * 0.08) + 's';
+
+            var img = document.createElement('img');
+            img.src = photo.image;
+            img.alt = photo.title;
+            img.loading = i < 2 ? 'eager' : 'lazy';
+            img.decoding = 'async';
+
+            var overlay = document.createElement('div');
+            overlay.className = 'gl-item-overlay';
+
+            var titleEl = document.createElement('div');
+            titleEl.className = 'gl-item-title';
+            titleEl.textContent = photo.title;
+
+            var meta = document.createElement('div');
+            meta.className = 'gl-item-meta';
+            meta.textContent = photo.category + ' · ' + photo.year;
+
+            overlay.appendChild(titleEl);
+            overlay.appendChild(meta);
+            item.appendChild(img);
+            item.appendChild(overlay);
+
+            item.addEventListener('click', function () { openLightbox(photo); });
+            grid.appendChild(item);
+        });
+
+        /* ── Scroll reveal ── */
+        var obs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    obs.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.06, rootMargin: '0px 0px -20px 0px' });
+
+        document.querySelectorAll('.gl-item').forEach(function (el) { obs.observe(el); });
+
+        /* Hero reveal */
+        var heroObs = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+                if (e.isIntersecting) { e.target.classList.add('sj-revealed'); heroObs.unobserve(e.target); }
+            });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('[data-reveal]').forEach(function (el) { heroObs.observe(el); });
+    })();
+    </script>
 </body>
 </html>

@@ -5,192 +5,405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hikayemiz — Sıhana Jorin Köy Derneği</title>
-    <meta name="description"
-        content="Sıhana Jorin Köy Derneği'nin hikayesi, değerleri ve yönetim kurulu hakkında bilgi edinin.">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23000'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='20' fill='%23DEDBC8'>S</text></svg>">
+    <meta name="description" content="Sıhana Jorin Köy Derneği'nin hikayesi, değerleri ve köyümüzün tarihi hakkında bilgi edinin.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet">
-    <script>window.tailwind = window.tailwind || {}; window.tailwind.config = { theme: { extend: { colors: { primary: '#DEDBC8' }, fontFamily: { sans: ['Almarai','sans-serif'], serif: ['"Instrument Serif"', 'serif'] } } } }</script>
+    <script>
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#DEDBC8' },
+                    fontFamily: {
+                        sans: ['Almarai', 'sans-serif'],
+                        serif: ['"Instrument Serif"', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
-        .hak-grid {
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #000;
+            color: #E1E0CC;
+            font-family: 'Almarai', sans-serif;
+            min-height: 100vh;
+        }
+
+        /* ── Hero ── */
+        .hk-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 480px;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+        }
+        .hk-hero img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.45);
+        }
+        .hk-hero-content {
+            position: relative;
+            z-index: 2;
+            padding: clamp(2rem, 5vw, 4rem);
+            max-width: 800px;
+        }
+        .hk-hero-label {
+            font-size: 0.6875rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(222,219,200,0.5);
+            margin-bottom: 1rem;
+        }
+        .hk-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 500;
+            line-height: 1.0;
+            letter-spacing: -0.03em;
+            color: #E1E0CC;
+        }
+        .hk-hero h1 em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        /* ── Layout ── */
+        .hk-section {
+            padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hk-section--wide {
+            max-width: 1300px;
+        }
+
+        /* ── Metin bölümleri ── */
+        .hk-intro {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: clamp(2rem, 5vw, 5rem);
-            align-items: center;
+            gap: clamp(3rem, 6vw, 7rem);
+            align-items: start;
+        }
+        @media (max-width: 720px) {
+            .hk-intro { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+        .hk-intro-label {
+            font-size: 0.6875rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(222,219,200,0.35);
+            margin-bottom: 1.25rem;
+        }
+        .hk-intro h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-weight: 500;
+            line-height: 1.15;
+            letter-spacing: -0.02em;
+            color: #E1E0CC;
+            margin-bottom: 1.5rem;
+        }
+        .hk-intro h2 em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+        .hk-body {
+            font-size: clamp(0.875rem, 1.1vw, 1rem);
+            line-height: 1.8;
+            color: rgba(222,219,200,0.5);
+        }
+        .hk-body + .hk-body { margin-top: 1.25rem; }
+
+        /* ── Separator / Divider ── */
+        .hk-sep {
+            border: none;
+            border-top: 1px solid rgba(222,219,200,0.07);
+            margin: 0 clamp(1.25rem, 5vw, 5rem);
         }
 
-        @media (max-width:768px) {
-            .hak-grid {
-                grid-template-columns: 1fr;
+
+
+        /* ── Değerler — liste ── */
+        .hk-values {
+            padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 5vw, 5rem);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .hk-values-header {
+            margin-bottom: 4rem;
+        }
+        .hk-values-header .hk-intro-label { margin-bottom: 1rem; }
+        .hk-values-header h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: #E1E0CC;
+        }
+        .hk-value-item {
+            display: grid;
+            grid-template-columns: 60px 1fr;
+            gap: 2rem;
+            align-items: start;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid rgba(222,219,200,0.07);
+            transition: background 0.3s;
+        }
+        .hk-value-item:first-of-type { border-top: 1px solid rgba(222,219,200,0.07); }
+        @media (max-width: 560px) {
+            .hk-value-item { grid-template-columns: 40px 1fr; gap: 1.25rem; }
+        }
+        .hk-value-num {
+            font-size: 0.6875rem;
+            letter-spacing: 0.1em;
+            color: rgba(222,219,200,0.25);
+            padding-top: 0.25rem;
+        }
+        .hk-value-body {}
+        .hk-value-body h3 {
+            font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+            font-weight: 500;
+            color: #E1E0CC;
+            margin-bottom: 0.75rem;
+        }
+        .hk-value-body p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+            color: rgba(222,219,200,0.45);
+            max-width: 600px;
+        }
+
+        /* ── Galeri strip ── */
+        .hk-photo-strip {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3px;
+            height: clamp(280px, 40vw, 500px);
+        }
+        @media (max-width: 640px) {
+            .hk-photo-strip {
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 1fr 1fr;
+                height: auto;
+            }
+            .hk-photo-strip .hk-photo-main {
+                grid-column: 1 / -1;
+                height: 260px;
             }
         }
-
-        .hak-grid>div:last-child {
-            aspect-ratio: 4/5;
-            border-radius: 1.5rem;
+        .hk-photo-main, .hk-photo-thumb {
             overflow: hidden;
-            border: 1px solid rgba(222, 219, 200, 0.08);
+            position: relative;
+        }
+        .hk-photo-main { grid-row: 1 / -1; }
+        .hk-photo-strip img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .hk-photo-strip img:hover { transform: scale(1.04); }
+
+        /* ── CTA ── */
+        .hk-cta {
+            padding: clamp(5rem, 10vw, 10rem) clamp(1.25rem, 5vw, 5rem);
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .hk-cta p {
+            font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+            font-weight: 400;
+            line-height: 1.3;
+            color: #E1E0CC;
+            margin-bottom: 2.5rem;
+        }
+        .hk-cta p em {
+            font-family: 'Instrument Serif', serif;
+            font-style: italic;
+        }
+        .hk-cta-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .hk-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            cursor: pointer;
+            font-family: 'Almarai', sans-serif;
+        }
+        .hk-btn--primary {
+            background: #DEDBC8;
+            color: #000;
+            border: none;
+        }
+        .hk-btn--primary:hover { background: #ece9d8; }
+        .hk-btn--ghost {
+            background: transparent;
+            color: rgba(222,219,200,0.6);
+            border: 1px solid rgba(222,219,200,0.15);
+        }
+        .hk-btn--ghost:hover {
+            border-color: rgba(222,219,200,0.4);
+            color: #E1E0CC;
         }
 
-        @media (max-width:768px) {
-            .hak-grid>div:last-child {
-                aspect-ratio: 16/9;
-            }
+        /* ── Reveal animations ── */
+        [data-reveal] {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        [data-reveal].visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body>
     <div id="site-nav"></div>
     <script src="js/site-nav.js"></script>
     <script src="js/data/site.js"></script>
-    <script src="js/hooks.js"></script>
-    <script src="js/components/page-header.js"></script>
-    <script src="js/components/flipping-card.js"></script>
-    <script src="js/animations-init.js"></script>
 
-    <main class="flex-grow pt-12">
-        <div id="page-header-root"></div>
-        <script type="text/babel">
-                (function () {
-                    const p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.hakkimizda) || {};
-                    const root = ReactDOM.createRoot(document.getElementById('page-header-root'));
-                    root.render(React.createElement(SJ.PageHeader, {
-                        title: p.title || 'Hikayemiz',
-                        description: p.description || '',
-                        buttons: [
-                            { label: 'Değerlerimiz', href: '#values', variant: 'primary' },
-                            { label: 'İletişime Geç', href: 'iletisim.html', variant: 'ghost' }
-                        ]
-                    }));
-                })();
-        </script>
-
-        <!-- Köyün Geçmişi -->
-        <section class="sj-section" data-reveal>
-            <div class="sj-container">
-                <div class="hak-grid">
-                    <div>
-                        <span class="sj-label">Köklerimiz</span>
-                        <h2 class="sj-h2" id="hakkimizda-kokler-title">Besler / Sîhana Jorin</h2>
-                        <p class="sj-body" style="margin-top:1.25rem; margin-bottom:1.25rem;" id="hakkimizda-kokler-text"></p>
-                        <div style="margin-top:1.75rem; display:flex; flex-direction:column; gap:1.25rem;" id="hakkimizda-details"></div>
-                        <p class="sj-body" style="margin-top:1.5rem; font-style:italic; color:rgba(222,219,200,0.6); font-family:'Instrument Serif',serif;">Sîhana Jorin, geleneksel değerlerinden güç alarak yarınlara yürüyen insanların toprağıdır.</p>
-                        <a href="#values" class="sj-link">
-                            Değerlerimizi Keşfedin
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
-                        </a>
-                    </div>
-                    <div style="position:relative; aspect-ratio:4/5; border-radius:1.5rem; overflow:hidden; border:1px solid rgba(222,219,200,0.08);">
-                        <img id="hakkimizda-image" src="" alt="Sıhana Jorin Köyü" style="width:100%; height:100%; object-fit:cover;">
-                        <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);"></div>
-                    </div>
-                </div>
+    <main>
+        <!-- Hero -->
+        <div class="hk-hero">
+            <img src="/resim/5866169159148834143.jpg" alt="Sıhana Jorin toplantısı" loading="eager">
+            <div class="hk-hero-content">
+                <p class="hk-hero-label">Sıhana Jorin Köy Derneği</p>
+                <h1>Geçmişten<br>beslenen bir <em>gelecek</em></h1>
             </div>
-            <script>
-                (function() {
-                    const p = (SJ.SITE_DATA && SJ.SITE_DATA.pages && SJ.SITE_DATA.pages.hakkimizda) || {};
-                    document.getElementById('hakkimizda-kokler-title').innerHTML = p.koklerTitle || 'Besler / Sîhana Jorin';
-                    document.getElementById('hakkimizda-kokler-text').textContent = p.koklerText || '';
-                    document.getElementById('hakkimizda-image').src = p.koklerImage || 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=900&q=80';
-                    const details = [
-                        {title: p.culturalTitle || 'Kültürel Kimlik', text: p.culturalText || ''},
-                        {title: p.geographicTitle || 'Coğrafi Karakter', text: p.geographicText || ''},
-                        {title: p.globalTitle || 'Global Bağ', text: p.globalText || ''}
-                    ];
-                    const container = document.getElementById('hakkimizda-details');
-                    container.innerHTML = details.map(function(d) {
-                        return '<div><h3 style="font-size:0.875rem;font-weight:600;color:#DEDBC8;margin-bottom:0.375rem">' + d.title + '</h3><p class="sj-body">' + d.text + '</p></div>';
-                    }).join('');
-                })();
-            </script>
-        </section>
+        </div>
 
-        <div class="sj-divider"></div>
-
-        <!-- Değerler - Flipping Cards -->
-        <section class="sj-section" id="values" data-reveal>
-            <div class="sj-container">
-                <div style="text-align:center; margin-bottom:3rem;">
-                    <span class="sj-label">Temel İlkeler</span>
-                    <h2 class="sj-h2" id="hakkimizda-values-title">Değerlerimiz</h2>
-                    <p class="sj-body" style="max-width:480px; margin:0.875rem auto 0;" id="hakkimizda-values-text"></p>
-                    <script>(function(){var p=(SJ.SITE_DATA&&SJ.SITE_DATA.pages&&SJ.SITE_DATA.pages.hakkimizda)||{};document.getElementById('hakkimizda-values-title').textContent=p.valuesTitle||'Değerlerimiz';document.getElementById('hakkimizda-values-text').textContent=p.valuesText||'';})();</script>
+        <!-- Giriş -->
+        <section class="hk-section" data-reveal>
+            <div class="hk-intro">
+                <div>
+                    <p class="hk-intro-label">Köklerimiz</p>
+                    <h2>Besler Köyü,<br>kadim adıyla <em>Sîhana Jorin</em></h2>
                 </div>
-                <div id="flipping-cards-root" class="overflow-x-auto md:overflow-visible scrollbar-none px-4 md:px-0 pb-2 snap-x snap-mandatory" style="-webkit-overflow-scrolling:touch; scrollbar-width:none;">
+                <div>
+                    <p class="hk-body">
+                        Doğubayazıt ilçesinin güneyinde, Ağrı Dağı'nın gölgesinde yer alan Sîhana Jorin; nesiller boyu süregelen güçlü bir aidiyetin, sarsılmaz bağların ve engin misafirperverliğin yurdu olmuştur.
+                    </p>
+                    <p class="hk-body">
+                        Sert kışlarına inat sıcak insan hikayelerinin filizlendiği bu toprak, geleneksel hayvancılık kültürüyle köklü bir yaşam sürerken; bugün metropollerden Avrupa'ya uzanan güçlü bir diaspora ağıyla da bağlarını canlı tutar.
+                    </p>
+                    <p class="hk-body" style="margin-top: 1.75rem; font-style: italic; font-family: 'Instrument Serif', serif; color: rgba(222,219,200,0.45); font-size: 1rem; line-height: 1.6;">
+                        "Sîhana Jorin, geleneksel değerlerinden güç alarak yarınlara yürüyen insanların toprağıdır."
+                    </p>
                 </div>
-                <script type="text/babel">
-                    (function () {
-                        const h = React.createElement;
-                        const root = ReactDOM.createRoot(document.getElementById('flipping-cards-root'));
-
-                        const values = [
-                            {
-                                id: 'dayanisma', num: '01', title: 'Dayanışma',
-                                summary: 'Birlikte hareket ederek köyümüzün sorunlarına çözüm üretiyoruz.',
-                                detail: 'Hemşehrilerimiz arasında güçlü bağlar kurarak, birlikte hareket ediyor ve köyümüzün zorluklarına ortak çözümler geliştiriyoruz.'
-                            },
-                            {
-                                id: 'kultur', num: '02', title: 'Kültür',
-                                summary: 'Zengin kültürel mirasımızı gelecek nesillere aktarıyoruz.',
-                                detail: 'Geleneklerimizi yaşatarak kimliğimizi koruyor, köyümüzün zengin kültürel dokusunu gelecek nesillere aktarıyoruz.'
-                            },
-                            {
-                                id: 'gelenek', num: '03', title: 'Gelenek',
-                                summary: 'Köy geleneklerimizi yaşatarak kimliğimizi koruyoruz.',
-                                detail: 'Köy geleneklerimizi yaşatarak kimliğimizi koruyor, gelecek nesillere aktarılmasını sağlıyoruz.'
-                            }
-                        ];
-
-                        root.render(h('div', { className: 'flex flex-nowrap md:flex-wrap gap-6 md:justify-center' },
-                            values.map(function (v) {
-                                return h('div', { key: v.id, className: 'snap-start shrink-0' },
-                                    h(SJ.FlippingCard, {
-                                        width: 270,
-                                        height: 290,
-                                        frontContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', textAlign: 'left', flex: 1 } },
-                                            h('span', { style: { fontFamily: 'inherit', fontSize: '0.625rem', color: 'rgba(222,219,200,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' } }, v.num + ' / İLKE'),
-                                            h('h3', { style: { fontSize: '1.25rem', fontWeight: 500, color: '#E1E0CC', marginBottom: '0.75rem' } }, v.title),
-                                            h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.45)', lineHeight: 1.65 } }, v.summary)
-                                        ),
-                                        backContent: h('div', { style: { padding: '2.25rem 2rem', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start', textAlign: 'left', flex: 1 } },
-                                            h('p', { style: { fontSize: '0.8125rem', color: 'rgba(222,219,200,0.55)', lineHeight: 1.7, marginBottom: '1.5rem' } }, v.detail),
-                                            h('a', { href: 'iletisim.html', style: { fontSize: '0.75rem', color: '#DEDBC8', textDecoration: 'none', borderBottom: '1px solid rgba(222,219,200,0.3)', paddingBottom: '2px' } }, 'Bize Ulaşın')
-                                        )
-                                    })
-                                );
-                            })
-                        ));
-                    })();
-                </script>
             </div>
         </section>
 
-        <div class="sj-divider"></div>
 
-        <!-- Yönetim CTA -->
-        <section class="sj-section sj-section--alt" data-reveal>
-            <div class="sj-container--narrow">
-                <div class="sj-card sj-card--lg" style="text-align:center; position:relative; overflow:hidden;">
-                    <div style="position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%, rgba(222,219,200,0.04) 0%, transparent 60%); pointer-events:none;"></div>
-                    <div style="position:relative; z-index:1;">
-                        <span class="sj-label">Yönetim</span>
-                        <h2 class="sj-h2" style="margin-bottom:1rem;" id="hakkimizda-mgmt-title">Yönetim Kurulumuz</h2>
-                        <p class="sj-body" style="max-width:480px; margin:0 auto 2rem;" id="hakkimizda-mgmt-text"></p>
-                        <script>(function(){var p=(SJ.SITE_DATA&&SJ.SITE_DATA.pages&&SJ.SITE_DATA.pages.hakkimizda)||{};document.getElementById('hakkimizda-mgmt-title').textContent=p.managementTitle||'Yönetim Kurulumuz';document.getElementById('hakkimizda-mgmt-text').textContent=p.managementText||'';})();</script>
-                        <a href="iletisim.html" class="sj-btn-primary">İletişime Geç</a>
-                    </div>
+
+        <!-- Fotoğraf strip -->
+        <div class="hk-photo-strip" data-reveal style="margin-top: 3px;">
+            <div class="hk-photo-main">
+                <img src="/resim/5866169159148834141.jpg" alt="Dernek buluşması" loading="lazy">
+            </div>
+            <div class="hk-photo-thumb">
+                <img src="/resim/5866169159148834153.jpg" alt="Doğa yürüyüşü" loading="lazy">
+            </div>
+            <div class="hk-photo-thumb">
+                <img src="/resim/5866169159148834154.jpg" alt="Bahar buluşması" loading="lazy">
+            </div>
+        </div>
+
+        <hr class="hk-sep">
+
+        <!-- Değerler -->
+        <div class="hk-values">
+            <div class="hk-values-header" data-reveal>
+                <p class="hk-intro-label">Temel İlkeler</p>
+                <h2>Bizi bir arada tutan değerler</h2>
+            </div>
+
+            <div class="hk-value-item" data-reveal>
+                <span class="hk-value-num">01</span>
+                <div class="hk-value-body">
+                    <h3>Dayanışma</h3>
+                    <p>Hemşehrilerimiz arasında güçlü bağlar kurarak, birlikte hareket ediyor ve köyümüzün zorluklarına ortak çözümler geliştiriyoruz. Hiçbir üyemizi yalnız bırakmıyoruz.</p>
                 </div>
             </div>
-        </section>
+
+            <div class="hk-value-item" data-reveal>
+                <span class="hk-value-num">02</span>
+                <div class="hk-value-body">
+                    <h3>Kültürel Miras</h3>
+                    <p>Geleneklerimizi yaşatarak kimliğimizi koruyor, köyümüzün zengin kültürel dokusunu gelecek nesillere aktarıyoruz. Yöresel müzikten el sanatlarına dek her şey canlı kalır.</p>
+                </div>
+            </div>
+
+            <div class="hk-value-item" data-reveal>
+                <span class="hk-value-num">03</span>
+                <div class="hk-value-body">
+                    <h3>Köklere Bağlılık</h3>
+                    <p>Dünyanın dört bir yanına yayılmış olsak da köklerimize olan bağlılığımız hiç değişmez. Yıllık buluşmalar, etkinlikler ve iletişim ağlarıyla her zaman birlikteyiz.</p>
+                </div>
+            </div>
+
+            <div class="hk-value-item" data-reveal>
+                <span class="hk-value-num">04</span>
+                <div class="hk-value-body">
+                    <h3>Geleceğe Yatırım</h3>
+                    <p>Gençlerimize verdiğimiz burs destekleri ve eğitim programlarıyla köyümüzün geleceğini bugünden inşa ediyoruz. Eğitimli nesiller en güçlü mirasımızdır.</p>
+                </div>
+            </div>
+        </div>
+
+        <hr class="hk-sep">
+
+        <!-- CTA -->
+        <div class="hk-cta" data-reveal>
+            <p>Köyümüzün <em>hikayesinin</em> bir parçası olmak ister misiniz?</p>
+            <div class="hk-cta-links">
+                <a href="gonullu.html" class="hk-btn hk-btn--primary">Derneğe Katıl</a>
+                <a href="iletisim.html" class="hk-btn hk-btn--ghost">İletişime Geç</a>
+            </div>
+        </div>
     </main>
 
     <div id="site-footer"></div>
+
+    <script>
+        /* Scroll reveal */
+        (function () {
+            const els = document.querySelectorAll('[data-reveal]');
+            const obs = new IntersectionObserver(function (entries) {
+                entries.forEach(function (e) {
+                    if (e.isIntersecting) {
+                        e.target.classList.add('visible');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+            els.forEach(function (el) { obs.observe(el); });
+        })();
+    </script>
 </body>
 
 </html>

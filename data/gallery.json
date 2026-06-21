@@ -1,16 +1,30 @@
 [
   {
-    "title": "Test",
-    "image": "/uploads/gallery/1781040456558-bbny.jpeg",
-    "description": "",
-    "category": "",
-    "year": "2026"
+    "title": "Dernek Buluşması",
+    "image": "/resim/5866169159148834141.jpg",
+    "description": "Sıhana Jorin köy derneği üyeleri bir araya geldi",
+    "category": "Topluluk",
+    "year": "2025"
   },
   {
-    "title": "Logo",
-    "image": "/uploads/gallery/1781040422530-93m7.png",
-    "description": "",
-    "category": "",
-    "year": "2026"
+    "title": "Genel Kurul Toplantısı",
+    "image": "/resim/5866169159148834143.jpg",
+    "description": "Dernek genel kurul toplantısı, tüm üyeler katılımıyla gerçekleşti",
+    "category": "Topluluk",
+    "year": "2025"
+  },
+  {
+    "title": "Yeşil Vadi",
+    "image": "/resim/5866169159148834153.jpg",
+    "description": "Doğanın içinde huzur dolu bir gün",
+    "category": "Doğa",
+    "year": "2025"
+  },
+  {
+    "title": "Bahar Buluşması",
+    "image": "/resim/5866169159148834154.jpg",
+    "description": "Bahar mevsiminde köy dayanışması",
+    "category": "Doğa",
+    "year": "2025"
   }
 ]

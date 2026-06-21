@@ -19,7 +19,7 @@ SJ.AnnouncementsSection = function AnnouncementsSection() {
             <h2 className="text-3xl sm:text-4xl font-medium" style={{ color: '#E1E0CC' }}>Köyümüzden Haberler</h2>
           </SJ.FadeUp>
         </div>
-        <div className="flex md:flex-wrap justify-start md:justify-center gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-pl-6 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 scrollbar-none">
+        <div className={announcements.length === 1 ? "flex justify-center items-center py-4 w-full" : "flex md:flex-wrap justify-start md:justify-center gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-pl-6 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 scrollbar-none"}>
           {announcements.map((a) => (
             <div key={a.id} className="snap-start shrink-0">
               <SJ.FlippingCard width={270} height={300}

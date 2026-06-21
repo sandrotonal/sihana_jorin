@@ -890,7 +890,7 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
                                 ))}
                             </div>
-                            <a href="bagis.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
+                            <a href="gonullu.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
                         </SJ.CardEntrance>
                     </div>
                 </div>
@@ -941,8 +941,13 @@ window.SJ.useInView = function useInView(options = {}) {
                                     <label className="text-xs text-gray-500 uppercase tracking-wider mb-1.5 block">Mesajınız</label>
                                     <textarea rows={4} placeholder="Mesajınızı yazın..." className="w-full bg-[#1a1a1a] border border-[#DEDBC8]/10 rounded-xl px-4 py-3 text-sm text-[#E1E0CC] placeholder-gray-600 focus:outline-none focus:border-[#DEDBC8]/30 transition-colors resize-none" />
                                 </div>
-                                <button type="submit" className="w-full bg-[#DEDBC8] text-black font-medium py-3 rounded-xl text-sm hover:bg-[#E8E5D4] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
-                                    Gönder <SJ.ArrowRight size={16} />
+                                <button type="submit" className="wa-send-btn button-spring w-full">
+                                    <div className="svg-wrapper-1">
+                                        <div className="svg-wrapper">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.66.986 3.298 1.448 5.356 1.449 5.405 0 9.803-4.394 9.806-9.8.003-5.396-4.39-9.789-9.801-9.789-5.403 0-9.799 4.393-9.802 9.8-.001 1.997.519 3.945 1.508 5.666l-.993 3.626 3.726-.952zm11.12-6.17c-.29-.145-1.72-.848-1.986-.944-.266-.096-.46-.145-.654.145-.193.29-.748.944-.917 1.138-.17.193-.338.217-.628.072-2.825-1.413-4.64-3.084-5.46-4.498-.218-.376-.023-.578.167-.768.171-.171.38-.444.57-.667.19-.22.254-.377.38-.628.127-.25.063-.467-.031-.661-.095-.193-.654-1.58-.895-2.16-.236-.57-.475-.492-.654-.501-.17-.008-.364-.01-.557-.01-.193 0-.507.072-.772.361-.266.29-1.014.992-1.014 2.417s1.04 2.796 1.185 2.99c.145.193 2.049 3.128 4.964 4.385.693.3 1.233.478 1.655.612.697.22 1.33.19 1.83.115.557-.08 1.72-.7 1.962-1.375.242-.676.242-1.255.17-1.375-.072-.12-.266-.19-.556-.335z"/></svg>
+                                        </div>
+                                    </div>
+                                    <span>WhatsApp ile Gönder</span>
                                 </button>
                             </form>
                         </SJ.FadeUp>
@@ -960,10 +965,8 @@ window.SJ.useInView = function useInView(options = {}) {
     SJ.Footer = function Footer() {
         const f = (SJ.SITE_DATA && SJ.SITE_DATA.footer) || {};
         const socialLinks = [
-            { label:'Instagram', href: f.instagram || 'https://instagram.com', icon:'Instagram' },
             { label:'Facebook', href: f.facebook || 'https://facebook.com', icon:'Facebook' },
-            { label:'YouTube', href: 'https://youtube.com', icon:'YouTube' },
-            { label:'X', href: f.twitter || 'https://x.com', icon:'XIcon_social' }
+            { label:'TikTok', href: f.tiktok || 'https://tiktok.com', icon:'TikTok' }
         ];
         return (
             <footer className="bg-[#050505] border-t border-[#DEDBC8]/5 pt-16 pb-8 px-4 md:px-6">
@@ -975,7 +978,9 @@ window.SJ.useInView = function useInView(options = {}) {
                             </a>
                             <p className="text-gray-500 text-sm leading-relaxed mb-4">{f.description || "Köyümüzün mirasını yaşatmak, geleceğini inşa etmek için bir aradayız."}</p>
                             <div className="flex items-center gap-1 text-gray-500 text-xs">
-                                <SJ.Heart size={12} className="text-[#DEDBC8]" /> ile yapıldı
+                                <a href="https://gucluyumhe.dev" target="_blank" rel="noopener" className="flex items-center gap-1 hover:text-[#DEDBC8] transition-colors" aria-label="gucluyumhe.dev">
+                                    <SJ.Heart size={12} className="text-[#DEDBC8]" /> ile yapıldı
+                                </a>
                             </div>
                         </div>
                         <div>
@@ -996,7 +1001,6 @@ window.SJ.useInView = function useInView(options = {}) {
                         <div>
                             <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">Destek</h4>
                             <ul className="space-y-2.5">
-                                <li><a href="bagis.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Bağış Yap</a></li>
                                 <li><a href="gonullu.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">Gönüllü Ol</a></li>
                                 <li><a href="iletisim.html" className="text-gray-500 text-sm hover:text-[#DEDBC8] transition-colors">İletişim</a></li>
                             </ul>
@@ -1080,7 +1084,7 @@ window.SJ.useInView = function useInView(options = {}) {
                             <h2 className="text-3xl sm:text-4xl font-medium" style={{ color: '#E1E0CC' }}>Köyümüzden Haberler</h2>
                         </SJ.FadeUp>
                     </div>
-                    <div className="flex md:flex-wrap justify-start md:justify-center gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-pl-6 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 scrollbar-none">
+                    <div className={announcements.length === 1 ? "flex justify-center items-center py-4 w-full" : "flex md:flex-wrap justify-start md:justify-center gap-6 overflow-x-auto md:overflow-visible snap-x snap-mandatory scroll-pl-6 pb-4 -mx-4 px-4 md:mx-0 md:px-0 md:pb-0 scrollbar-none"}>
                         {announcements.map((a) => (
                             <div key={a.id} className="snap-start shrink-0">
                                 <SJ.FlippingCard width={270} height={300}

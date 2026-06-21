@@ -1,45 +1,30 @@
 [
   {
-    "image": "/uploads/slider/1780939372530-8fyj.jpeg",
-    "title": "Ömer Özbay ",
-    "subtitle": "test",
-    "description": "Ömer baba  ziraat",
-    "category": "Topluluk Bulusmasi",
-    "year": "2025"
-  },
-  {
-    "title": "Yaz Şenliği 2024",
-    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1920&auto=format&fit=crop",
-    "category": "Kültürel Etkinlik",
-    "year": "2024",
-    "description": "Köyün geleneksel yaz festivali"
-  },
-  {
-    "title": "El Sanatları Atölyesi",
-    "image": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1920&auto=format&fit=crop",
-    "category": "Atölye Çalışması",
-    "year": "2024",
-    "description": "Geleneksel el sanatları eğitim programı"
-  },
-  {
-    "title": "Doğa Yürüyüşü",
-    "image": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=1920&auto=format&fit=crop",
-    "category": "Doğa Aktivitesi",
-    "year": "2024",
-    "description": "Köy çevresinde doğa yürüyüşleri"
-  },
-  {
-    "title": "Bağ Bozumu Festivali",
-    "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1920&auto=format&fit=crop",
-    "category": "Tarım Projesi",
-    "year": "2023",
-    "description": "Geleneksel bağ bozumu kutlamaları"
-  },
-  {
-    "title": "Kış Toplantısı",
-    "image": "https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1920&auto=format&fit=crop",
+    "title": "Dernek Buluşması",
+    "image": "/resim/5866169159148834141.jpg",
     "category": "Topluluk Buluşması",
-    "year": "2023",
-    "description": "Yıllık kış toplantısı ve değerlendirme"
+    "year": "2025",
+    "description": "Sıhana Jorin köy derneği üyeleri bir araya geldi"
+  },
+  {
+    "title": "Genel Kurul",
+    "image": "/resim/5866169159148834143.jpg",
+    "category": "Topluluk Buluşması",
+    "year": "2025",
+    "description": "Dernek genel kurul toplantısı, tüm üyeler katılımıyla gerçekleşti"
+  },
+  {
+    "title": "Yeşil Vadi",
+    "image": "/resim/5866169159148834153.jpg",
+    "category": "Doğa Aktivitesi",
+    "year": "2025",
+    "description": "Doğanın içinde huzur dolu bir gün"
+  },
+  {
+    "title": "Bahar Buluşması",
+    "image": "/resim/5866169159148834154.jpg",
+    "category": "Doğa Aktivitesi",
+    "year": "2025",
+    "description": "Bahar mevsiminde köy dayanışması"
   }
 ]

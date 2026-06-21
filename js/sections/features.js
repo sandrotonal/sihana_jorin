@@ -56,7 +56,7 @@ SJ.FeaturesSection = function FeaturesSection() {
                 <div key={i} className="flex items-start gap-2"><SJ.Check size={16} className="text-primary mt-0.5 flex-shrink-0" /><span className="text-gray-400 text-sm">{item}</span></div>
               ))}
             </div>
-            <a href="bagis.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
+            <a href="gonullu.html" className="learn-more-group inline-flex items-center gap-1 text-primary text-sm mt-4">Daha fazla<span className="learn-arrow" style={{ transform: 'rotate(-45deg)', display: 'inline-flex' }}><SJ.ArrowRight size={14} /></span></a>
           </SJ.CardEntrance>
         </div>
       </div>

@@ -825,3 +825,391 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+/* ============================================================
+   WHATSAPP SEND BUTTON STYLES (PREMIUM ANIMATION)
+   ============================================================ */
+.wa-send-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem; /* rounded-xl */
+  background-color: #DEDBC8; /* Sîhana Jorin brand cream */
+  color: #000000 !important;
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  border: 1px solid rgba(222, 219, 200, 0.3);
+  box-shadow: 0 4px 12px rgba(222, 219, 200, 0.1);
+}
+
+.wa-send-btn:active {
+  transform: scale(0.95);
+}
+
+.wa-send-btn:hover {
+  background-color: #E8E5D4;
+  box-shadow: 0 6px 16px rgba(222, 219, 200, 0.25);
+  border-color: rgba(222, 219, 200, 0.5);
+}
+
+.wa-send-btn .svg-wrapper-1 {
+  display: flex;
+  align-items: center;
+}
+
+.wa-send-btn .svg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.wa-send-btn:hover .svg-wrapper {
+  animation: wa-fly 0.6s ease-in-out infinite alternate;
+}
+
+.wa-send-btn:hover svg {
+  transform: translateX(1.9em) scale(1.15);
+}
+
+.wa-send-btn:hover span {
+  transform: translateX(6em);
+  opacity: 0;
+}
+
+.wa-send-btn span {
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+  margin-left: 0.5rem;
+  display: inline-block;
+}
+
+@keyframes wa-fly {
+  from { transform: translateY(0.08em); }
+  to   { transform: translateY(-0.08em); }
+}
+
+/* ============================================================
+   PREMIUM ANIMATION SYSTEM — Framer Motion quality
+   GPU-composited, spring-based, 60fps
+   ============================================================ */
+
+/* ── Spring easing custom properties ── */
+:root {
+    --spring-out:      cubic-bezier(0.16, 1, 0.3, 1);
+    --spring-bounce:   cubic-bezier(0.34, 1.56, 0.64, 1);
+    --spring-stiff:    cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out:     cubic-bezier(0.4, 0, 0.2, 1);
+    --dur-fast: 0.25s;
+    --dur-med:  0.5s;
+    --dur-slow: 0.8s;
+}
+
+/* ── Performance: GPU layer hints for animated elements ── */
+.gl-item img,
+.hk-photo-strip img,
+.slider-project,
+.slider-project img,
+.slider-minimap-img img,
+.flipping-card-inner,
+[data-reveal] {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* ── Staggered reveal (data-stagger on parent) ── */
+[data-stagger] > * {
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+        opacity var(--dur-slow) var(--spring-out),
+        transform var(--dur-slow) var(--spring-out);
+}
+[data-stagger].sj-revealed > *:nth-child(1)  { transition-delay: 0.00s; }
+[data-stagger].sj-revealed > *:nth-child(2)  { transition-delay: 0.07s; }
+[data-stagger].sj-revealed > *:nth-child(3)  { transition-delay: 0.14s; }
+[data-stagger].sj-revealed > *:nth-child(4)  { transition-delay: 0.21s; }
+[data-stagger].sj-revealed > *:nth-child(5)  { transition-delay: 0.28s; }
+[data-stagger].sj-revealed > *:nth-child(6)  { transition-delay: 0.35s; }
+[data-stagger].sj-revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Slide-in from left / right ── */
+[data-reveal-left] {
+    opacity: 0;
+    transform: translateX(-32px);
+    transition:
+        opacity var(--dur-slow) var(--spring-out),
+        transform var(--dur-slow) var(--spring-out);
+}
+[data-reveal-left].sj-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+[data-reveal-right] {
+    opacity: 0;
+    transform: translateX(32px);
+    transition:
+        opacity var(--dur-slow) var(--spring-out),
+        transform var(--dur-slow) var(--spring-out);
+}
+[data-reveal-right].sj-revealed {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Scale-in reveal ── */
+[data-reveal-scale] {
+    opacity: 0;
+    transform: scale(0.93);
+    transition:
+        opacity var(--dur-slow) var(--spring-stiff),
+        transform var(--dur-slow) var(--spring-stiff);
+}
+[data-reveal-scale].sj-revealed {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ── Improved base reveal (override with spring) ── */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity var(--dur-slow) var(--spring-out),
+        transform var(--dur-slow) var(--spring-out);
+    will-change: opacity, transform;
+}
+[data-reveal].sj-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Magnetic link hover ── */
+.sj-magnetic {
+    display: inline-block;
+    transition: transform 0.35s var(--spring-bounce);
+    will-change: transform;
+}
+.sj-magnetic:hover {
+    transform: translateY(-3px) scale(1.02);
+}
+
+/* ── Shimmer text ── */
+@keyframes shimmer-text {
+    0%   { background-position: -200% center; }
+    100% { background-position: 200% center; }
+}
+.sj-shimmer {
+    background: linear-gradient(
+        90deg,
+        rgba(225,224,204,0.4) 0%,
+        rgba(225,224,204,1)   40%,
+        rgba(225,224,204,0.4) 80%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-text 3.5s linear infinite;
+}
+
+/* ── Fade-in keyframe ── */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.sj-fade-in {
+    animation: fadeIn var(--dur-slow) var(--spring-out) forwards;
+}
+.sj-fade-in-1 { animation-delay: 0.1s; opacity: 0; }
+.sj-fade-in-2 { animation-delay: 0.2s; opacity: 0; }
+.sj-fade-in-3 { animation-delay: 0.35s; opacity: 0; }
+
+/* ── Slide up from bottom ── */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.sj-slide-up {
+    animation: slideUp var(--dur-slow) var(--spring-out) both;
+}
+
+/* ── Scale fade ── */
+@keyframes scaleFade {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+}
+.sj-scale-fade {
+    animation: scaleFade var(--dur-slow) var(--spring-stiff) both;
+}
+
+/* ── Image hover scale (smooth, GPU) ── */
+.sj-img-hover {
+    overflow: hidden;
+    border-radius: inherit;
+}
+.sj-img-hover img {
+    will-change: transform;
+    transition: transform 0.9s var(--spring-out);
+}
+.sj-img-hover:hover img {
+    transform: scale(1.06);
+}
+
+/* ── Button press ── */
+.sj-btn-primary,
+.sj-btn-ghost,
+.hk-btn {
+    active-scale: 0.96;
+    transition:
+        background 0.25s,
+        transform 0.2s var(--spring-bounce),
+        box-shadow 0.25s,
+        border-color 0.25s,
+        color 0.25s;
+    will-change: transform;
+}
+.sj-btn-primary:active,
+.sj-btn-ghost:active,
+.hk-btn:active {
+    transform: scale(0.96);
+}
+.sj-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(222,219,200,0.12);
+}
+
+/* ── Line draw ── */
+@keyframes lineDraw {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+.sj-line-draw {
+    display: block;
+    height: 1px;
+    background: rgba(222,219,200,0.2);
+    transform-origin: left;
+    animation: lineDraw 0.8s var(--spring-out) both;
+}
+
+/* ── Nav link underline ── */
+.nav-link {
+    position: relative;
+}
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(225,224,204,0.6);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--spring-out);
+}
+.nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* ── Feature card hover ── */
+.feature-card {
+    transition:
+        border-color 0.3s var(--ease-in-out),
+        box-shadow 0.3s var(--ease-in-out),
+        transform 0.35s var(--spring-out);
+    will-change: transform;
+}
+.feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(222,219,200,0.18) !important;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.35), 0 0 0 1px rgba(222,219,200,0.06);
+}
+
+/* ── sj-card hover lift ── */
+.sj-card {
+    transition:
+        border-color 0.3s var(--ease-in-out),
+        box-shadow 0.3s var(--ease-in-out),
+        transform 0.35s var(--spring-out);
+    will-change: transform;
+}
+.sj-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(222,219,200,0.16) !important;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3);
+}
+
+/* ── Pulse dot (for live/active indicators) ── */
+@keyframes pulse-ring {
+    0%   { transform: scale(0.8); opacity: 0.8; }
+    70%  { transform: scale(1.4); opacity: 0; }
+    100% { transform: scale(1.4); opacity: 0; }
+}
+.sj-pulse {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.sj-pulse::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.3;
+    animation: pulse-ring 2s var(--ease-in-out) infinite;
+}
+
+/* ── Blur-in ── */
+@keyframes blurIn {
+    from { opacity: 0; filter: blur(8px); transform: translateY(12px); }
+    to   { opacity: 1; filter: blur(0px); transform: translateY(0); }
+}
+.sj-blur-in {
+    animation: blurIn 0.7s var(--spring-out) both;
+}
+
+/* ── Horizontal scroll marquee ── */
+@keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+}
+.sj-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 20s linear infinite;
+    will-change: transform;
+}
+.sj-marquee-track:hover {
+    animation-play-state: paused;
+}
+
+/* ── Responsive image performance ── */
+img {
+    max-width: 100%;
+    height: auto;
+}
+img[loading="lazy"] {
+    content-visibility: auto;
+}
+
+/* ── Reduce layout shifts ── */
+.gl-item,
+.slider-project,
+.hk-photo-main,
+.hk-photo-thumb {
+    contain: layout style;
+}
