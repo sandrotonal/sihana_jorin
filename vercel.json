@@ -4,6 +4,34 @@
     {
       "src": "server.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "*.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "logo.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "logosıhan.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "css/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "js/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "resim/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "data/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
