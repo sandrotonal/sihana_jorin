@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/js/data/announcements.js",
+      "dest": "server.js"
+    },
+    {
+      "src": "/js/config.js",
+      "dest": "server.js"
+    },
+    {
+      "src": "/js/data/gallery.js",
+      "dest": "server.js"
+    },
+    {
+      "src": "/js/data/site.js",
+      "dest": "server.js"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "server.js"
+    }
+  ]
+}
