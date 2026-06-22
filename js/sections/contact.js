@@ -19,11 +19,11 @@ SJ.ContactSection = function ContactSection() {
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-400 text-sm">
                                     <SJ.Phone size={18} className="text-[#DEDBC8] shrink-0" />
-                                    <span>{c.phone || "+90 (555) 123 4567"}</span>
+                                    <span>{c.phone || "+90 (544) 917 77 01"}</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-gray-400 text-sm">
                                     <SJ.Mail size={18} className="text-[#DEDBC8] shrink-0" />
-                                    <span>{c.email || "info@sihanajorin.org"}</span>
+                                    <span>{c.email || "omerozbay104@gmail.com"}</span>
                                 </div>
                             </div>
                         </SJ.FadeUp>

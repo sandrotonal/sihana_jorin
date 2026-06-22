@@ -57,13 +57,13 @@ const DEFAULTS = {
             "title": "Birlikte daha güçlüyüz",
             "description": "Derneğimize katılmak, fikir paylaşmak veya herhangi bir konuda bizimle iletişime geçmek isterseniz, her zaman buradayız.",
             "address": "Sıhana Jorin Köyü, Merkez Mahallesi, No:1",
-            "phone": "+90 (555) 123 4567",
-            "email": "info@sihanajorin.org"
+            "phone": "+90 (544) 917 77 01",
+            "email": "omerozbay104@gmail.com"
         },
         "footer": {
             "description": "Sıhana Jorin Köyü Derneği — birlikte daha güçlüyüz.",
-            "email": "info@sihanajorin.org",
-            "phone": "+90 (555) 123 4567",
+            "email": "omerozbay104@gmail.com",
+            "phone": "+90 (544) 917 77 01",
             "facebook": "#",
             "instagram": "#",
             "twitter": "#"

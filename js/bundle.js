@@ -919,10 +919,10 @@ window.SJ.useInView = function useInView(options = {}) {
                                         <SJ.MapPin size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.address || "Sıhana Jorin Köyü, Merkez Mahallesi, No:1"}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-gray-400 text-sm">
-                                        <SJ.Phone size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.phone || "+90 (555) 123 4567"}</span>
+                                        <SJ.Phone size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.phone || "+90 (544) 917 77 01"}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-gray-400 text-sm">
-                                        <SJ.Mail size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.email || "info@sihanajorin.org"}</span>
+                                        <SJ.Mail size={18} className="text-[#DEDBC8] shrink-0" /><span>{c.email || "omerozbay104@gmail.com"}</span>
                                     </div>
                                 </div>
                             </SJ.FadeUp>
@@ -986,8 +986,8 @@ window.SJ.useInView = function useInView(options = {}) {
                         <div>
                             <h4 className="text-xs font-semibold tracking-widest uppercase text-[#DEDBC8]/40 mb-4">İletişim</h4>
                             <ul className="space-y-2.5">
-                                <li className="text-gray-500 text-sm">{f.email || "info@sihanajorin.org"}</li>
-                                <li className="text-gray-500 text-sm">{f.phone || "+90 (555) 123 4567"}</li>
+                                <li className="text-gray-500 text-sm">{f.email || "omerozbay104@gmail.com"}</li>
+                                <li className="text-gray-500 text-sm">{f.phone || "+90 (544) 917 77 01"}</li>
                             </ul>
                         </div>
                         <div>
