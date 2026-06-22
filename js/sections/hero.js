@@ -5,7 +5,22 @@ SJ.HeroSection = function HeroSection() {
     return (
         <section id="hero" className="h-screen p-4 md:p-6" aria-label="Ana bölüm">
             <div className="relative h-full rounded-2xl md:rounded-[2rem] overflow-hidden">
-                <video ref={el => { if (el) { el.muted = true; el.play().catch(e => console.log("Hero video autoplay failed", e)); } }} loop muted playsInline className="absolute inset-0 w-full h-full object-cover" aria-hidden="true">
+                <video 
+                    ref={el => { 
+                        if (el) { 
+                            el.muted = true; 
+                            el.load();
+                            el.play().catch(e => console.log("Hero video autoplay failed", e)); 
+                        } 
+                    }} 
+                    loop 
+                    muted 
+                    playsInline 
+                    autoPlay
+                    preload="auto"
+                    className="absolute inset-0 w-full h-full object-cover" 
+                    aria-hidden="true"
+                    poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 1080'%3E%3Crect fill='%23000000' width='1920' height='1080'/%3E%3C/svg%3E">
                     <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260405_170732_8a9ccda6-5cff-4628-b164-059c500a2b41.mp4" type="video/mp4" />
                 </video>
                 <div className="noise-overlay opacity-[0.7] mix-blend-overlay pointer-events-none absolute inset-0 z-10" aria-hidden="true"></div>
